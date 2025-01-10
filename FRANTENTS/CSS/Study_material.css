@@ -1,0 +1,154 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+.body{
+height: 100%;
+width: 100%;
+background-color: #05081f;
+background-color: #D9AFD9;
+background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+
+}
+.contenerbox{
+    height: 100%;
+    width: 70%;
+     margin: 10px auto;
+     background-image: linear-gradient(43deg, #f3f5f79d 0%, #93d35f73 99%);
+     
+    box-shadow: 1px 1px 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+}
+img{
+    height: 10rem;
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.itembox:hover image{
+transform: scale(1.1rem);
+transition-duration: 200ms;
+}
+.headbox{
+    width: 70%;
+    margin: auto;
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   text-align: center;
+   
+}
+.headbox h1{
+    text-shadow: 4px 4px  white;
+    font-size: 40px;
+}
+.headbox p{
+color: white;
+}
+.text h2{
+    font-size: 18px;
+}
+.text{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 15px;
+}
+.main_contener{
+    border: solid rgba(0, 0, 0, 0.185) 1px;
+    width: 25%;
+    height:340px;
+    display: flex;
+    box-sizing: border-box;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+   
+}
+.image_orther img{
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+}
+.itembox{
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.navigation{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+button{
+   width: 90px;
+   height: 25px;
+}
+
+.orther{
+    display: flex;
+    justify-content: space-between; 
+   align-items: center;
+}
+.orther img{
+    display: flex;
+    align-items: flex-end;
+}
+.imformation_box{
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  
+}
+.cards_parent{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+a{
+text-decoration: none;
+}
+
+  
+.itembox:hover img{
+    transform: scale(1.1);
+    transition-duration: 200ms;
+    overflow: hidden;
+}
+.navigation_Butten2{
+    
+    color: white;
+    font-size: 100%;
+    width: 100%;
+   
+    border-radius: 50px;
+    box-sizing: border-box;
+  }
+  input{
+    font-size:large;
+    padding-left: 20px;
+    height: 40px;
+    width: 40%;
+    border-radius: 20px;
+  }
+  .butten button{
+    position: absolute;
+    top: 167px;
+    width: 7%;
+    height: 39px;
+    align-self: flex-end;
+    border-radius: 20px;
+    padding-left: 10px;
+    left: 484px;
+   font-size: large;
+   display: flex;
+   align-items: center;
+  }
+  .butten button:hover{
+    background-color: green;
+  }
+  
