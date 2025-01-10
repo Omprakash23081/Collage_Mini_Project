@@ -1,7 +1,5 @@
-// const mysql = require('mysql2');
-import mysql from 'mysql2';
+const connection=require("./Connection")
 import express from 'express';
-// const path = require('path');
 const app = express();
 
 const rout = 8000;
