@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticky Search Bar</title>
+    <style>
+      .header {
+        background: #fff;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .navbar {
+        background: #0073e6;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+      }
+      .search-bar {
+        padding: 10px;
+        text-align: center;
+        transition: all 0.3s;
+      }
+      .search-bar input {
+        width: 60%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .content {
+        height: 2000px; /* Just to create scrolling effect */
+        padding: 20px;
+      }
+      .fixed-search {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: white;
+        padding: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>My Website</h1>
+    </div>
+
+    <div class="search-bar" id="searchBar">
+      <input type="text" placeholder="Search..." />
+    </div>
+
+    <div class="navbar" id="navbar">
+      <h3>Navigation Bar</h3>
+    </div>
+
+    <div class="content">
+      <p>Scroll down to see the effect...</p>
+    </div>
+
+    <script>
+      let navbar = document.getElementById("navbar");
+      let searchBar = document.getElementById("searchBar");
+      let navbarOffset = navbar.offsetTop;
+
+      window.onscroll = function () {
+        if (window.pageYOffset >= navbarOffset) {
+          searchBar.classList.add("fixed-search");
+        } else {
+          searchBar.classList.remove("fixed-search");
+        }
+      };
+    </script>
+  </body>
+</html>
