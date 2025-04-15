@@ -1,0 +1,18 @@
+.App_contaniar {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 30px;
+  column-gap: 60px;
+
+  font-family: "Arial", sans-serif !important;
+}
+
+.Primum_contener {
+  display: flex;
+  width: 100%;
+  background-color: #121621;
+  color: white;
+}

@@ -1,0 +1,55 @@
+#primum04_id {
+  margin-left: 288px;
+  width: 77% !important;
+}
+
+#sow_more {
+  width: 500px;
+  margin-left: 100%;
+}
+span {
+  font-size: 5px;
+}
+
+.heade {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headr1 {
+  display: flex;
+}
+
+#actions {
+  display: flex;
+
+  height: 40px;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+.color {
+  border: solid black 2px;
+  border-radius: 20px;
+  background-color: #e03c57;
+}
+#actions :hover {
+  color: mediumblue;
+}
+#actions svg {
+  margin-top: 3px;
+  padding-left: 7px;
+}
+#actions p {
+  margin-right: 70px;
+  margin-top: 10px;
+  color: black;
+}
+
+.hader2 {
+  margin-top: 10px;
+}
+#primum04_id hr {
+  color: black;
+  width: 100%;
+  margin-top: -3px;
+}

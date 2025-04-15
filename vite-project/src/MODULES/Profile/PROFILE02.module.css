@@ -1,0 +1,76 @@
+.container {
+  width: 60%;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+
+.profile02 {
+  border: solid rgb(87, 89, 201) 2px;
+  border-radius: 20px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+}
+
+.profile02_content .profile02_content_icon {
+  margin-top: 20px;
+  order: 1;
+}
+
+.profile02_content p {
+  font-size: 18px;
+  margin-left: 10px;
+  margin-top: 20px;
+  color: white;
+}
+
+.arow {
+  order: 2;
+  margin-left: auto;
+}
+
+.arow :hover {
+  fill: rgb(212, 151, 19);
+  transform: translateX(5px);
+}
+
+.Activity_contener {
+  margin-top: 28px;
+}
+
+.weekly_Activity {
+  border: solid black 1px;
+  border-radius: 15px;
+  height: 62px;
+  width: 50%;
+  margin: 10px;
+  padding-left: 10px;
+  align-items: center;
+  display: flex;
+}
+
+.Activity_contener1 {
+  display: flex;
+}
+
+.weekly_Activity h3 {
+  margin-left: 10px;
+  font-size: large;
+  margin-top: -26px;
+}
+
+.weekly_Activity p {
+  margin-left: 10px;
+  color: aliceblue;
+  font-size: large;
+}
+
+.container h2 {
+  font-size: 27px;
+  margin-top: 30px;
+  margin-bottom: -15px;
+}

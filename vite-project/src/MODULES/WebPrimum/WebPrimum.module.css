@@ -1,0 +1,249 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#body {
+  background-color: #000000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  margin-left: 30%;
+  margin-top: 4%;
+
+  justify-content: center;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.pricing_container {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing_table {
+  min-width: 95% !important;
+  border-spacing: 0;
+  z-index: 999999;
+  border-collapse: separate;
+  margin-bottom: 24px;
+}
+
+.pricing_table td {
+  padding: 16px;
+  color: #a1a1aa;
+}
+
+.pricing_table tr:not(:last-child) td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pricing_table td:first-child {
+  width: 50%;
+}
+
+.pricing_table td:not(:first-child) {
+  text-align: center;
+  width: 25%;
+}
+
+.header td {
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.check {
+  color: #60a5fa;
+  font-size: 20px;
+  z-index: 9999999;
+}
+
+.x_mark {
+  color: #71717a;
+  font-size: 20px;
+}
+
+.small_text {
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+.billing_toggle {
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border: solid 1px rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  width: fit-content;
+  margin-bottom: 24px;
+}
+
+.color {
+  color: #60a5fa;
+  border: solid 1px #60a5fa;
+}
+
+.billing_option {
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #a1a1aa;
+}
+
+.billing_option.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.price_cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.price_card {
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price_card.selected {
+  background: #1d1f26;
+  border-color: #60a5fa;
+}
+
+.price1 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.price1 span {
+  font-size: 0.6em;
+  color: #a1a1aa;
+  font-weight: normal;
+}
+.price2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.price2 span {
+  font-size: 0.6em;
+  color: #a1a1aa;
+  font-weight: normal;
+}
+
+.cta_button {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: #60a5fa;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
+    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 24px;
+  text-align: center;
+  text-decoration: none;
+  animation: pulse 2s infinite;
+}
+
+/* @keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.0015);
+  }
+
+  50% {
+    transform: scale(1.023);
+  }
+  75% {
+    transform: scale(1.015);
+  }
+  100% {
+    transform: scale(1);
+  }
+} */
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cta_button:hover {
+  background: #3b82f6;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
+    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+@media (max-width: 640px) {
+  .price_cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+#super {
+  padding-left: 20px;
+}
+
+.selactedone {
+  background: #1d1f26d2;
+  width: 150px;
+  height: 45%;
+  margin-left: 61%;
+  margin-top: 7%;
+  border-radius: 10px;
+  position: absolute;
+}
+.selactedtwo {
+  background: #1d1f26d2;
+  width: 150px;
+  height: 45%;
+  margin-left: 74%;
+  margin-top: 7%;
+  border-radius: 10px;
+  position: absolute;
+}
+
+.primumtext {
+  color: goldenrod;
+}
+
+#primumtext {
+  color: goldenrod;
+}
+
+.price2 span {
+  color: goldenrod;
+}
+.price2 h7 {
+  color: goldenrod;
+}

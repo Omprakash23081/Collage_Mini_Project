@@ -1,0 +1,15 @@
+.profile_contener {
+  background-color: #151529;
+}
+
+.profile {
+  width: 80vw;
+  /* height: 100vh; */
+  margin-left: 260px;
+  padding: 30px;
+  display: flex;
+}
+
+.profile04 {
+  margin-top: -100px;
+}
