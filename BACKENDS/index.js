@@ -1,7 +1,5 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-const connection = require("./Connection");
+require("dotenv").config();
+const express = require("express");
 
 const app = express();
 const port = 5000;
@@ -19,6 +17,6 @@ app.get("/Login", (req, res) => {
   res.send(data);
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${port}`);
 });
