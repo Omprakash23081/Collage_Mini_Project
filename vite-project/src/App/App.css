@@ -1218,6 +1218,19 @@ p {
   background: #f9f9f9;
 }
 
+.registrationDate {
+  background-color: green;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: -0px;
+}
+
+.endDate {
+  background-color: rgb(226, 16, 16);
+  border-radius: 20px;
+  text-align: center;
+  margin-top: 2%;
+}
 /* Footers css codes */
 
 footer {
