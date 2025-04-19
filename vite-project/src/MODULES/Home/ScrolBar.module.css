@@ -1,33 +1,38 @@
 .carousel_container {
   position: relative;
-  /* top: 80px; */
-
   width: 85%;
   max-width: 1362px;
-  /* Your desired width */
   height: 450px;
-  /* Your desired height */
   overflow: hidden;
-  /* Hide overflow to keep the carousel neat */
   margin: 20px auto;
-  /* Centering */
   border-radius: 20px;
-
 }
 
 .carousel_slide {
   display: flex;
-  /* Use flexbox for horizontal layout */
   width: 300%;
-  /* 100% per image, 3 images = 300% */
   height: 100%;
   transition: transform 0.5s ease-in-out;
-  /* Smooth transition */
 }
 
 .carousel_slide img {
   width: 33.33%;
-  /* Ensure each image takes 1/3 of the slide width */
   height: 100%;
-  /* Maintain height of the container */
+}
+
+@media (max-width: 768px) {
+  .carousel_container {
+    width: 95%;
+    height: 300px;
+  }
+
+  .carousel_slide img {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel_container {
+    height: 200px;
+  }
 }
