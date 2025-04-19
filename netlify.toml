@@ -1,0 +1,4 @@
+[build]
+  base = "vite-project"
+  publish = "dist"
+  command = "npm run build"
