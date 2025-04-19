@@ -828,6 +828,81 @@ body::before {
   transform: translateX(200%);
 }
 
+@media (max-width: 543px) and (max-height: 554px) {
+  body {
+    margin-top: 30px;
+    padding: 10px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .container {
+    width: 100%;
+    min-height: auto;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 12px;
+    box-shadow: none;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .form-container,
+  .sign-in,
+  .sign-up {
+    width: 100%;
+    position: relative;
+    transform: none !important;
+    opacity: 1 !important;
+    z-index: auto !important;
+  }
+
+  .toggle-container,
+  .toggle,
+  .toggle-panel {
+    display: none; /* Hide toggle animation and text for compact view */
+  }
+
+  .container form {
+    padding: 20px 15px;
+    width: 100%;
+  }
+
+  .container input,
+  .container button {
+    width: 100%;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+
+  .social-icons {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .social-icons a {
+    width: 34px;
+    height: 34px;
+    margin: 4px;
+  }
+
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .container span,
+  .container a,
+  .container p {
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
 /* year card box css */
 
 .yearcontainer {

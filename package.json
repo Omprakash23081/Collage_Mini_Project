@@ -1,0 +1,21 @@
+{
+  "name": "mini_project",
+  "version": "1.0.0",
+  "description": "This template provides a robust setup to get React working seamlessly with Vite, ensuring high performance and developer productivity.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Omprakash23081/Collage_Mini_Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Omprakash23081/Collage_Mini_Project/issues"
+  },
+  "homepage": "https://github.com/Omprakash23081/Collage_Mini_Project#readme"
+}
