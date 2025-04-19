@@ -1231,6 +1231,98 @@ p {
   text-align: center;
   margin-top: 2%;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 1200px) {
+  .case-study-card {
+    width: 240px;
+    height: 330px;
+  }
+
+  .headers {
+    font-size: 2rem;
+  }
+
+  .search-bar1 input,
+  .search-bar1 select {
+    width: 25% !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .case-study-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .case-study-card {
+    width: 80%;
+    height: auto;
+  }
+
+  .search-bar1 {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .search-bar1 input,
+  .search-bar1 select,
+  .search-bar1 .search-button {
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+
+  .search-bar1 .input-item {
+    flex: 1 1 auto;
+  }
+
+  .headers {
+    font-size: 1.8rem;
+  }
+
+  .headers p {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .case-study-container_head_line {
+    font-size: 1.5rem;
+  }
+
+  .container_Lost_found {
+    padding: 30px 10px;
+    height: auto;
+  }
+
+  .search-bar1 {
+    width: 95vw;
+  }
+}
+
+@media (max-width: 576px) {
+  .headers {
+    font-size: 1.5rem;
+  }
+
+  .headers p {
+    font-size: 1rem;
+  }
+
+  .case-study-card {
+    padding: 10px;
+    margin: 15px 0;
+  }
+
+  .search-bar1 input,
+  .search-bar1 select,
+  .search-bar1 .search-button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
 /* Footers css codes */
 
 footer {
