@@ -3,15 +3,16 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   server: {
-    host: "0.0.0.0", // 👈 Make Vite listen on all IPs
-    port: process.env.PORT || 5173, // 👈 Let Render assign the port
+    host: "0.0.0.0",
+    port: process.env.PORT || 5173,
     proxy: {
       "/Login": {
-        target: "http://localhost:5000", // This is fine for local dev
+        target: "http://localhost:5000",
         changeOrigin: true,
         secure: false,
       },
     },
+    allowedHosts: ["collage-mini-project.onrender.com"],
   },
   plugins: [react()],
 });
