@@ -35,4 +35,12 @@
   .carousel_container {
     height: 200px;
   }
+
+  .carousel_slide {
+    width: 200%;
+  }
+
+  .carousel_slide img {
+    width: 50%;
+  }
 }
