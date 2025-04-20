@@ -1,12 +1,10 @@
 .App_contaniar {
   display: flex;
-
   justify-content: center;
   align-items: center;
   flex-direction: column;
   row-gap: 30px;
   column-gap: 60px;
-
   font-family: "Arial", sans-serif !important;
 }
 

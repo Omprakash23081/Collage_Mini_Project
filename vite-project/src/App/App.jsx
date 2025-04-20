@@ -14,24 +14,24 @@ import axios from "axios";
 
 function App() {
   // Fetch data from the API
-  useEffect(() => {
-    const controller = new AbortController();
-    setTimeout(async () => {
-      await axios
-        .get("/Login", {
-          signal: controller.signal,
-        })
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          if (axios.isCancel(error)) {
-            console.log(`Errer during abort signal ${error.message}`);
-          }
-          console.error("Error fetching data:", error);
-        });
-    }, 3000);
-  }, []);
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   setTimeout(async () => {
+  //     await axios
+  //       .get("/Login", {
+  //         signal: controller.signal,
+  //       })
+  //       .then((response) => {
+  //         console.log(response.data);
+  //       })
+  //       .catch((error) => {
+  //         if (axios.isCancel(error)) {
+  //           console.log(`Errer during abort signal ${error.message}`);
+  //         }
+  //         console.error("Error fetching data:", error);
+  //       });
+  //   }, 3000);
+  // }, []);
 
   // let [logins, setLogin] = useState(false);
   let [currentPrimum, SetPrimum] = useState(false);
@@ -50,11 +50,11 @@ function App() {
       path: "/Login",
       element: (
         <>
-          <div className={style.App_contaniar}>
+          {/* <div className={style.App_contaniar}>
             <Navbar />
             <Login />
             <Footer />
-          </div>
+          </div> */}
         </>
       ),
     },
@@ -63,10 +63,10 @@ function App() {
       path: "/Primum",
       element: (
         <>
-          <div className={style.Primum_contener}>
+          {/* <div className={style.Primum_contener}>
             <AllPrimum currentmanu={currentmanu} SetSidebar={SetSidebar} />
             <Primum currentmanu={currentmanu} />
-          </div>
+          </div> */}
         </>
       ),
     },

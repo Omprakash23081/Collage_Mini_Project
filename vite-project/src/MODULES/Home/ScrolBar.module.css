@@ -25,41 +25,11 @@
 @media (max-width: 768px) {
   .carousel_container {
     height: 380px;
-    width: 95%;
   }
 }
 
 @media (max-width: 480px) {
   .carousel_container {
     height: 280px;
-    width: 95%;
-  }
-
-  .carousel_slide {
-    width: 200%;
-    animation: slideIn 0.5s ease-in-out;
-  }
-
-  .carousel_slide img {
-    width: 50%;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

@@ -8,10 +8,8 @@ import "./App.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* <Router> */}
     <div className={style.contener}>
       <App></App>
     </div>
-    {/* </Router> */}
   </StrictMode>
 );

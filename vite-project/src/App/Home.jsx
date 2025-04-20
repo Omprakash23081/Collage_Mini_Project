@@ -17,11 +17,11 @@ function Home({ SetPrimums, logins }) {
         <Header />
         <ScrolBar />
         <YearBooks SetPrimums={SetPrimums} />
-        <Hackthon />
-        <Lost_Found />
-        <Facelity_Directery />
+        {/* <Hackthon /> */}
+        {/* <Lost_Found /> */}
+        {/* <Facelity_Directery /> */}
       </>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

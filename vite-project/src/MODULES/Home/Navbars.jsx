@@ -11,7 +11,7 @@ function Navbar() {
           <div className="image_navigation">
             <img src={icon} alt="THE ACHIEVERS" />
             <Link to="/">
-              <b>THE GLBITN</b>
+              <b>Studysharp</b>
             </Link>
           </div>
           <div className="language_navigation">
