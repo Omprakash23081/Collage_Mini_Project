@@ -1,0 +1,172 @@
+/* FacultyDirectory.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
+  color: #333;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.headerTitle {
+  font-size: 3.5rem;
+  color: #ffffff;
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 15px;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.headerSubtitle {
+  font-size: 1.3rem;
+  color: #ffffff;
+  text-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+  animation: slideIn 1.5s ease-out;
+}
+
+.searchBar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: linear-gradient(135deg, #ffffff, #f0f4f8);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: zoomIn 1.2s ease-out;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.searchBar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+.inputField {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 0.3s;
+  outline: none;
+  background: #f9f9f9;
+}
+
+.inputField:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.searchButton {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.5);
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
+.searchButton:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.7);
+}
+
+.results {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-top: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 60%;
+}
+
+.faculty_card {
+  background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  animation: fadeInUp 0.5s ease both;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faculty_card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.card_inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card_image {
+  flex: 0 0 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card_image img {
+  width: 100%;
+  max-width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px #f8b500;
+}
+
+.card_details {
+  flex: 0 0 70%;
+  color: #fff;
+}
+
+.card_details h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.card_details p {
+  margin: 0.2rem 0;
+  font-weight: 500;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive tweaks for small devices */
+@media (max-width: 480px) {
+  .card_inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card_image,
+  .card_details {
+    flex: 1 1 100%;
+  }
+
+  .card_image img {
+    max-width: 70px;
+    height: 70px;
+  }
+}

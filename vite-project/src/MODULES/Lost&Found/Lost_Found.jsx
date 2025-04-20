@@ -1,9 +1,11 @@
+import styles from "./Lost_Found.module.css";
+
 function Lost_Found() {
   return (
     <>
-      <header>
+      <header className={styles.header}>
         <h1>Lost and Found</h1>
-        <nav class="condation">
+        <nav className={styles.condation}>
           <button>
             <a href="#post-item">Post an Item</a>
           </button>
@@ -14,11 +16,11 @@ function Lost_Found() {
       </header>
 
       <section id="post-item">
-        <form id="postForm">
-          <label for="title">Item Title:</label>
+        <form id="postForm" className={styles.form}>
+          <label htmlFor="title">Item Title:</label>
           <input type="text" id="title" name="title" required />
 
-          <label for="description">Description:</label>
+          <label htmlFor="description">Description:</label>
           <textarea
             id="description"
             name="description"
@@ -26,29 +28,30 @@ function Lost_Found() {
             required
           ></textarea>
 
-          <label for="status">Status:</label>
+          <label htmlFor="status">Status:</label>
           <select id="status" name="status" required>
             <option value="lost">Lost</option>
             <option value="found">Found</option>
           </select>
 
-          <label for="location">Location:</label>
+          <label htmlFor="location">Location:</label>
           <input type="text" id="location" name="location" required />
 
-          <label for="contact">Your Contact Info:</label>
+          <label htmlFor="contact">Your Contact Info:</label>
           <input type="text" id="contact" name="contact" required />
 
-          <label for="image">Upload Image:</label>
+          <label htmlFor="image">Upload Image:</label>
           <input type="file" id="image" name="image" accept="image/*" />
 
           <button type="submit">Post Item</button>
         </form>
       </section>
 
-      <footer>
+      <footer className={styles.footer}>
         <p>&copy; 2024 Student Sport Portal. All rights reserved.</p>
       </footer>
     </>
   );
 }
+
 export default Lost_Found;

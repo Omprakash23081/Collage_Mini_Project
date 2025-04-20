@@ -62,7 +62,7 @@ function App() {
     },
 
     {
-      path: "/Lost&Found",
+      path: "/Lost_Found",
       element: (
         <>
           <Lost_Found />

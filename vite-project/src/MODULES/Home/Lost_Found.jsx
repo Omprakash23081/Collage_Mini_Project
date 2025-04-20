@@ -1,5 +1,4 @@
-// import style from "./Lost_Found.nodule.css"
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Lost_Found() {
   return (
@@ -23,14 +22,14 @@ function Lost_Found() {
           <option value="T3">BCA</option>
         </select>
         <a href="http://localhost:5502/FRANTENTS/HTML/LOSE%26FOUND.html">
-          <button className="search-button">
-            <NavLink
-              to="/Lost&Found"
-              className={(navData) => (navData.isActive ? "active" : "")}
-            >
-              <b> → </b>
-            </NavLink>
-          </button>
+          <NavLink
+            to="/Lost_Found"
+            className={(navData) => (navData.isActive ? "active" : "")}
+          >
+            <button className="search-button">
+              <b>→</b>{" "}
+            </button>
+          </NavLink>
         </a>
       </div>
     </div>
