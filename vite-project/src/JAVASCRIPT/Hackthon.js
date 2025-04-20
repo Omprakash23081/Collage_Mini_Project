@@ -10,7 +10,7 @@ export function setHackthon() {
       });
     },
     {
-      threshold: 0.1,
+      threshold: 0.01,
     }
   );
 
