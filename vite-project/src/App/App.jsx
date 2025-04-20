@@ -6,6 +6,8 @@ import style from "./App.module.css";
 import Login from "../MODULES/Login/Login.jsx";
 import Navbar from "../MODULES/Home/Navbars.jsx";
 import Footer from "../MODULES/Footer/Footer.jsx";
+import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
+import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 import Primum from "../MODULES/Primum_Page1/Primum.jsx";
 import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
 import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
@@ -50,11 +52,29 @@ function App() {
       path: "/Login",
       element: (
         <>
-          {/* <div className={style.App_contaniar}>
+          <div className={style.App_contaniar}>
             <Navbar />
             <Login />
             <Footer />
-          </div> */}
+          </div>
+        </>
+      ),
+    },
+
+    {
+      path: "/Lost&Found",
+      element: (
+        <>
+          <Lost_Found />
+        </>
+      ),
+    },
+
+    {
+      path: "/Faculty&Directory",
+      element: (
+        <>
+          <FacultyDirectory />
         </>
       ),
     },
@@ -63,6 +83,7 @@ function App() {
       path: "/Primum",
       element: (
         <>
+          <h1>Still I m woking comming soon .. </h1>
           {/* <div className={style.Primum_contener}>
             <AllPrimum currentmanu={currentmanu} SetSidebar={SetSidebar} />
             <Primum currentmanu={currentmanu} />

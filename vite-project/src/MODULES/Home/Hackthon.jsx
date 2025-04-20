@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { setHackthon } from "../../JAVASCRIPT/Hackthon"; // Assuming correct function
+import styles from "./Hackthon.module.css";
+import { setHackthon } from "../../JAVASCRIPT/Hackthon"; // Optional
 
 function Hackathon() {
-  useEffect(() => {
-    setHackthon();
-  }, []);
+  // useEffect(() => {
+  //   setHackthon();
+  // }, []);
 
   const hackathonData = [
     {
@@ -39,21 +40,20 @@ function Hackathon() {
 
   return (
     <section>
-      <div className="case-study-container_head_line">
+      <div className={styles.heading}>
         <h1>HACKATHONS</h1>
       </div>
-      <div className="case-study-container">
+      <div className={styles.container}>
         {hackathonData.map((item, index) => (
           <div
             key={index}
-            className={`case-study-card ${
-              index % 2 === 0 ? "animate-from-left" : "animate-from-right"
+            className={`${styles.card} ${
+              index % 2 === 0 ? styles.fromLeft : styles.fromRight
             }`}
+            style={{ animationDelay: `${index * 0.3}s` }}
           >
-            <div className="case-study-tag">{item.name}</div>
-
-            <h3 className="case-study-card-title">{item.description}</h3>
-
+            <div className={styles.tag}>{item.name}</div>
+            <h3 className={styles.cardTitle}>{item.description}</h3>
             <p className="registrationDate">
               <strong>Registration:</strong> {item.registrationDate}
             </p>

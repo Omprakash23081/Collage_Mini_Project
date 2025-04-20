@@ -1318,6 +1318,65 @@ p {
     font-size: 0.9rem;
     padding: 10px;
   }
+
+  .yearcontainer {
+    padding: 20px 10px;
+    margin-top: -15px;
+  }
+
+  .header {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .card-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    margin: 10px 0;
+  }
+
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+  }
+
+  .login-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .case-study-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .case-study-card {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  .case-study-container_head_line {
+    font-size: 1.5rem;
+  }
 }
 
 /* Footers css codes */
