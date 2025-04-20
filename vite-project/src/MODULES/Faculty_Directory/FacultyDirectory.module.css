@@ -1,5 +1,3 @@
-/* FacultyDirectory.module.css */
-
 .container {
   display: flex;
   flex-direction: column;
@@ -9,7 +7,7 @@
   font-family: "Poppins", sans-serif;
   background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
   color: #333;
-  min-height: 100vh;
+  height: 100vh;
   overflow-x: hidden;
 }
 
@@ -168,5 +166,27 @@
   .card_image img {
     max-width: 70px;
     height: 70px;
+  }
+
+  .container {
+    margin-top: -10.9%;
+    padding: 1rem;
+  }
+  .searchBar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inputField {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .searchButton {
+    width: 100%;
+  }
+
+  .results {
+    max-width: 90%;
   }
 }

@@ -14,9 +14,7 @@ function Facelity_Directery() {
           className="input-department"
         />
         <select className="input-department">
-          <option value="" disabled selected>
-            Select Department
-          </option>
+          <option value="disabled selected">Select Department</option>
           <option value="cs">Computer Science</option>
           <option value="math">Mathematics</option>
           <option value="physics">Physics</option>

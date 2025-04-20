@@ -21,7 +21,7 @@ function Lost_Found() {
           <option value="T2">MCA</option>
           <option value="T3">BCA</option>
         </select>
-        <a href="http://localhost:5502/FRANTENTS/HTML/LOSE%26FOUND.html">
+        <a href="">
           <NavLink
             to="/Lost_Found"
             className={(navData) => (navData.isActive ? "active" : "")}
