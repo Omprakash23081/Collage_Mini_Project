@@ -1,5 +1,4 @@
 export function setHackthon() {
-  // Directly query the cards and start observing
   const cards = document.querySelectorAll(".case-study-card");
 
   const observer = new IntersectionObserver(
@@ -11,7 +10,7 @@ export function setHackthon() {
       });
     },
     {
-      threshold: 0.2, // Trigger animation when 20% of the element is visible
+      threshold: 0.1,
     }
   );
 
@@ -20,4 +19,3 @@ export function setHackthon() {
     observer.observe(card);
   });
 }
-

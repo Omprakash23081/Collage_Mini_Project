@@ -1009,8 +1009,8 @@ header p {
   justify-content: center !important;
   align-items: center !important;
   flex-wrap: wrap;
-  margin: 40px 0;
-  width: 100%;
+  /* margin: 40px 0; */
+  /* width: 100%; */
 }
 
 .case-study-card {
@@ -1018,11 +1018,10 @@ header p {
   height: 350px;
   margin: 20px;
   padding: 15px;
-  background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+  background: linear-gradient(to bottom right, #000000, #2575fc);
   color: white;
-  border-radius: 10px;
-  opacity: 0;
-  /* Start hidden */
+  border-radius: 20px;
+  opacity: 1;
   transform: translateX(0);
   transition: transform 0.8s ease-out, opacity 0.8s ease-out;
 }
@@ -1037,9 +1036,7 @@ header p {
 
 .animate-visible {
   opacity: 1;
-  /* Make visible */
   transform: translateX(0);
-  /* Bring back into view */
 }
 
 .case-study-tag {

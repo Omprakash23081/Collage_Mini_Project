@@ -24,12 +24,14 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .carousel_container {
-    height: 300px;
+    height: 380px;
+    width: 95%;
   }
 }
 
 @media (max-width: 480px) {
   .carousel_container {
-    height: 200px;
+    height: 280px;
+    width: 95%;
   }
 }
