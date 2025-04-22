@@ -2,10 +2,16 @@ import Scrolbar1 from "../PHOTO/Scrolbar1.jpeg";
 import Scrolbar2 from "../PHOTO/Scrolbar2.jpeg";
 import image from "../PHOTO/rocket.gif";
 import SubjectArea from "./Subject_areas.jsx";
+import styles from "./PrimiumHome.module.css";
 
 function PrimiumHome() {
+  const cards = Array(4).fill({
+    title: "AKTU",
+    description: "Go and explore new things",
+    image,
+  });
   return (
-    <div className="">
+    <>
       <div className="home">
         <div className="header_Primuam1">
           <center>
@@ -55,57 +61,26 @@ function PrimiumHome() {
                 <span className="visually-hidden">Next</span>
               </button>
             </div>
-            <div className="MainCardContener">
-              <div className="card" id="primumcard1">
-                <img
-                  src={image}
-                  alt="Village Leader"
-                  className="profile-image"
-                  id="PrimumImage"
-                />
-                <h2>AKTU</h2>
-                <p>Go And Explorw new Thing</p>
-                <button className="login-button">Explore</button>
-              </div>
-              <div className="card" id="primumcard1">
-                <img
-                  src={image}
-                  alt="Village Leader"
-                  className="profile-image"
-                  id="PrimumImage"
-                />
-                <h2>AKTU</h2>
-                <p>Go And Explorw new Thing</p>
-                <button className="login-button">Explore</button>
-              </div>
-              <div className="card" id="primumcard1">
-                <img
-                  src={image}
-                  alt="Village Leader"
-                  className="profile-image"
-                  id="PrimumImage"
-                />
-                <h2>AKTU</h2>
-                <p>Go And Explorw new Thing</p>
-                <button className="login-button">Explore</button>
-              </div>
-              <div className="card" id="primumcard1">
-                <img
-                  src={image}
-                  alt="Village Leader"
-                  className="profile-image"
-                  id="PrimumImage"
-                />
-                <h2>AKTU</h2>
-                <p>Go And Explorw new Thing</p>
-                <button className="login-button">Explore</button>
-              </div>
+            <div className={styles.cardContainer}>
+              {cards.map((card, index) => (
+                <div className={styles.card} key={index}>
+                  <img
+                    src={card.image}
+                    alt="Village Leader"
+                    className={styles.profileImage}
+                  />
+                  <h2 className={styles.cardTitle}>{card.title}</h2>
+                  <p className={styles.cardDescription}>{card.description}</p>
+                  <button className={styles.loginButton}>Explore</button>
+                </div>
+              ))}
             </div>
+
             <SubjectArea />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 export default PrimiumHome;

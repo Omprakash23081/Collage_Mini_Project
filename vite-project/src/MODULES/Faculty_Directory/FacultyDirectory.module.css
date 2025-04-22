@@ -187,6 +187,9 @@
   }
 
   .results {
-    max-width: 90%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 }

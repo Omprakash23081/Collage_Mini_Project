@@ -829,81 +829,6 @@ body::before {
   transform: translateX(200%);
 }
 
-@media (max-width: 543px) {
-  body {
-    margin-top: 30px;
-    padding: 10px;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  .container {
-    width: 100%;
-    min-height: auto;
-    height: auto;
-    margin: 20px auto;
-    border-radius: 12px;
-    box-shadow: none;
-    flex-direction: column;
-    overflow: visible;
-  }
-
-  .form-container,
-  .sign-in,
-  .sign-up {
-    width: 100%;
-    position: relative;
-    transform: none !important;
-    opacity: 1 !important;
-    z-index: auto !important;
-  }
-
-  .toggle-container,
-  .toggle,
-  .toggle-panel {
-    display: none; /* Hide toggle animation and text for compact view */
-  }
-
-  .container form {
-    padding: 20px 15px;
-    width: 100%;
-  }
-
-  .container input,
-  .container button {
-    width: 100%;
-    margin: 10px 0;
-    font-size: 14px;
-  }
-
-  .social-icons {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
-  }
-
-  .social-icons a {
-    width: 34px;
-    height: 34px;
-    margin: 4px;
-  }
-
-  h1 {
-    font-size: 20px;
-    text-align: center;
-  }
-
-  .container span,
-  .container a,
-  .container p {
-    font-size: 12px;
-    text-align: center;
-  }
-}
-
 /* year card box css */
 
 .yearcontainer {
@@ -1498,7 +1423,6 @@ i {
 }
 
 .home {
-  /* gap: 5px; */
   margin-top: -17px;
   display: flex;
   flex-direction: column;
@@ -1535,36 +1459,6 @@ i {
   height: 200px !important;
 }
 
-#primumcard1 {
-  width: 25% !important;
-  height: 250px;
-  margin-top: 80px;
-}
-
-#PrimumImage {
-  width: 60%;
-  margin-top: -20px;
-}
-#primumcard1 h2 {
-  font-size: medium;
-  width: 100%;
-  margin-top: -10px;
-}
-#primumcard1 .login-button {
-  width: 55%;
-  margin-top: -1px;
-}
-#primumcard1 p {
-  font-size: medium;
-  width: 120%;
-  align-self: center;
-  font-weight: 100;
-}
-
-.MainCardContener {
-  display: flex;
-}
-
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: black;
@@ -1582,6 +1476,29 @@ i {
 }
 .nav-link h6 {
   margin-top: 7px;
+}
+
+@media (max-width: 768px) {
+  .header_Primuam1_Contener {
+    margin-left: 0;
+    min-width: 122%;
+    padding: 20px;
+  }
+
+  .header_Primuam1 {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .home {
+    margin-top: -10px;
+  }
+  .header_Primuam1 h1 {
+    font-size: 1.2rem;
+  }
+}
+.header_Primuam1 h1 {
+  color: rgb(55, 0, 255);
 }
 
 /* //Subject Componenet  */
