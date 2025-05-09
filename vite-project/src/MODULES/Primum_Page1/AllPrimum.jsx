@@ -101,16 +101,18 @@ function AllPrimum({ currentmanu, SetSidebar }) {
       </div>
 
       {/* Bottom bar for mobile */}
-      <div className="d-md-none fixed-bottom bg-white border-top d-flex justify-content-around py-2 shadow">
+      <div className="d-md-none fixed-bottom bg-black border-top d-flex justify-content-around py-1 shadow">
         {menuItems.map((item) => (
           <button
             key={item.name}
             onClick={() => HandalOnClick(item.name)}
-            className={`btn text-dark d-flex flex-column align-items-center ${
+            className={`btn text-white d-flex flex-column align-items-center ${
               currentmanu === item.name ? style.activeBottom : ""
             }`}
           >
-            <i className={`bi ${item.icon} ${style.icon} fs-5`}></i>
+            <i
+              className={`bi ${item.icon} ${style.icon} fs-5   margin-left: 12px`}
+            ></i>
             <small>{item.name}</small>
           </button>
         ))}

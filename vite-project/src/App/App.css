@@ -631,7 +631,7 @@ body::before {
 }
 
 .container {
-  background-color: #fff;
+  background-color: #ffffff9f;
   border-radius: 25px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   position: relative;
@@ -752,7 +752,7 @@ body::before {
 }
 
 .social-icons a {
-  border: 1px solid #ccc;
+  border: 1px solid #1d1515;
   border-radius: 20%;
   display: inline-flex;
   justify-content: center;
@@ -827,6 +827,42 @@ body::before {
 
 .container.active .toggle-right {
   transform: translateX(200%);
+}
+
+/* Small devices (phones, 600px and down) */
+@media (max-width: 500px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+    min-height: auto;
+    margin-top: 50px;
+    border-radius: 15px;
+  }
+
+  .form-container,
+  .sign-in,
+  .sign-up,
+  .toggle-container {
+    width: 100% !important;
+    position: relative !important;
+    height: auto !important;
+    transform: none !important;
+  }
+
+  .toggle {
+    display: none;
+  }
+
+  .container.active .sign-in,
+  .container.active .sign-up {
+    transform: none;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .toggle-panel {
+    display: none;
+  }
 }
 
 /* year card box css */
