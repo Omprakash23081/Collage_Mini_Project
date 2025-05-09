@@ -9,6 +9,10 @@ import Footer from "../MODULES/Footer/Footer.jsx";
 import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
 import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 import Primum from "../MODULES/Primum_Page1/Primum.jsx";
+import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
+import PYQPage from "../MODULES/Primum_Page3(PYQ)/PYQ.jsx";
+import ProfilePage from "../MODULES/Profile/PROFILE.jsx";
+import { Outlet } from "react-router-dom";
 import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
 import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -82,13 +86,33 @@ function App() {
     {
       path: "/Primum",
       element: (
-        <>
-          <div className={style.Primum_contener}>
-            <AllPrimum currentmanu={currentmanu} SetSidebar={SetSidebar} />
-            <Primum currentmanu={currentmanu} />
-          </div>
-        </>
+        <div className={style.Primum_contener}>
+          <AllPrimum currentmanu={currentmanu} SetSidebar={SetSidebar} />
+          <Outlet /> {/* Renders nested route components */}
+        </div>
       ),
+      children: [
+        {
+          path: "", // Default path (e.g. /Primum)
+          element: <Primum currentmanu={currentmanu} />,
+        },
+        {
+          path: "Profile", // e.g. /Primum/Profile
+          element: <ProfilePage />,
+        },
+        // {
+        //   path: "Courses",
+        //   element: <CoursesPage />,
+        // },
+        {
+          path: "PYQ",
+          element: <PYQPage />,
+        },
+        {
+          path: "Premium",
+          element: <PremiumPage />,
+        },
+      ],
     },
   ]);
 

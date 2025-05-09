@@ -2,7 +2,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import icon from "..//PHOTO/icon.png";
 import style from "./AllPrimum.module.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function AllPrimum({ currentmanu, SetSidebar }) {
   function HandalOnClick(value) {
@@ -35,19 +35,15 @@ function AllPrimum({ currentmanu, SetSidebar }) {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           {menuItems.map((item) => (
-            <li
-              key={item.name}
-              className="nav-item"
-              onClick={() => HandalOnClick(item.name)}
-            >
-              <button
-                className={`nav-link ${
-                  currentmanu === item.name ? style.active : ""
-                }`}
-                aria-current="page"
+            <li key={item.name} className="nav-item">
+              <NavLink
+                to={`/Primum/${item.name}`}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? style.active : "text-white"}`
+                }
               >
                 <i className={`bi ${item.icon}`}></i> <h6>{item.name}</h6>
-              </button>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -103,18 +99,20 @@ function AllPrimum({ currentmanu, SetSidebar }) {
       {/* Bottom bar for mobile */}
       <div className="d-md-none fixed-bottom bg-black border-top d-flex justify-content-around py-1 shadow">
         {menuItems.map((item) => (
-          <button
+          <NavLink
             key={item.name}
-            onClick={() => HandalOnClick(item.name)}
-            className={`btn text-white d-flex flex-column align-items-center ${
-              currentmanu === item.name ? style.activeBottom : ""
-            }`}
+            to={`/Primum/${item.name}`}
+            className={({ isActive }) =>
+              `btn text-white d-flex flex-column align-items-center ${
+                isActive ? style.activeBottom : ""
+              }`
+            }
           >
             <i
-              className={`bi ${item.icon} ${style.icon} fs-5   margin-left: 12px`}
+              className={`bi ${item.icon} ${style.icon} fs-5 margin-left: 10px`}
             ></i>
             <small>{item.name}</small>
-          </button>
+          </NavLink>
         ))}
       </div>
     </>

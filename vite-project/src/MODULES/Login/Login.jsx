@@ -2,14 +2,14 @@ import { setupLogin } from "../../JAVASCRIPT/login.js";
 import { useEffect } from "react";
 import "./Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faKey, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
 import {
   faGooglePlusG,
   faFacebookF,
   faGithub,
   faLinkedinIn,
-  faKey,
-  faRightToBracket,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/free-brands-svg-icons";
 
 function Login() {
   useEffect(() => {

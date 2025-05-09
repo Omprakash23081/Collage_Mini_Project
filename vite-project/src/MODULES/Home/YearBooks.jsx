@@ -16,7 +16,7 @@ function YearBooks({ SetPrimums }) {
             <button
               className="login-button" /*onClick={() => { SetPrimums() }}*/
             >
-              <Link to="/login">Login</Link>
+              <Link to="/Primum">Explore</Link>
             </button>
           </div>
 
