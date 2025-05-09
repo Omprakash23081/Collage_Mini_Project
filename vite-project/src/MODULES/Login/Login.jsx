@@ -1,12 +1,15 @@
 import { setupLogin } from "../../JAVASCRIPT/login.js";
 import { useEffect } from "react";
+import "./Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGooglePlusG,
   faFacebookF,
   faGithub,
   faLinkedinIn,
-} from "@fortawesome/free-brands-svg-icons";
+  faKey,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
   useEffect(() => {
@@ -33,14 +36,14 @@ function Login() {
                 <FontAwesomeIcon icon={faLinkedinIn} />
               </a>
             </div>
-
-            <span>or use your email for registeration</span>
+            <span>or use your email for registration</span>
             <input type="text" placeholder="Name" />
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Password" />
             <button>Sign Up</button>
           </form>
         </div>
+
         <div className="form-container sign-in">
           <form method="get">
             <h1>Sign In</h1>
@@ -58,20 +61,24 @@ function Login() {
                 <FontAwesomeIcon icon={faLinkedinIn} />
               </a>
             </div>
-
             <span>or use your email password</span>
             <input type="email" placeholder="Email" name="email" />
             <input type="password" placeholder="Password" name="password" />
-            <a href="#">Forget Your Password?</a>
+            <a href="#" className="forgot-password">
+              <FontAwesomeIcon icon={faKey} style={{ marginRight: "6px" }} />
+              Forgot Your Password?
+            </a>
             <button type="submit">Sign In</button>
           </form>
         </div>
+
         <div className="toggle-container">
           <div className="toggle">
             <div className="toggle-panel toggle-left">
               <h1>Welcome Back!</h1>
               <p>Enter your personal details to use all of site features</p>
-              <button className="hidden" id="login">
+              <button className="login-button hidden" id="login">
+                <FontAwesomeIcon icon={faRightToBracket} />
                 Sign In
               </button>
             </div>
@@ -80,7 +87,8 @@ function Login() {
               <p>
                 Register with your personal details to use all of site features
               </p>
-              <button id="register" className="hidden">
+              <button id="register" className="login-button hidden">
+                <FontAwesomeIcon icon={faRightToBracket} />
                 Sign Up
               </button>
             </div>
@@ -90,4 +98,5 @@ function Login() {
     </>
   );
 }
+
 export default Login;

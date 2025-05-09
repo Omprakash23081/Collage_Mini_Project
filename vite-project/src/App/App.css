@@ -860,9 +860,9 @@ body::before {
     z-index: 2;
   }
 
-  .toggle-panel {
+  /* .toggle-panel {
     display: none;
-  }
+  } */
 }
 
 /* year card box css */
