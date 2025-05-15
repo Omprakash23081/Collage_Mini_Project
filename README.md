@@ -66,6 +66,8 @@ src/
     ScrolBar.js   # Scrollbar logic
   PHOTO/          # Images and assets
 ```
+![image](https://github.com/user-attachments/assets/bbaaf9c6-ffeb-4c61-a945-7ad052013e66)
+
 
 ## Learn More
 
