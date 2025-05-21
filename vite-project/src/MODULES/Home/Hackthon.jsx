@@ -54,10 +54,10 @@ function Hackathon() {
           >
             <div className={styles.tag}>{item.name}</div>
             <h3 className={styles.cardTitle}>{item.description}</h3>
-            <p className="registrationDate">
+            <p className={styles.registrationDate}>
               <strong>Registration:</strong> {item.registrationDate}
             </p>
-            <p className="endDate">
+            <p className={styles.endDate}>
               <strong>Ends:</strong> {item.endDate}
             </p>
           </div>

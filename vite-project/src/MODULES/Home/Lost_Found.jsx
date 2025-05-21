@@ -1,19 +1,24 @@
 import { NavLink } from "react-router-dom";
+import styles from "./Lost_Found.module.css";
 
 function Lost_Found() {
   return (
-    <div className="container_Lost_found">
-      <div className="headers">
+    <div className={styles.container_Lost_found}>
+      <div className={styles.headers}>
         <h1>Lost & Found</h1>
         <p>
           Did you lose valuables inside the airport premises? Tell us about it,
           so that we can find it for you.
         </p>
       </div>
-      <div className="search-bar1">
-        <input type="text" placeholder="Name of Name" className="input-name" />
-        <input type="date" className="input-date" />
-        <select className="input-terminal">
+      <div className={styles.search_bar1}>
+        <input
+          type="text"
+          placeholder="Name of Name"
+          className={styles.input_name}
+        />
+        <input type="date" className={styles.input_date} />
+        <select className={styles.input_terminal}>
           <option value="" disabled selected>
             COURSE
           </option>
@@ -26,7 +31,7 @@ function Lost_Found() {
             to="/Lost_Found"
             className={(navData) => (navData.isActive ? "active" : "")}
           >
-            <button className="search-button">
+            <button className={styles.search_button}>
               <b>→</b>{" "}
             </button>
           </NavLink>
