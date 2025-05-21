@@ -99,6 +99,12 @@ h1 {
   flex-direction: column;
 }
 
+@media (max-width: 576px) {
+  .language {
+    margin-right: 7px;
+  }
+}
+
 .language {
   display: flex;
   align-items: center;
@@ -592,10 +598,6 @@ a:hover {
   justify-content: center;
 }
 
-/* LOGIN PAGE CSSS */
-
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
-
 * {
   margin: 0;
   padding: 0;
@@ -693,7 +695,7 @@ body::before {
 .container input {
   background-color: #f0f4f8;
   /* Lighter blue shade for input background */
-  border: none;
+  /* border: none; */
   margin: 8px 0;
   padding: 10px 15px;
   font-size: 13px;
@@ -832,37 +834,8 @@ body::before {
 /* Small devices (phones, 600px and down) */
 @media (max-width: 500px) {
   .container {
-    flex-direction: column;
-    width: 95%;
-    min-height: auto;
-    margin-top: 50px;
-    border-radius: 15px;
-  }
-
-  .form-container,
-  .sign-in,
-  .sign-up,
-  .toggle-container {
-    width: 100% !important;
-    position: relative !important;
-    height: auto !important;
-    transform: none !important;
-  }
-
-  .toggle {
     display: none;
   }
-
-  .container.active .sign-in,
-  .container.active .sign-up {
-    transform: none;
-    opacity: 1;
-    z-index: 2;
-  }
-
-  /* .toggle-panel {
-    display: none;
-  } */
 }
 
 /* year card box css */

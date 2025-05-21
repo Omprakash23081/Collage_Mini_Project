@@ -1,6 +1,6 @@
 import { setupLogin } from "../../JAVASCRIPT/login.js";
-import { useEffect } from "react";
-import "./Login.css";
+import { useEffect, useState } from "react";
+import styles from "./Login.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faKey, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 function Login() {
+  const [isSignUp, setIsSignUp] = useState(false);
   useEffect(() => {
     setupLogin();
   }, []);
