@@ -49,12 +49,12 @@ h1 {
 
 /* background-image: linear-gradient(62deg, #6489ae 0%, #e0c3fc 100%); */
 .contener:hover {
-  background-color: #8ec5fc;
+  background-color: #3f4a55;
   background-image: linear-gradient(
     62deg,
-    #8ec5fc 12%,
-    #e0c3fc 59%,
-    #ffffff 100%
+    #ffffffea 12%,
+    #37323baf 59%,
+    #52414167 100%
   );
 }
 
@@ -429,16 +429,16 @@ h4 {
   width: 6.8%;
   height: 77%;
   align-self: flex-end;
-  right: 1.7%;
+  right: 1.6%;
   font-size: large;
+  background: linear-gradient(90deg, #434446b0 60%, #dce0e4 100%);
   display: flex;
   align-items: center;
 }
 
 .butten button:hover {
-  background-color: rgba(0, 123, 255, 0.5);
-  border-color: #007bff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  background: linear-gradient(90deg, #dce0e4 30%, #3c3e42dc 100%);
+  border-color: #4d5258;
 }
 
 #butten {
@@ -884,7 +884,7 @@ header p {
 }
 
 .card {
-  background-color: white;
+  background: linear-gradient(135deg, #59636ebd 0%, #e3f0ffc4 100%);
   border-radius: 20px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -913,14 +913,19 @@ header p {
 
 .login-button {
   text-decoration: none;
-  background-color: #4a4afc;
-  color: white;
+  background: linear-gradient(90deg, #434446b0 60%, #dce0e4 100%);
   padding: 10px 20px;
   border-radius: 30px;
   align-self: center;
   margin-top: -20px;
   font-size: 16px;
   transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background: linear-gradient(90deg, #dce0e4 30%, #3c3e42dc 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 120, 212, 0.13);
 }
 
 .login-button:hover {

@@ -18,15 +18,14 @@
 }
 
 .search_bar1 .search_button:hover {
-  background: linear-gradient(135deg, #0056b3, #003f7f);
-  transform: scale(1.1);
+  background: linear-gradient(90deg, #dce0e4 30%, #3c3e42dc 100%);
   box-shadow: 0 6px 15px rgba(0, 123, 255, 0.7);
 }
 
 .search_bar1 .search_button {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: linear-gradient(90deg, #434446b0 60%, #dce0e4 100%);
   color: white;
-  border: none;
+  /* border: none; */
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s;
@@ -53,12 +52,11 @@
 }
 
 .search_bar1:hover {
-  transform: scale(1.05);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
 }
 
 .search_bar1 button {
-  border-radius: 10px !important;
+  border-radius: 15px !important;
 }
 
 .search_bar1 input,

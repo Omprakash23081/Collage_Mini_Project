@@ -4,6 +4,7 @@ import Header from "../MODULES/Home/Header.jsx";
 import Navbar from "../MODULES/Home/Navbars.jsx";
 import Footer from "../MODULES/Footer/Footer.jsx";
 import Hackthon from "../MODULES/Home/Hackthon.jsx";
+import Feedback from "../MODULES/Feedback/feedback.jsx";
 import ScrolBar from "../MODULES/Home/ScrolBar.jsx";
 import YearBooks from "../MODULES/Home/YearBooks.jsx";
 import Lost_Found from "../MODULES/Home/Lost_Found.jsx";
@@ -20,6 +21,7 @@ function Home({ SetPrimums, logins }) {
         <Hackthon />
         <Lost_Found />
         <Facelity_Directery />
+        <Feedback />
       </>
       <Footer />
     </div>
