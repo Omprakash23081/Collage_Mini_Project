@@ -4,12 +4,17 @@
 
 .profile {
   width: 80vw;
-  /* height: 100vh; */
   margin-left: 260px;
   padding: 30px;
   display: flex;
 }
-
+@media (max-width: 768px) {
+  .profile {
+    width: 100%;
+    margin-left: 0;
+    padding: 20px;
+  }
+}
 .profile04 {
   margin-top: -100px;
 }

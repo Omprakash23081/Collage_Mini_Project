@@ -10,11 +10,11 @@ function AllPrimum({ currentmanu, SetSidebar }) {
   }
 
   const menuItems = [
-    { name: "Home", icon: "bi-house-door" },
-    { name: "Corses", icon: "bi-book" },
-    { name: "PYQ", icon: "bi-journal-bookmark-fill" },
-    { name: "Premium", icon: "bi-award" },
-    { name: "Profile", icon: "bi-person-circle" },
+    { go: "", icon: "bi-house-door", name: "Home" },
+    { go: "Corses", icon: "bi-book", name: "Corses" },
+    { go: "PYQ", icon: "bi-journal-bookmark-fill", name: "PYQ" },
+    { go: "Premium", icon: "bi-award", name: "Premium" },
+    { go: "Profile", icon: "bi-person-circle", name: "Profile" },
   ];
 
   return (
@@ -37,7 +37,7 @@ function AllPrimum({ currentmanu, SetSidebar }) {
           {menuItems.map((item) => (
             <li key={item.name} className="nav-item">
               <NavLink
-                to={`/Primum/${item.name}`}
+                to={`/Primum/${item.go}`}
                 className={({ isActive }) =>
                   `nav-link ${isActive ? style.active : "text-white"}`
                 }

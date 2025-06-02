@@ -3,19 +3,19 @@ import Home from "./Home.jsx";
 import { useState } from "react";
 import { useEffect } from "react";
 import style from "./App.module.css";
+import { Outlet } from "react-router-dom";
 import Login from "../MODULES/Login/Login.jsx";
 import Navbar from "../MODULES/Home/Navbars.jsx";
 import Footer from "../MODULES/Footer/Footer.jsx";
-import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
-import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 import Primum from "../MODULES/Primum_Page1/Primum.jsx";
-import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
-import PYQPage from "../MODULES/Primum_Page3(PYQ)/PYQ.jsx";
 import ProfilePage from "../MODULES/Profile/PROFILE.jsx";
-import { Outlet } from "react-router-dom";
 import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
+import PYQPage from "../MODULES/Primum_Page3(PYQ)/PYQ.jsx";
+import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
 import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
+import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 import axios from "axios";
 
 function App() {
