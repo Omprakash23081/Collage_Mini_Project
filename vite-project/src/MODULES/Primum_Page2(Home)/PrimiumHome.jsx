@@ -1,3 +1,4 @@
+// thus is all right
 import Scrolbar1 from "../PHOTO/Scrolbar1.jpeg";
 import Scrolbar2 from "../PHOTO/Scrolbar2.jpeg";
 import image from "../PHOTO/rocket.gif";

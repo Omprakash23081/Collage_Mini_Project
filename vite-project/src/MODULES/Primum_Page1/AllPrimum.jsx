@@ -4,13 +4,9 @@ import icon from "..//PHOTO/icon.png";
 import style from "./AllPrimum.module.css";
 import { Link, NavLink } from "react-router-dom";
 
-function AllPrimum({ currentmanu, SetSidebar }) {
-  function HandalOnClick(value) {
-    SetSidebar(value);
-  }
-
+function AllPrimum({ SetSidebar, currentmanu }) {
   const menuItems = [
-    { go: "", icon: "bi-house-door", name: "Home" },
+    { go: "", icon: "bi-house-door", name: "Home", exact: true },
     { go: "Corses", icon: "bi-book", name: "Corses" },
     { go: "PYQ", icon: "bi-journal-bookmark-fill", name: "PYQ" },
     { go: "Premium", icon: "bi-award", name: "Premium" },
@@ -23,13 +19,13 @@ function AllPrimum({ currentmanu, SetSidebar }) {
       <div
         id="SideBar"
         className="d-none d-md-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
-        style={{ width: "19%", height: "100vh" }}
+        style={{ width: "19%", minHeight: "100vh" }}
       >
         <Link
           to="/"
-          className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+          className="d-flex align-items-center mb-3 text-white text-decoration-none"
         >
-          <img src={icon} alt="" className="bi me-2" width="40" height="32" />
+          <img src={icon} alt="logo" className="me-2" width="40" height="32" />
           <span className={style.fs_4}>THE ACHIVERS</span>
         </Link>
         <hr />
@@ -37,12 +33,16 @@ function AllPrimum({ currentmanu, SetSidebar }) {
           {menuItems.map((item) => (
             <li key={item.name} className="nav-item">
               <NavLink
-                to={`/Primum/${item.go}`}
+                to={item.go === "" ? "/Primum" : `/Primum/${item.go}`}
+                end={item.go === ""}
                 className={({ isActive }) =>
-                  `nav-link ${isActive ? style.active : "text-white"}`
+                  `nav-link d-flex align-items-center gap-2 ${
+                    isActive ? style.active : "text-white"
+                  }`
                 }
               >
-                <i className={`bi ${item.icon}`}></i> <h6>{item.name}</h6>
+                <i className={`bi ${item.icon}`}></i>
+                <h6 className="mb-0">{item.name}</h6>
               </NavLink>
             </li>
           ))}
@@ -58,7 +58,7 @@ function AllPrimum({ currentmanu, SetSidebar }) {
           >
             <img
               src={icon}
-              alt=""
+              alt="profile"
               width="32"
               height="32"
               className="rounded-circle me-2"
@@ -97,11 +97,12 @@ function AllPrimum({ currentmanu, SetSidebar }) {
       </div>
 
       {/* Bottom bar for mobile */}
-      <div className="d-md-none fixed-bottom bg-black border-top d-flex justify-content-around py-1 shadow">
+      <div className="d-md-none fixed-bottom bg-black border-top d-flex justify-content-around py-2 shadow">
         {menuItems.map((item) => (
           <NavLink
             key={item.name}
-            to={`/Primum/${item.name}`}
+            to={item.go === "" ? "/Primum" : `/Primum/${item.go}`}
+            end={item.go === ""}
             className={({ isActive }) =>
               `btn text-white d-flex flex-column align-items-center ${
                 isActive ? style.activeBottom : ""

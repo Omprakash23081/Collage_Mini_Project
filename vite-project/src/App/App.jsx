@@ -1,109 +1,93 @@
-//to create a new react boiler plate use rfce
-import Home from "./Home.jsx";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import axios from "axios";
+
 import style from "./App.module.css";
-import { Outlet } from "react-router-dom";
+import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
+
+import Home from "./Home.jsx";
 import Login from "../MODULES/Login/Login.jsx";
 import Navbar from "../MODULES/Home/Navbars.jsx";
 import Footer from "../MODULES/Footer/Footer.jsx";
 import Primum from "../MODULES/Primum_Page1/Primum.jsx";
+import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
 import ProfilePage from "../MODULES/Profile/PROFILE.jsx";
-import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
 import PYQPage from "../MODULES/Primum_Page3(PYQ)/PYQ.jsx";
 import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
-import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
 import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
-import axios from "axios";
 
 function App() {
-  // Fetch data from the API
+  const [currentPrimum, setPrimum] = useState(false);
+  const [currentmanu, setManu] = useState("Home");
+
+  useEffect(() => {
+    setupScrolBar();
+  }, []);
+
   useEffect(() => {
     const controller = new AbortController();
     setTimeout(async () => {
-      await axios
-        .get("/Login", {
+      try {
+        const response = await axios.get("/Login", {
           signal: controller.signal,
-        })
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          if (axios.isCancel(error)) {
-            console.log(`Errer during abort signal ${error.message}`);
-          }
-          console.error("Error fetching data:", error);
         });
+        console.log(response.data);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log(`Error during abort signal: ${error.message}`);
+        } else {
+          console.error("Error fetching data:", error);
+        }
+      }
     }, 3000);
   }, []);
-
-  // let [logins, setLogin] = useState(false);
-  let [currentPrimum, SetPrimum] = useState(false);
-  let [currentmanu, Setmanu] = useState("Home");
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
-        <>
-          <Home currentPrimum={currentPrimum} SetPrimums={SetPrimums} />
-        </>
+        <Home
+          currentPrimum={currentPrimum}
+          SetPrimums={() => setPrimum(true)}
+        />
       ),
     },
     {
       path: "/Login",
       element: (
-        <>
-          <div className={style.App_contaniar}>
-            <Navbar />
-            <Login />
-            <Footer />
-          </div>
-        </>
+        <div className={style.App_contaniar}>
+          <Navbar />
+          <Login />
+          <Footer />
+        </div>
       ),
     },
-
     {
       path: "/Lost_Found",
-      element: (
-        <>
-          <Lost_Found />
-        </>
-      ),
+      element: <Lost_Found />,
     },
-
     {
       path: "/Faculty&Directory",
-      element: (
-        <>
-          <FacultyDirectory />
-        </>
-      ),
+      element: <FacultyDirectory />,
     },
-
     {
       path: "/Primum",
       element: (
         <div className={style.Primum_contener}>
-          <AllPrimum currentmanu={currentmanu} SetSidebar={SetSidebar} />
-          <Outlet /> {/* Renders nested route components */}
+          <AllPrimum currentmanu={currentmanu} SetSidebar={setManu} />
+          <Outlet />
         </div>
       ),
       children: [
         {
-          path: "", // Default path (e.g. /Primum)
+          index: true,
           element: <Primum currentmanu={currentmanu} />,
         },
         {
-          path: "Profile", // e.g. /Primum/Profile
+          path: "Profile",
           element: <ProfilePage />,
         },
-        // {
-        //   path: "Courses",
-        //   element: <CoursesPage />,
-        // },
         {
           path: "PYQ",
           element: <PYQPage />,
@@ -116,43 +100,7 @@ function App() {
     },
   ]);
 
-  function Render() {
-    setLogin(true);
-  }
-
-  function SetPrimums() {
-    SetPrimum(true);
-  }
-
-  function SetSidebar(value) {
-    Setmanu(value);
-  }
-
-  useEffect(() => {
-    setupScrolBar();
-  }, []);
-
-  return (
-    <>
-      <RouterProvider router={router} />
-
-      {/* {currentPrimum && (
-        <div className={style.Primum_contener}>
-          <AllPrimum currentmanu={currentmanu} SetSidebar={SetSidebar} />
-          <Primum currentmanu={currentmanu} />
-        </div>
-      )} */}
-
-      {/* {!currentPrimum && (
-        <Home
-          currentPrimum={currentPrimum}
-          SetPrimums={SetPrimums}
-          logins={logins}
-          Render={Render}
-        />
-      )} */}
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
