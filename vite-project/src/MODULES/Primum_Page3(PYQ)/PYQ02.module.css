@@ -8,6 +8,12 @@
   width: 80.7vw;
   height: 100vh;
 }
+@media (max-width: 768px) {
+  .PYQ02contener {
+    width: 100vw;
+    height: 120%;
+  }
+}
 
 #PYQ02body {
   background: #151529;

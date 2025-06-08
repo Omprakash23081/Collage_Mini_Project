@@ -14,6 +14,13 @@
   padding: 20px;
 }
 
+@media (max-width: 768px) {
+  #body {
+    width: 100vw;
+    height: 110%;
+  }
+}
+
 .pyq_container {
   max-width: 1200px;
   margin: 0 auto;

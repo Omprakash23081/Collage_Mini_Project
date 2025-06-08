@@ -109,7 +109,8 @@ function AllPrimum({ currentmanu, SetSidebar }) {
             }
           >
             <i
-              className={`bi ${item.icon} ${style.icon} fs-5 margin-left: 10px`}
+              className={`bi ${item.icon} ${style.icon} fs-5`}
+              style={{ marginLeft: "10px" }}
             ></i>
             <small>{item.name}</small>
           </NavLink>
