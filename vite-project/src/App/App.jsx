@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import axios from "axios";
-
 import style from "./App.module.css";
 import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
-
 import Home from "./Home.jsx";
 import Login from "../MODULES/Login/Login.jsx";
 import Navbar from "../MODULES/Home/Navbars.jsx";
 import Footer from "../MODULES/Footer/Footer.jsx";
-import Primum from "../MODULES/Primum_Page1/Primum.jsx";
 import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
 import ProfilePage from "../MODULES/Profile/PROFILE.jsx";
 import PYQPage from "../MODULES/Primum_Page3(PYQ)/PYQ.jsx";
 import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
 import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
+import PrimiumHome from "../MODULES/Primum_Page2(Home)/PrimiumHome.jsx";
 import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 
 function App() {
@@ -81,8 +79,8 @@ function App() {
       ),
       children: [
         {
-          index: true,
-          element: <Primum currentmanu={currentmanu} />,
+          path: "",
+          element: <PrimiumHome />,
         },
         {
           path: "Profile",

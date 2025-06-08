@@ -4,7 +4,7 @@ import icon from "..//PHOTO/icon.png";
 import style from "./AllPrimum.module.css";
 import { Link, NavLink } from "react-router-dom";
 
-function AllPrimum({ SetSidebar, currentmanu }) {
+function AllPrimum() {
   const menuItems = [
     { go: "", icon: "bi-house-door", name: "Home", exact: true },
     { go: "Corses", icon: "bi-book", name: "Corses" },
