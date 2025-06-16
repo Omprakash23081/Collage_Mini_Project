@@ -1,4 +1,4 @@
-# 🚀 MINI_PROJECT: StudySharp
+# 🚀 MINI_PROJECT: StudySharp(https://studysharps.netlify.app/)
 
 A high-performance React application powered by **Vite**, designed for optimal developer experience and rapid development.
 
