@@ -111,7 +111,7 @@ function AllPrimum() {
           >
             <i
               className={`bi ${item.icon} ${style.icon} fs-5`}
-              style={{ marginLeft: "10px" }}
+              style={{ marginLeft: "6px" }}
             ></i>
             <small>{item.name}</small>
           </NavLink>
