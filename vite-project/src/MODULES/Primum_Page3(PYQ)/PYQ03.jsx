@@ -6,29 +6,6 @@ import PYQ03HEADERS from "./PYQ03HEADER.jsx";
 import { useState, useRef, useEffect } from "react";
 
 function PYQ03({ setcontents, currentsubject }) {
-  const [showmanue, setshowmanue] = useState("All");
-  // const [headshowmanue, headsetshowmanue] = useState("");
-  const [isSticky, setIsSticky] = useState(false);
-  const navbarRef = useRef();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (navbarRef.current) {
-        const navbarOffset = navbarRef.current.offsetTop;
-        if (window.pageYOffset > navbarOffset) {
-          setIsSticky(true);
-        } else {
-          setIsSticky(false);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   const questions = {
     1: {
       question: "What is the capital of France?",
@@ -76,15 +53,29 @@ function PYQ03({ setcontents, currentsubject }) {
     },
   };
 
+  const [showmanue, setshowmanue] = useState("All");
+  const [isSticky, setIsSticky] = useState(false);
+  const navbarRef = useRef();
   const count = useRef(Object.keys(questions).length);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (navbarRef.current) {
+        const navbarOffset = navbarRef.current.offsetTop;
+        setIsSticky(window.pageYOffset > navbarOffset);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   function set1(value) {
-    if (showmanue === "All") {
-      count.current = Object.keys(questions).length;
-    } else {
-      count.current = Object.keys(questions).length;
-    }
-    console.log(value);
+    if (!questions) return;
+    count.current = Object.keys(questions).length;
+
     setshowmanue(value[0]);
     if (value[0] === "TopicWise") {
       setcontents(value[1]);
@@ -97,48 +88,49 @@ function PYQ03({ setcontents, currentsubject }) {
 
   return (
     <div className={style.body}>
-
-      <PYQ03HEADERS count={count} set={set} currentsubject={currentsubject} />
+      <PYQ03HEADERS
+        count={count.current}
+        set={set}
+        currentsubject={currentsubject}
+      />
 
       <nav
         className={`${style.tabs} ${isSticky ? style.sticky : ""}`}
         ref={navbarRef}
       >
         <div
-          className={`${style.tab} ${showmanue === "All" && style.active}`}
-          onClick={(event) => set1(["All"])}
+          className={`${style.tab} ${showmanue === "All" ? style.active : ""}`}
+          onClick={() => set1(["All"])}
         >
-          <center>All Questions</center>{" "}
+          <center>All Questions</center>
         </div>
 
         <div
-          className={`${style.tab} ${(showmanue === "TopicWise" || showmanue === "Topic Wise") &&
-            style.active
-            }`}
-          onClick={(event) => set1(["Topic Wise"])}
+          className={`${style.tab} ${
+            showmanue === "TopicWise" ? style.active : ""
+          }`}
+          onClick={() => set1(["TopicWise"])}
         >
           <center>Topic-Wise</center>
         </div>
         <hr className={style.hr} />
       </nav>
 
-
       <div className={style.questions_contener}>
-        {/* this comes after clicking on subtopic like newton law of motion  */}
-        {showmanue === "TopicWise" && <PYQ03TOPICKWISE questions={questions} />}
-        {/* this is subtopic like newtan law of motion */}
-        {showmanue === "Topic Wise" ? (
-          <PYQ03SUBTOPICWISE Topic={Topic} set1={set1} setcontents={setcontents} />
-        ) :
-          <PYQ03SUBTOPICWISE questions={questions} />
-        }
+        {showmanue === "TopicWise" && (
+          <PYQ03SUBTOPICWISE
+            Topic={Topic}
+            set1={set1}
+            setcontents={setcontents}
+          />
+        )}
+
         {showmanue === "All" && <PYQ03ALLQUESTION questions={questions} />}
+
+        {showmanue === "Topic" && <PYQ03TOPICKWISE questions={questions} />}
       </div>
     </div>
   );
 }
-export default PYQ03;
 
-{
-  /* <PYQ03TOPICKWISE questions={questions} */
-}
+export default PYQ03;
