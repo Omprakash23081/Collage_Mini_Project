@@ -1,0 +1,8 @@
+.pyq {
+  margin-left: 19.09%;
+}
+@media (max-width: 768px) {
+  .pyq {
+    margin-left: 0;
+  }
+}

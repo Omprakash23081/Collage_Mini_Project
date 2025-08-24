@@ -1,22 +1,22 @@
-require("dotenv").config();
-const express = require("express");
+import dotenv from "dotenv";
+import app from "./app.js";
+import connectDB from "./DB/connect.js";
+// import ApiError from "./util/ApiErrer.js";
+dotenv.config();
 
-const app = express();
-const port = 5000;
+const port = process.env.PORT || 3000;
 
-// FIRST API "https://api.escuelajs.co/api/v1";
-// SECOND API https://api.escuelajs.co/api/v1/products
+// This code initializes the server, connects to the database, and starts listening on the specified port. It also handles any errors that may occur during the connection or server startup.
+connectDB()
+  .then(
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    })
+  )
+  .catch((error) => {
+    console.error("Error starting server:", error);
+  });
 
-// Simple API
-app.get("/Login", (req, res) => {
-  const data = {
-    title: "Hello",
-    description: "World",
-  };
-
-  res.send(data);
-});
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${port}`);
-});
+//write routes
+import router from "./routes/user.routes.js";
+app.use("/api/users", router);

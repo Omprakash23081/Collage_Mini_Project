@@ -1,0 +1,128 @@
+.chapters_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .chapters_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chapter_card {
+  background: rgba(28, 29, 37, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 0.2px solid rgba(255, 255, 255, 0.39);
+  animation: fadeInUp 0.6s ease-out backwards;
+  height: 80px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chapter_card:hover {
+  transform: translateY(-2px);
+  background: rgba(37, 38, 49, 0.8);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 0 30px rgba(26, 132, 255, 0.1);
+  border-color: rgba(26, 132, 255, 0.2);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(212, 202, 202, 0.12) 0px -12px 30px,
+    rgba(221, 212, 212, 0.12) 0px 4px 6px,
+    rgba(202, 196, 196, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.chapter_card:hover .chapter_icon {
+  transform: scale(1.1) rotate(2deg);
+  background: rgba(58, 59, 70, 0.9);
+  border-color: rgba(26, 132, 255, 0.3);
+  box-shadow: 0 0 20px rgba(26, 132, 255, 0.2);
+}
+
+.chapters_grid .chapter_card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.chapters_grid .chapter_card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.chapters_grid .chapter_card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.chapters_grid .chapter_card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.chapters_grid .chapter_card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.chapters_grid .chapter_card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.chapters_grid .chapter_card:nth-child(7) {
+  animation-delay: 0.7s;
+}
+.chapters_grid .chapter_card:nth-child(8) {
+  animation-delay: 0.8s;
+}
+.chapters_grid .chapter_card:nth-child(9) {
+  animation-delay: 0.9s;
+}
+
+.chapter_icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(42, 43, 54, 0.7);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.chapter_info p {
+  color: #8a8a8a;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chapter_info p::before {
+  content: "•";
+  color: #1a84ff;
+  font-size: 16px;
+}
+
+.chapter_info {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.chapter_info h3 {
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: #ffffff;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-top: 30px;
+  text-overflow: ellipsis;
+}
