@@ -1,95 +1,79 @@
-import { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import style from "./App.module.css";
-import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
 import Home from "./Home.jsx";
+import { useEffect } from "react";
+import style from "./App.module.css";
 import Login from "../MODULES/Login/Login.jsx";
+import { AppProvider } from "./AppContext.jsx";
 import Navbar from "../MODULES/Home/Navbars.jsx";
 import Footer from "../MODULES/Footer/Footer.jsx";
-import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
 import ProfilePage from "../MODULES/Profile/PROFILE.jsx";
+import { setupScrolBar } from "../JAVASCRIPT/ScrolBar.js";
 import PYQPage from "../MODULES/Primum_Page3(PYQ)/PYQ.jsx";
+import NotesPage from "../MODULES/NotesPage/ROOT/NOTES.jsx";
 import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
 import Lost_Found from "../MODULES/Lost&Found/Lost_Found.jsx";
-import NotesPage from "../MODULES/NotesPage/ROOT/NOTES.jsx";
+import AllPrimum from "../MODULES/Primum_Page1/AllPrimum.jsx";
 import PrimiumHome from "../MODULES/Primum_Page2(Home)/PrimiumHome.jsx";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 
+import "./index.css";
+
 function App() {
-  const [currentPrimum, setPrimum] = useState(false);
-  const [currentmanu, setManu] = useState("Home");
-  const [isLogin, setIsLogin] = useState(false);
-
-  function handleLogin() {
-    setIsLogin(true);
-  }
-
   useEffect(() => {
     setupScrolBar();
   }, []);
 
   const router = createBrowserRouter([
+    // "/"
     {
       path: "/",
-      element: (
-        <Home
-          currentPrimum={currentPrimum}
-          SetPrimums={() => setPrimum(true)}
-        />
-      ),
+      element: <Home />,
     },
+    // "/login"
     {
-      path: "/Login",
+      path: "/login",
       element: (
         <div className={style.App_contaniar}>
-          <Navbar isLogin={isLogin} />
-          <Login handleLogin={handleLogin} />
+          <Navbar />
+          <Login />
           <Footer />
         </div>
       ),
     },
+    // "/lost-found"
     {
-      path: "/Lost_Found",
+      path: "/lost-found",
       element: <Lost_Found />,
     },
+    // "/faculty-directory"
     {
-      path: "/Faculty&Directory",
+      path: "/faculty-directory",
       element: <FacultyDirectory />,
     },
+    // "/primum"
     {
-      path: "/Primum",
+      path: "/primum",
       element: (
         <div className={style.Primum_contener}>
-          <AllPrimum currentmanu={currentmanu} SetSidebar={setManu} />
+          <AllPrimum />
           <Outlet />
         </div>
       ),
       children: [
-        {
-          path: "",
-          element: <PrimiumHome />,
-        },
-        {
-          path: "Profile",
-          element: <ProfilePage />,
-        },
-        {
-          path: "Notes",
-          element: <NotesPage />,
-        },
-        {
-          path: "PYQ",
-          element: <PYQPage />,
-        },
-        {
-          path: "Premium",
-          element: <PremiumPage />,
-        },
+        { path: "", element: <PrimiumHome /> },
+        { path: "profile", element: <ProfilePage /> },
+        { path: "notes", element: <NotesPage /> },
+        { path: "pyq", element: <PYQPage /> },
+        { path: "premium", element: <PremiumPage /> },
       ],
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
+  );
 }
 
 export default App;

@@ -1,5 +1,4 @@
 import User from "../models/user.models.js";
-import ApiErrer from "../util/ApiErrer.js";
 import ApiResponse from "../util/ApiResponse.js";
 
 const loginUser = async (req, res) => {
@@ -9,24 +8,26 @@ const loginUser = async (req, res) => {
   if (
     [email, password].some((field) => (field ? field.trim() === "" : false))
   ) {
-    throw new ApiErrer("All fields are required", 400);
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "All fields are required"));
   }
 
-  //check wather user is exist if exist then throw errer athor wise prosid
   const user = await User.findOne({ email });
-  console.log("uppr");
 
   if (!user) {
-    throw new ApiErrer("User not found", 404);
+    return res.status(404).json(new ApiResponse(404, null, "User not found"));
   }
-  if (user.password != password) {
-    throw new ApiErrer("invalid credentails", 404);
+
+  const isPasswordValid = await user.comparePassword(password);
+
+  if (!isPasswordValid) {
+    return res.status(401).json(new ApiResponse(401, null, "Wrong password"));
   }
-  console.log("lower");
 
   return res
     .status(201)
-    .json(new ApiResponse(201, null, "User logged in successfullyyyy"));
+    .json(new ApiResponse(201, null, "User logged in successfullyyyy..."));
 };
 
 export { loginUser };

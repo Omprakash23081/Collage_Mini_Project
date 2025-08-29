@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import app from "./app.js";
 import connectDB from "./DB/connect.js";
-// import ApiError from "./util/ApiErrer.js";
 dotenv.config();
 
 const port = process.env.PORT || 3000;

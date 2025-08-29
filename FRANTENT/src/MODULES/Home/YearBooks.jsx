@@ -6,12 +6,12 @@ function YearBooks({ SetPrimums }) {
     <section>
       <div className="yearcontainer">
         <h1 className="header" id="hellow">
-          Login{" "}
+          EXPLORE AS PER YEAR{" "}
         </h1>
         <div className="card-wrapper">
           <div className="card">
             <img src={image} alt="Village Leader" className="profile-image" />
-            <h2>FIRST YESR</h2>
+            <h2>FIRST YEAR</h2>
             <p>.....................</p>
             <button
               className="login-button" /*onClick={() => { SetPrimums() }}*/

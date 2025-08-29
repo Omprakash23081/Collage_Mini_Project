@@ -1,10 +1,13 @@
 //import css from './Navbars.module.css'we can import like this and use like className= {css["variable_like_className"]}
 import icon from "../PHOTO/icon.png";
 import style from "./Navbars.module.css";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AppContext } from "../../App/AppContext.jsx";
 
-function Navbar({ isLogin }) {
+function Navbar() {
+  const { isLogin } = useContext(AppContext);
+
   return (
     <>
       <div className="contener">
@@ -288,17 +291,23 @@ function Navbar({ isLogin }) {
           className="Right_side_navaction_bar"
           // onClick={() => setActiveLink("Login")}
         >
-          <div>
-            {!isLogin ? (
+          {!isLogin ? (
+            <div>
               <button className="navigation_Butten1">
                 <NavLink to="/Login">
                   <b>Login....</b>
                 </NavLink>
               </button>
-            ) : (
-              <p>o o</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div>
+              <button className="navigation_Butten1">
+                <NavLink to="/Primum">
+                  <b>Primum</b>
+                </NavLink>
+              </button>
+            </div>
+          )}
           <div>
             <div className="navigation_Butten2">
               <input type="search" placeholder="Search..." />

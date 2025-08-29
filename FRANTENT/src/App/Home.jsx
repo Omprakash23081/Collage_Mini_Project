@@ -10,14 +10,14 @@ import YearBooks from "../MODULES/Home/YearBooks.jsx";
 import Lost_Found from "../MODULES/Home/Lost_Found.jsx";
 import Facelity_Directery from "../MODULES/Home/Facelity_Directery.jsx";
 
-function Home({ SetPrimums, isLogin }) {
+function Home() {
   return (
     <div className={style.App_contaniar}>
       <>
-        <Navbar isLogin={isLogin} />
+        <Navbar />
         <Header />
         <ScrolBar />
-        <YearBooks SetPrimums={SetPrimums} />
+        <YearBooks />
         <Hackthon />
         <Lost_Found />
         <Facelity_Directery />
