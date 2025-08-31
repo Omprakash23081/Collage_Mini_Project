@@ -16,8 +16,6 @@ import PrimiumHome from "../MODULES/Primum_Page2(Home)/PrimiumHome.jsx";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import FacultyDirectory from "../MODULES/Faculty_Directory/FacultyDirectory.jsx";
 
-import "./index.css";
-
 function App() {
   useEffect(() => {
     setupScrolBar();

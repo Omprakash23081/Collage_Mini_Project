@@ -35,8 +35,7 @@ function Login() {
       [name]: files ? files[0] : value,
     }));
   };
-
-  const { name, image, email, password } = formData;
+  const { email, password } = formData;
 
   const LoginUser = async (e) => {
     e.preventDefault();
@@ -64,20 +63,20 @@ function Login() {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${BASE_URL}/api/users/register`, {
-        name,
-        image,
-        email,
-        password,
-      });
-      console.log(response.data);
-      if (response.status < 400) {
-        alert("Registration successful: " + response.data.message);
-        handleLogin(response.data.user);
-        navigate("/");
-      } else {
-        alert("Registration failed: " + response.data.message);
-      }
+      const formDataObj = new FormData();
+      formDataObj.append("name", formData.name);
+      formDataObj.append("email", formData.email);
+      formDataObj.append("password", formData.password);
+      formDataObj.append("image", formData.image);
+
+      const response = await axios.post(
+        `${BASE_URL}/api/users/register`,
+        formDataObj
+      );
+
+      alert("Registration successful: " + response.data.message);
+      handleLogin(response.data.user);
+      navigate("/");
     } catch (error) {
       alert(
         "Error during registration: " +

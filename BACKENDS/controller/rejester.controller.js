@@ -23,6 +23,7 @@ const registerUser = async (req, res) => {
       .status(401)
       .json(new ApiResponse(401, null, "User already exists"));
   }
+  console.log("op");
 
   console.log(req.files?.image?.[0]?.path + "printing");
   const imageLocalPath = req.files?.image[0]?.path;
