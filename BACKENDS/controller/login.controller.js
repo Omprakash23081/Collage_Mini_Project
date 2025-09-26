@@ -1,6 +1,7 @@
 import User from "../models/user.models.js";
 import ApiResponse from "../util/ApiResponse.js";
 import GenerateToken from "../services/auth.js";
+import jwt from "jsonwebtoken";
 
 const security = {
   httpOnly: true,
