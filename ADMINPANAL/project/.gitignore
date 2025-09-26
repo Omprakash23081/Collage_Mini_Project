@@ -11,10 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-.env 
-node_modules
-package-lock.json
-yarn.lock
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -25,5 +22,4 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
-.github
-netlify.toml
+.env
