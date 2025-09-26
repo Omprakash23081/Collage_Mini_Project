@@ -21,6 +21,7 @@ const RefreshHandler = () => {
         setIsLogin(true);
         navigate("/");
       } catch (err) {
+        console.log("Refresh failed:", err.response);
         setIsLogin(false);
         navigate("/login");
       }
