@@ -2,6 +2,12 @@ import User from "../models/user.models.js";
 import ApiResponse from "../util/ApiResponse.js";
 import GenerateToken from "../services/auth.js";
 
+const security = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+};
+
 const loginUser = async (req, res) => {
   console.log(req.body);
 
@@ -27,11 +33,6 @@ const loginUser = async (req, res) => {
   }
   const { accessToken, refreshToken } = await GenerateToken(user);
 
-  const security = {
-    httpOnly: true,
-    secure: false,
-  };
-
   return res
     .status(201)
     .cookie("accessToken", accessToken, security)
@@ -40,10 +41,6 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-  const security = {
-    httpOnly: true,
-    secure: false,
-  };
   await User.findByIdAndUpdate(
     req.user._id,
     { refreshToken: undefined },
@@ -82,12 +79,6 @@ const refreshAccessToken = async (req, res) => {
   const { accessToken, refreshToken: newRefreshToken } = await GenerateToken(
     user
   );
-
-  const security = {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  };
 
   return res
     .status(200)
