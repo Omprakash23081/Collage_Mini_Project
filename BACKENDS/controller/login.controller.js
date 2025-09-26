@@ -80,8 +80,10 @@ const refreshAccessToken = async (req, res) => {
 
   const security = {
     httpOnly: true,
-    secure: false,
+    secure: true,
+    sameSite: "none",
   };
+
   return res
     .status(200)
     .cookie("accessToken", accessToken, security)
