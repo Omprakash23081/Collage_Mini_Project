@@ -65,7 +65,14 @@ const refreshAccessToken = async (req, res) => {
 
   try {
     // Verify token first
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    await jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err)
+          return res.status(403).json({ message: "Invalid refresh token" });
+      }
+    );
 
     // Find user by ID (instead of refreshToken only)
     const user = await User.findById(decoded.id);
