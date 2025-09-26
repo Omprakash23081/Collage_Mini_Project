@@ -100,7 +100,7 @@ const refreshAccessToken = async (req, res) => {
       .json({ message: "Access Token refreshed successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(403).json({ message: "Invalid refresh token" });
+    return res.status(403).json({ message: `Invalid refresh token ${error}` });
   }
 };
 
