@@ -61,7 +61,10 @@ const refreshAccessToken = async (req, res) => {
     req.cookies?.refreshToken || req.headers["Authorization"]?.split(" ")[1];
 
   if (!refreshToken) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({
+      message: "refress token is not present",
+      data: refreshToken,
+    });
   }
 
   const user = await User.findOne({ refreshToken }).select(
@@ -71,7 +74,9 @@ const refreshAccessToken = async (req, res) => {
   console.log("use is :" + user);
 
   if (!user) {
-    return res.status(401).json(new ApiResponse(401, null, "Unauthorized"));
+    return res
+      .status(401)
+      .json(new ApiResponse(401, null, "user is not find from your token"));
   }
 
   const { accessToken, refreshToken: newRefreshToken } = await GenerateToken(
