@@ -65,17 +65,10 @@ const refreshAccessToken = async (req, res) => {
   }
 
   try {
-    // Verify token first
-    await jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      (err, decoded) => {
-        if (err)
-          return res.status(403).json({ message: "Invalid refresh token" });
-      }
-    );
+    // Verify and decode refresh token
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-    // Find user by ID (instead of refreshToken only)
+    // Find user by ID and also check refreshToken matches
     const user = await User.findById(decoded.id);
 
     if (!user || user.refreshToken !== refreshToken) {
@@ -84,15 +77,10 @@ const refreshAccessToken = async (req, res) => {
         .json({ message: "user not found or token mismatch" });
     }
 
+    // Generate new tokens
     const { accessToken, refreshToken: newRefreshToken } = await GenerateToken(
       user
     );
-
-    const security = {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    };
 
     return res
       .status(200)
@@ -101,7 +89,7 @@ const refreshAccessToken = async (req, res) => {
       .json({ message: "Access Token refreshed successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(403).json({ message: `Invalid refresh token ${error}` });
+    return res.status(403).json({ message: "Invalid refresh token" });
   }
 };
 
