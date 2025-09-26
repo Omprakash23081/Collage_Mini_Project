@@ -55,36 +55,46 @@ const logoutUser = async (req, res) => {
 
 const refreshAccessToken = async (req, res) => {
   const refreshToken =
-    req.cookies?.refreshToken || req.headers["Authorization"]?.split(" ")[1];
+    req.cookies?.refreshToken || req.headers["authorization"]?.split(" ")[1];
 
   if (!refreshToken) {
     return res.status(401).json({
-      message: "refress token is not present",
-      data: refreshToken,
+      message: "refresh token is not present",
     });
   }
 
-  const user = await User.findOne({ refreshToken }).select(
-    "-password -refreshToken"
-  );
+  try {
+    // Verify token first
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-  console.log("use is :" + user);
+    // Find user by ID (instead of refreshToken only)
+    const user = await User.findById(decoded.id);
 
-  if (!user) {
+    if (!user || user.refreshToken !== refreshToken) {
+      return res
+        .status(401)
+        .json({ message: "user not found or token mismatch" });
+    }
+
+    const { accessToken, refreshToken: newRefreshToken } = await GenerateToken(
+      user
+    );
+
+    const security = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    };
+
     return res
-      .status(401)
-      .json(new ApiResponse(401, null, "user is not find from your token"));
+      .status(200)
+      .cookie("accessToken", accessToken, security)
+      .cookie("refreshToken", newRefreshToken, security)
+      .json({ message: "Access Token refreshed successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(403).json({ message: "Invalid refresh token" });
   }
-
-  const { accessToken, refreshToken: newRefreshToken } = await GenerateToken(
-    user
-  );
-
-  return res
-    .status(200)
-    .cookie("accessToken", accessToken, security)
-    .cookie("refreshToken", newRefreshToken, security)
-    .json(new ApiResponse(200, user, "Access Token refreshed successfully"));
 };
 
 export { loginUser, logoutUser, refreshAccessToken };
