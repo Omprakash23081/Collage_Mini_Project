@@ -13,8 +13,12 @@ const GenerateToken = async (user) => {
   const refreshToken = jwt.sign(payLoad, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: "7d",
   });
+
   user.refreshToken = refreshToken;
-  await user.save();
+  const data = await user.save();
+
+  console.log(data);
+
   return { accessToken, refreshToken };
 };
 

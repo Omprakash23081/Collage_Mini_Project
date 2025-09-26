@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { type } from "os";
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -14,6 +15,10 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+
+    refreshToken: {
+      type: String,
     },
     image: {
       type: String,

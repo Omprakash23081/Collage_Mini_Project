@@ -4,11 +4,12 @@ const verifyJWT = async (req, res, next) => {
   try {
     const token =
       req.cookies?.accessToken || req.headers["Authorization"]?.split(" ")[1];
-    console.log(token + "    it is in auth middleware");
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+    //it will give all the acess of the fileds witch is defined in the payload
+    //in the auth.js file
     const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     const user = await User.findById(decode.id).select(

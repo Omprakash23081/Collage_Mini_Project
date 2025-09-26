@@ -8,6 +8,7 @@ app.use(
       "https://hellowduniya.netlify.app",
       "http://localhost:5174",
       "http://localhost:5173",
+      "https://collage-mini-project-090y.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,

@@ -4,7 +4,7 @@ import GenerateToken from "../services/auth.js";
 
 const loginUser = async (req, res) => {
   console.log(req.body);
-  console.log("djd");
+
   const { email, password } = req.body;
   if (
     [email, password].some((field) => (field ? field.trim() === "" : false))
@@ -29,7 +29,7 @@ const loginUser = async (req, res) => {
 
   const security = {
     httpOnly: true,
-    secure: true,
+    secure: false,
   };
 
   return res
@@ -42,7 +42,7 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
   const security = {
     httpOnly: true,
-    secure: true,
+    secure: false,
   };
   await User.findByIdAndUpdate(
     req.user._id,
@@ -56,4 +56,37 @@ const logoutUser = async (req, res) => {
     .json(new ApiResponse(200, null, "User logged out successfully"));
 };
 
-export { loginUser, logoutUser };
+const refreshAccessToken = async (req, res) => {
+  const refreshToken =
+    req.cookies?.refreshToken || req.headers["Authorization"]?.split(" ")[1];
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const user = await User.findOne({ refreshToken }).select(
+    "-password -refreshToken"
+  );
+
+  console.log("use is :" + user);
+
+  if (!user) {
+    return res.status(401).json(new ApiResponse(401, null, "Unauthorized"));
+  }
+
+  const { accessToken, refreshToken: newRefreshToken } = await GenerateToken(
+    user
+  );
+
+  const security = {
+    httpOnly: true,
+    secure: false,
+  };
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, security)
+    .cookie("refreshToken", newRefreshToken, security)
+    .json(new ApiResponse(200, user, "Access Token refreshed successfully"));
+};
+
+export { loginUser, logoutUser, refreshAccessToken };
