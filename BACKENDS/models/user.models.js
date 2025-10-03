@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+// import { required } from "joi";
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -21,6 +22,11 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+    },
+    role: {
+      type: String,
+      enum: ["Admin", "User"],
+      required: true,
     },
   },
   { timestamps: true }

@@ -1,6 +1,6 @@
 import ApiResponse from "../util/ApiResponse.js";
 import { Upload } from "../util/cloudinary.js";
-import { Item } from "../models/lostAndFound.js";
+import { Item } from "../models/lostAndFound.models.js";
 
 const Items = async (req, res) => {
   const { name, description, status, location, number, image } = req.body;

@@ -2,7 +2,7 @@ import { kMaxLength } from "buffer";
 import mongoose from "mongoose";
 import { type } from "os";
 
-const itemScema = mongoose.Schema(
+const itemScema = new mongoose.Schema(
   {
     name: {
       type: String,
