@@ -10,7 +10,7 @@ const security = {
 };
 
 const loginUser = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const { email, password } = req.body;
   if (
@@ -88,7 +88,7 @@ const refreshAccessToken = async (req, res) => {
       .cookie("refreshToken", newRefreshToken, security)
       .json({ message: "Access Token refreshed successfully" });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(403).json({ message: "Invalid refresh token" });
   }
 };

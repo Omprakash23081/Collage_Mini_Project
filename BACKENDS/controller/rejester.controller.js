@@ -4,7 +4,7 @@ import ApiResponse from "../util/ApiResponse.js";
 import { Upload } from "../util/cloudinary.js";
 
 const registerUser = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const { name, email, password } = req.body;
   if (
@@ -23,17 +23,17 @@ const registerUser = async (req, res) => {
       .status(401)
       .json(new ApiResponse(401, null, "User already exists"));
   }
-  console.log("op");
+  // console.log("op");
 
-  console.log(req.files?.image?.[0]?.path + "printing");
+  // console.log(req.files?.image?.[0]?.path + "printing");
   const imageLocalPath = req.files?.image[0]?.path;
   let imageUrl = null;
 
   if (imageLocalPath) {
     imageUrl = await Upload(imageLocalPath);
   }
-  console.log(imageLocalPath + " image path");
-  console.log(imageUrl + " image url");
+  // console.log(imageLocalPath + " image path");
+  // console.log(imageUrl + " image url");
 
   const user = await User.create({
     name,

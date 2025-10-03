@@ -17,7 +17,7 @@ const GenerateToken = async (user) => {
   user.refreshToken = refreshToken;
   const data = await user.save();
 
-  console.log(data);
+  // console.log(data);
 
   return { accessToken, refreshToken };
 };

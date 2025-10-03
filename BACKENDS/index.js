@@ -17,5 +17,7 @@ connectDB()
   });
 
 //write routes
-import router from "./routes/user.routes.js";
-app.use("/api/users", router);
+import UserRouter from "./routes/user.routes.js";
+import ItemRouter from "./routes/items.routes.js";
+app.use("/api/users", UserRouter);
+app.use("/api/items", ItemRouter);

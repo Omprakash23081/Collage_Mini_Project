@@ -8,6 +8,8 @@ const verifyJWT = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+
+    console.log("user details ");
     //it will give all the acess of the fileds witch is defined in the payload
     //in the auth.js file
     const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
