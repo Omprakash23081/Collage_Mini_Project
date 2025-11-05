@@ -5,7 +5,7 @@ export const AppContext = createContext();
 export function AppProvider({ children }) {
   const [isLogin, setIsLogin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [AccessToken, setAccessToken] = useState(null);
+  const [userName, setUserName] = useState("");
 
   return (
     <AppContext.Provider
@@ -14,8 +14,8 @@ export function AppProvider({ children }) {
         setIsLogin,
         loading,
         setLoading,
-        AccessToken,
-        setAccessToken,
+        userName,
+        setUserName,
       }}
     >
       {children}

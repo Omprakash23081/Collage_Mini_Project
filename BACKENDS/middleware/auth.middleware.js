@@ -6,7 +6,9 @@ const verifyJWT = async (req, res, next) => {
       req.cookies?.accessToken || req.headers["Authorization"]?.split(" ")[1];
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res
+        .status(401)
+        .json({ message: "plase login first you have not valid tocken" });
     }
 
     console.log("user details ");
@@ -19,13 +21,17 @@ const verifyJWT = async (req, res, next) => {
     );
 
     if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({
+        message: "plase login fist before submit form your tocken went wrong",
+      });
     }
 
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res
+      .status(401)
+      .json({ message: "somthing went wrong during validation of user" });
   }
 };
 export default verifyJWT;

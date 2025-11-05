@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Navigate } from "react-router";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { createBrowserRouter } from "react-router-dom";
 import Sidebar from "./components/Layout/Sidebar";
 import Header from "./components/Layout/Header";
 import Dashboard from "./pages/Dashboard";
@@ -14,38 +13,15 @@ import { AppContext } from "./AppContext.jsx";
 import Login from "./components/Login/Login.jsx";
 import RefrshHandler from "./RefrshHandler.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
-
+import Loding from "./Loding.jsx";
+import axios from "axios";
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const { isLogin } = useContext(AppContext);
-  const { loading } = useContext(AppContext);
-
-  // const router = createBrowserRouter([
-  //   {
-  //     path: "/login",
-  //     element: <Login />,
-  //   },
-  //   {
-  //     path: "/",
-  //     element: (
-  //       <>
-  //         <Dashboard />
-  //         <Outlet />
-  //       </>
-  //     ),
-  //     children: [
-  //       { path: "", element: <PrimiumHome /> },
-  //       { path: "profile", element: <ProfilePage /> },
-  //       { path: "notes", element: <NotesPage /> },
-  //       { path: "pyq", element: <PYQPage /> },
-  //       { path: "premium", element: <PremiumPage /> },
-  //     ],
-  //   },
-  // ]);
+  const { isLogin, loading, setUserName } = useContext(AppContext);
 
   return (
     <Router>
+      {loading ? <Loding /> : null}
       <div className="min-h-screen bg-gray-900 flex">
         {isLogin && (
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />

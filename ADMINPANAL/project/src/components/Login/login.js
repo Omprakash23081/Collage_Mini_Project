@@ -5,10 +5,10 @@ export function setupLogin() {
   const loginBtn = document.getElementById("login");
 
   if (!registerBtn || !loginBtn) {
-    // console.log("Buttons not found! Check your HTML IDs.");
+    console.log("Buttons not found! Check your HTML IDs.");
     return;
   }
-  // console.log("in js file ")
+  // console.log("in js file ");
 
   registerBtn.addEventListener("click", () => {
     container.classList.add("active");

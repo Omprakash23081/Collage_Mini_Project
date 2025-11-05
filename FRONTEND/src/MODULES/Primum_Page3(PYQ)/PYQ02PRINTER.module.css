@@ -1,0 +1,100 @@
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .subjects {
+    grid-template-columns: 1fr;
+  }
+}
+
+.subject_card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px #ffffff33;
+}
+
+.subject_card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 1rem;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.subject_card:hover::before {
+  opacity: 1;
+}
+
+.subject_card h2,
+.subject_stats {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  padding-left: 20px;
+}
+
+.subject_card h2 {
+  padding-top: 20px;
+}
+
+.subject_card {
+  background-image: linear-gradient(
+    111.1deg,
+    rgba(69, 150, 164, 1) 2.5%,
+    rgba(17, 20, 34, 1) 100.3%
+  );
+  border-radius: 1rem;
+  /* padding: 1.5rem; */
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.physics::before {
+  background: radial-gradient(
+    circle at top right,
+    rgba(255, 87, 34, 0.2),
+    transparent
+  );
+}
+
+.chemistry::before {
+  background: radial-gradient(
+    circle at top right,
+    rgba(76, 175, 80, 0.2),
+    transparent
+  );
+}
+
+.mathematics::before {
+  background: radial-gradient(
+    circle at top right,
+    rgba(33, 150, 243, 0.2),
+    transparent
+  );
+}
+
+.subject_title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.subject_stats {
+  color: #8890a6;
+  font-size: 0.875rem;
+}
+
+.subject_icon {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  height: 120%;
+}

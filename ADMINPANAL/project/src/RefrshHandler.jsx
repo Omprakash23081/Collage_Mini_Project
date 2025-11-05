@@ -2,21 +2,14 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AppContext } from "./AppContext.jsx";
-
-const BASE_URL = "https://collage-mini-project-090y.onrender.com";
+import { BASE_URL } from "./constant.js";
 
 const RefreshHandler = () => {
   const navigate = useNavigate();
-  const { setIsLogin, setAccessToken } = useContext(AppContext);
+  const { setIsLogin, setLoading } = useContext(AppContext);
 
   useEffect(() => {
     const checkLogin = async () => {
-      // console.log("Cookie RT:", req.cookies.refreshToken);
-      // const user = await User.findOne({
-      //   refreshToken: req.cookies.refreshToken,
-      // });
-      // console.log("DB RT:", user?.refreshToken);
-
       try {
         const res = await axios.post(
           `${BASE_URL}/api/users/refreshToken`,
@@ -31,6 +24,7 @@ const RefreshHandler = () => {
         setIsLogin(false);
         navigate("/login");
       }
+      setLoading(false);
     };
 
     checkLogin();

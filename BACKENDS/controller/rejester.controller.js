@@ -4,9 +4,9 @@ import ApiResponse from "../util/ApiResponse.js";
 import { Upload } from "../util/cloudinary.js";
 
 const registerUser = async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
 
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   if (
     [name, email, password].some((field) =>
       field ? field.trim() === "" : false
@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
       .status(401)
       .json(new ApiResponse(401, null, "User already exists"));
   }
-  // console.log("op");
+  console.log(role);
 
   // console.log(req.files?.image?.[0]?.path + "printing");
   const imageLocalPath = req.files?.image[0]?.path;
@@ -35,11 +35,19 @@ const registerUser = async (req, res) => {
   // console.log(imageLocalPath + " image path");
   // console.log(imageUrl + " image url");
 
+  let normalizedRole = role?.replace(/['"]+/g, "").trim();
+  if (normalizedRole) {
+    normalizedRole =
+      normalizedRole.charAt(0).toUpperCase() +
+      normalizedRole.slice(1).toLowerCase();
+  }
+
   const user = await User.create({
     name,
     email,
     password,
     image: imageUrl,
+    role: normalizedRole,
   });
   const newUserCreatedref = await User.findById(user._id).select("-password");
 

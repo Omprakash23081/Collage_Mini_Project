@@ -1,4 +1,0 @@
-[build]
-base = "FRANTENT"
-publish = "dist"
-command = "npm run build"

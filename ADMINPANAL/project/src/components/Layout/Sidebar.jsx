@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -10,6 +10,7 @@ import {
   X,
   ChevronLeft,
 } from "lucide-react";
+import { AppContext } from "../../AppContext.jsx";
 
 const navigationItems = [
   { name: "Dashboard", path: "/", icon: LayoutDashboard },
@@ -21,6 +22,8 @@ const navigationItems = [
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
+  const { userName } = useContext(AppContext);
+
   return (
     <>
       {/* Mobile backdrop */}
@@ -92,7 +95,7 @@ export default function Sidebar({ isOpen, onClose }) {
               className="w-10 h-10 rounded-full object-cover"
             />
             <div className="flex-1">
-              <p className="text-sm font-medium text-white">John Doe</p>
+              <p className="text-sm font-medium text-white">{userName}</p>
               <p className="text-xs text-gray-400">Administrator</p>
             </div>
           </div>

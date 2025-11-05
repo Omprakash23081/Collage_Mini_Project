@@ -12,7 +12,7 @@ const security = {
 const loginUser = async (req, res) => {
   // console.log(req.body);
 
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
   if (
     [email, password].some((field) => (field ? field.trim() === "" : false))
   ) {

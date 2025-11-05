@@ -84,7 +84,7 @@ function ImageUpload({ onImageSelect, currentImage, onImageRemove }) {
 }
 
 export default function Content() {
-  const [activeTab, setActiveTab] = useState("achievements");
+  const [activeTab, setActiveTab] = useState("Notes");
   const [achievements, setAchievements] = useState(mockAchievements);
   const [services, setServices] = useState(mockServices);
   const [videos, setVideos] = useState(mockVideos);
@@ -97,208 +97,10 @@ export default function Content() {
   const [imagePreview, setImagePreview] = useState("");
 
   const tabs = [
-    { id: "achievements", name: "Achievements", icon: Award },
-    { id: "services", name: "Services", icon: Briefcase },
+    { id: "Notes", name: "Notes", icon: Award },
+    { id: "PYQ", name: "PYQ", icon: Briefcase },
     { id: "videos", name: "Videos", icon: Play },
-    { id: "skills", name: "Skills", icon: Code },
-    { id: "tools", name: "Tools", icon: Wrench },
-    { id: "testimonials", name: "Testimonials", icon: MessageCircle },
   ];
-
-  const getCurrentData = () => {
-    switch (activeTab) {
-      case "achievements":
-        return achievements;
-      case "services":
-        return services;
-      case "videos":
-        return videos;
-      case "skills":
-        return skills;
-      case "tools":
-        return tools;
-      case "testimonials":
-        return testimonials;
-      default:
-        return [];
-    }
-  };
-
-  const getColumns = () => {
-    switch (activeTab) {
-      case "achievements":
-        return [
-          { key: "title", header: "Title" },
-          { key: "category", header: "Category" },
-          {
-            key: "date",
-            header: "Date",
-            render: (value) => new Date(value).toLocaleDateString(),
-          },
-          {
-            key: "actions",
-            header: "Actions",
-            render: (value, row) => renderActions(row),
-          },
-        ];
-      case "services":
-        return [
-          { key: "title", header: "Service" },
-          { key: "category", header: "Category" },
-          { key: "price", header: "Price" },
-          {
-            key: "status",
-            header: "Status",
-            render: (value) => (
-              <span
-                className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  value === "Active"
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
-                }`}
-              >
-                {value}
-              </span>
-            ),
-          },
-          {
-            key: "actions",
-            header: "Actions",
-            render: (value, row) => renderActions(row),
-          },
-        ];
-      case "videos":
-        return [
-          {
-            key: "thumbnail",
-            header: "Video",
-            render: (value, row) => (
-              <div className="flex items-center space-x-3">
-                <img
-                  src={value}
-                  alt={row.title}
-                  className="w-16 h-10 object-cover rounded"
-                />
-                <div>
-                  <p className="font-medium text-gray-200">{row.title}</p>
-                  <p className="text-sm text-gray-400">{row.views} views</p>
-                </div>
-              </div>
-            ),
-          },
-          {
-            key: "createdAt",
-            header: "Created",
-            render: (value) => new Date(value).toLocaleDateString(),
-          },
-          {
-            key: "actions",
-            header: "Actions",
-            render: (value, row) => renderActions(row),
-          },
-        ];
-      case "skills":
-        return [
-          { key: "name", header: "Skill" },
-          { key: "category", header: "Category" },
-          {
-            key: "percentage",
-            header: "Proficiency",
-            render: (value) => (
-              <div className="flex items-center space-x-2">
-                <div className="w-16 h-2 bg-gray-600 rounded-full">
-                  <div
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{ width: `${value}%` }}
-                  />
-                </div>
-                <span className="text-sm text-gray-300">{value}%</span>
-              </div>
-            ),
-          },
-          {
-            key: "actions",
-            header: "Actions",
-            render: (value, row) => renderActions(row),
-          },
-        ];
-      case "tools":
-        return [
-          { key: "name", header: "Tool" },
-          { key: "category", header: "Category" },
-          {
-            key: "actions",
-            header: "Actions",
-            render: (value, row) => renderActions(row),
-          },
-        ];
-      case "testimonials":
-        return [
-          {
-            key: "avatar",
-            header: "Client",
-            render: (value, row) => (
-              <div className="flex items-center space-x-3">
-                <img
-                  src={value}
-                  alt={row.clientName}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-medium text-gray-200">{row.clientName}</p>
-                  <p className="text-sm text-gray-400">{row.clientCompany}</p>
-                </div>
-              </div>
-            ),
-          },
-          {
-            key: "rating",
-            header: "Rating",
-            render: (value) => (
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <span
-                    key={i}
-                    className={i < value ? "text-yellow-400" : "text-gray-500"}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-            ),
-          },
-          {
-            key: "createdAt",
-            header: "Date",
-            render: (value) => new Date(value).toLocaleDateString(),
-          },
-          {
-            key: "actions",
-            header: "Actions",
-            render: (value, row) => renderActions(row),
-          },
-        ];
-      default:
-        return [];
-    }
-  };
-
-  const renderActions = (row) => (
-    <div className="flex items-center space-x-2">
-      <button
-        onClick={() => handleEdit(row)}
-        className="p-1 text-blue-400 hover:text-blue-300"
-      >
-        <Edit className="w-4 h-4" />
-      </button>
-      <button
-        onClick={() => handleDelete(row.id)}
-        className="p-1 text-red-400 hover:text-red-300"
-      >
-        <Trash2 className="w-4 h-4" />
-      </button>
-    </div>
-  );
 
   const handleAdd = () => {
     setEditingItem(null);
@@ -316,10 +118,10 @@ export default function Content() {
 
   const handleDelete = (id) => {
     switch (activeTab) {
-      case "achievements":
+      case "Notes":
         setAchievements(achievements.filter((item) => item.id !== id));
         break;
-      case "services":
+      case "PYQ":
         setServices(services.filter((item) => item.id !== id));
         break;
       case "videos":
@@ -449,7 +251,7 @@ export default function Content() {
 
   const renderForm = () => {
     switch (activeTab) {
-      case "achievements":
+      case "Notes":
         return (
           <form onSubmit={handleSubmit} className="space-y-4">
             <ImageUpload
@@ -519,7 +321,7 @@ export default function Content() {
           </form>
         );
 
-      case "services":
+      case "PYQ":
         return (
           <form onSubmit={handleSubmit} className="space-y-4">
             <ImageUpload
@@ -906,7 +708,7 @@ export default function Content() {
 
         {/* Content */}
         <div className="p-4 sm:p-6 overflow-x-auto">
-          <Table columns={getColumns()} data={getCurrentData()} />
+          {/* <Table columns={getColumns()} data={getCurrentData()} /> */}
         </div>
       </div>
 

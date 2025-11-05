@@ -1,0 +1,99 @@
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+  margin-top: 5%;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #f0f0f0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profileImage {
+  width: 100%;
+  height: 60%;
+  max-height: 200px; /* Set a max height for images */
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  border-radius: 8px 8px 0 0;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .profileImage {
+  transform: scale(1.05);
+}
+
+.cardTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 10px 0;
+  color: #333;
+}
+
+.cardDescription {
+  font-size: 0.95rem;
+  color: #666;
+  padding: 0 12px 15px;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.loginButton {
+  background-color: #3498db;
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.loginButton:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+@media (max-width: 1200px) {
+  .card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+
+  .cardDescription {
+    font-size: 0.85rem;
+  }
+
+  .loginButton {
+    padding: 6px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profileImage {
+    max-height: 150px; /* Adjust max height for smaller screens */
+  }
+}
+
+

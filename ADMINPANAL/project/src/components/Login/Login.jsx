@@ -11,16 +11,16 @@ import {
   faLinkedinIn,
 } from "@fortawesome/free-brands-svg-icons";
 import { AppContext } from "../../AppContext.jsx";
-// import "../../../../../FRANTENT/src/App/App.css";
+import styles from "./Login.module.css";
+import { BASE_URL } from "../../constant.js";
 
 function Login() {
-  const BASE_URL = "https://collage-mini-project-090y.onrender.com";
-  const navigate = useNavigate();
-  const { setIsLogin, isLogin } = useContext(AppContext);
-
   useEffect(() => {
     setupLogin();
   }, []);
+
+  const navigate = useNavigate();
+  const { setIsLogin } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,6 +36,7 @@ function Login() {
       [name]: files ? files[0] : value,
     }));
   };
+
   const { email, password } = formData;
 
   const LoginUser = async (e) => {
@@ -43,19 +44,12 @@ function Login() {
     try {
       const response = await axios.post(
         `${BASE_URL}/api/users/login`,
-        {
-          email,
-          password,
-        },
+        { email, password },
         { withCredentials: true }
       );
-
       if (response.status < 400) {
         alert("Login successful: " + response.data.message);
-
         setIsLogin(true);
-        // console.log("login state in login page in login page ", isLogin);
-        // console.log(localStorage.getItem("token"));
         navigate("/");
       } else {
         alert("Login failed: " + response.data.message);
@@ -76,6 +70,7 @@ function Login() {
       formDataObj.append("email", formData.email);
       formDataObj.append("password", formData.password);
       formDataObj.append("image", formData.image);
+      formDataObj.append("role", "Admin");
 
       const response = await axios.post(
         `${BASE_URL}/api/users/register`,
@@ -83,7 +78,6 @@ function Login() {
       );
 
       alert("Registration successful: " + response.data.message);
-      handleLogin(response.data.user);
       navigate("/");
     } catch (error) {
       alert(
@@ -94,24 +88,19 @@ function Login() {
   };
 
   return (
-    <div id="container" className="container">
+    <div className={styles.container} id="container">
       {/* SIGN UP FORM */}
-      <div className="form-container sign-up">
-        <form onSubmit={registerUser} method="post">
+      <div className={`${styles.formContainer} ${styles.signUp}`}>
+        <form onSubmit={registerUser}>
           <h1>Create Account</h1>
-          <div className="social-icons">
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGooglePlusG} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faFacebookF} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGithub} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faLinkedinIn} />
-            </a>
+          <div className={styles.socialIcons}>
+            {[faGooglePlusG, faFacebookF, faGithub, faLinkedinIn].map(
+              (icon, idx) => (
+                <a href="#" key={idx} className={styles.icon}>
+                  <FontAwesomeIcon icon={icon} />
+                </a>
+              )
+            )}
           </div>
           <span>use your email for registration</span>
           <input
@@ -142,22 +131,17 @@ function Login() {
       </div>
 
       {/* SIGN IN FORM */}
-      <div className="form-container sign-in">
-        <form onSubmit={LoginUser} method="post">
+      <div className={`${styles.formContainer} ${styles.signIn}`}>
+        <form onSubmit={LoginUser}>
           <h1>Sign In</h1>
-          <div className="social-icons">
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGooglePlusG} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faFacebookF} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGithub} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faLinkedinIn} />
-            </a>
+          <div className={styles.socialIcons}>
+            {[faGooglePlusG, faFacebookF, faGithub, faLinkedinIn].map(
+              (icon, idx) => (
+                <a href="#" key={idx} className={styles.icon}>
+                  <FontAwesomeIcon icon={icon} />
+                </a>
+              )
+            )}
           </div>
           <span>or use your email password</span>
           <input
@@ -175,7 +159,7 @@ function Login() {
             minLength={8}
             onChange={handleChange}
           />
-          <a href="#" className="forgot-password">
+          <a href="#" className={styles.forgotPassword}>
             <FontAwesomeIcon icon={faKey} style={{ marginRight: "6px" }} />
             Forgot Your Password?
           </a>
@@ -184,21 +168,27 @@ function Login() {
       </div>
 
       {/* TOGGLE CONTAINER */}
-      <div className="toggle-container">
-        <div className="toggle">
-          <div className="toggle-panel toggle-left">
+      <div className={styles.toggleContainer}>
+        <div className={styles.toggle}>
+          <div className={`${styles.togglePanel} ${styles.toggleLeft}`}>
             <h1>Welcome Back!</h1>
             <p>Enter your personal details to use all of site features</p>
-            <button className="login-button hidden" id="login">
+            <button
+              className={`${styles.loginButton} ${styles.hidden}`}
+              id="login"
+            >
               <FontAwesomeIcon icon={faRightToBracket} /> Sign In
             </button>
           </div>
-          <div className="toggle-panel toggle-right">
+          <div className={`${styles.togglePanel} ${styles.toggleRight}`}>
             <h1>Hello, Friend!</h1>
             <p>
               Register with your personal details to use all of site features
             </p>
-            <button id="register" className="login-button hidden">
+            <button
+              id="register"
+              className={`${styles.loginButton} ${styles.hidden}`}
+            >
               <FontAwesomeIcon icon={faRightToBracket} /> Sign Up
             </button>
           </div>

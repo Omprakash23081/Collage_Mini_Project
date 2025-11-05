@@ -5,12 +5,16 @@ import { Item } from "../models/lostAndFound.models.js";
 const Items = async (req, res) => {
   const { name, description, status, location, number, image } = req.body;
 
+  console.log(name);
+
   const localPath = req.files?.image?.[0]?.path;
 
   var responseUrl = null;
   if (localPath) {
     responseUrl = await Upload(localPath);
   }
+  console.log(responseUrl);
+
   let response = null;
   if (responseUrl != null) {
     response = await Item.create({

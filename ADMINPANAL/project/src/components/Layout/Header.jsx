@@ -1,19 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Menu, Bell, Search } from "lucide-react";
+import { AppContext } from "../../AppContext.jsx";
+import axios from "axios";
+import { BASE_URL } from "../../constant.js";
 
 export default function Header({ onMenuClick }) {
   const [open, setOpen] = useState(false);
+  const { userName, setLoading, setUserName } = useContext(AppContext);
 
-  // Close dropdown if clicked outside
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //       setOpen(false);
-  //     }
-  //   }
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, []);
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const userDetails = await axios.get(`${BASE_URL}/api/users/me`, {
+          withCredentials: true,
+        });
+        setUserName(userDetails.data.name);
+        console.log("Fetching user details for:", userDetails);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
+  const LogoutUser = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    console.log("Logging out...");
+    const response = await axios.post(
+      `${BASE_URL}/api/users/Logout`,
+      {},
+      { withCredentials: true }
+    );
+    alert("Logging out..." + response + response.data.message);
+    if (response.status >= 400) {
+      alert("Logout failed: " + response.data.message);
+      setLoading(false);
+      return;
+    }
+    window.location.reload();
+  };
 
   return (
     <header
@@ -56,7 +82,7 @@ export default function Header({ onMenuClick }) {
               className="flex items-center space-x-3 cursor-pointer"
             >
               <div className="hidden md:block text-right">
-                <p className="text-sm font-medium text-white">Omprakash</p>
+                <p className="text-sm font-medium text-white">{userName}</p>
                 <p className="text-xs text-gray-400">Administrator</p>
               </div>
               <img
@@ -72,7 +98,7 @@ export default function Header({ onMenuClick }) {
                 <button
                   onClick={() => {
                     setOpen(false);
-                    alert("Logging out..."); // replace with your logout logic
+                    LogoutUser(event);
                   }}
                   className="w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-600"
                 >
