@@ -1,16 +1,10 @@
 .profileContainer {
-  width: 80.4vw;
-  margin-left: 23.6%;
+  width: 100%;
   padding: 2rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #f0f0f0;
-  background-color: #121212;
-  min-height: 101%;
-}
-@media (max-width: 1200px) {
-  .profileContainer {
-    margin-left: 35%;
-  }
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  min-height: 100%;
 }
 
 .profileHeader {
@@ -19,11 +13,12 @@
   gap: 2rem;
   align-items: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #1c1c1e 0%, #2a2a2d 100%);
+  background: var(--bg-secondary);
   border-radius: 16px;
   margin-bottom: 2rem;
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-color);
 }
 
 .avatarContainer {
@@ -35,7 +30,7 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #2f2f2f;
+  border: 4px solid var(--bg-tertiary);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -43,7 +38,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: var(--accent-gradient);
   color: white;
   padding: 0.3rem 1rem;
   border-radius: 20px;
@@ -60,11 +55,11 @@
 .userName {
   font-size: 2rem;
   margin: 0 0 0.5rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .userEmail {
-  color: #9ca3af;
+  color: var(--text-secondary);
   margin: 0 0 1rem 0;
 }
 
@@ -79,11 +74,11 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  color: #b0b0b0;
+  color: var(--text-secondary);
 }
 
 .statIcon {
-  color: #6e8efb;
+  color: var(--accent-primary);
   font-size: 1.2rem;
 }
 
@@ -92,7 +87,7 @@
   top: 1rem;
   right: 1rem;
   font-size: 0.8rem;
-  color: #aaa;
+  color: var(--text-muted);
 }
 
 .profileNav {
@@ -108,24 +103,26 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.8rem 1.5rem;
-  background: #1f1f1f;
-  border: none;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
   font-size: 0.95rem;
-  color: #ccc;
+  color: var(--text-secondary);
 }
 
 .navButton:hover {
-  background: #312e2e;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .navButton.active {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: var(--accent-gradient);
   color: white;
-  box-shadow: 0 4px 12px rgba(110, 142, 251, 0.3);
+  box-shadow: 0 4px 12px rgba(194, 22, 65, 0.3);
+  border-color: transparent;
 }
 
 .navIcon {
@@ -133,19 +130,20 @@
 }
 
 .profileContent {
-  background: #1e1e1e;
+  background: var(--bg-secondary);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   margin-bottom: 4rem;
+  border: 1px solid var(--border-color);
 }
 
 .sectionTitle {
   font-size: 1.5rem;
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #ffffff;
-  border-bottom: 2px solid #333;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 0.5rem;
 }
 
@@ -156,16 +154,17 @@
 }
 
 .activityCard {
-  background: #2a2a2a;
+  background: var(--bg-tertiary);
   border-radius: 12px;
   padding: 1.5rem;
   transition: all 0.3s ease;
-  border: 1px solid #3a3a3a;
+  border: 1px solid var(--border-color);
 }
 
 .activityCard:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border-color: var(--accent-primary);
 }
 
 .activityHeader {
@@ -177,16 +176,16 @@
 .activityHeader h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .activityDate {
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 0.8rem;
 }
 
 .progressContainer {
-  background: #3a3a3a;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   height: 10px;
   margin: 1rem 0;
@@ -194,7 +193,7 @@
 }
 
 .progressBar {
-  background: linear-gradient(90deg, #6e8efb, #a777e3);
+  background: var(--accent-gradient);
   border-radius: 10px;
   height: 100%;
   transition: width 0.5s ease;
@@ -205,7 +204,7 @@
   right: 0;
   top: -1.5rem;
   font-size: 0.8rem;
-  color: #6e8efb;
+  color: var(--accent-primary);
   font-weight: 600;
 }
 
@@ -220,7 +219,7 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 0.9rem;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .timeIcon {
@@ -228,7 +227,7 @@
 }
 
 .continueButton {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: var(--accent-gradient);
   color: white;
   border: none;
   border-radius: 6px;
@@ -240,7 +239,7 @@
 
 .continueButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(110, 142, 251, 0.3);
+  box-shadow: 0 4px 8px rgba(194, 22, 65, 0.3);
 }
 
 .achievementsGrid {
@@ -259,13 +258,13 @@
 }
 
 .achievementCard.earned {
-  background: rgba(110, 142, 251, 0.1);
-  border: 1px solid rgba(110, 142, 251, 0.3);
+  background: rgba(194, 22, 65, 0.1);
+  border: 1px solid rgba(194, 22, 65, 0.3);
 }
 
 .achievementCard.locked {
-  background: #2c2c2c;
-  border: 1px solid #3a3a3a;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   opacity: 0.6;
 }
 
@@ -280,13 +279,13 @@
 }
 
 .achievementCard.earned .achievementIcon {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: var(--accent-gradient);
   color: white;
 }
 
 .achievementCard.locked .achievementIcon {
-  background: #444;
-  color: #888;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
 }
 
 .achievementInfo {
@@ -296,13 +295,13 @@
 .achievementInfo h3 {
   margin: 0 0 0.3rem 0;
   font-size: 1rem;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .achievementInfo p {
   margin: 0;
   font-size: 0.8rem;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .achievementBadge {
@@ -332,12 +331,8 @@
   }
 
   .profileContainer {
-    width: fit-content;
-  }
-
-  .profileContainer {
-    /* margin-top: 300px; */
-    margin-left: 0%;
+    width: 100%;
+    padding: 1rem;
   }
 
   .userStats {
@@ -399,8 +394,8 @@
 
 .editBtn {
   background: transparent;
-  border: 1px solid #6e8efb;
-  color: #6e8efb;
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -412,11 +407,11 @@
 }
 
 .editBtn:hover {
-  background: rgba(110, 142, 251, 0.1);
+  background: rgba(194, 22, 65, 0.1);
 }
 
 .userBio {
-  color: #555;
+  color: var(--text-secondary);
   margin: 0.5rem 0 1rem 0;
   line-height: 1.5;
 }
@@ -436,15 +431,16 @@
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .formGroup input,
 .formGroup textarea {
   width: 100%;
   padding: 0.8rem;
-  color: rgb(0, 0, 0);
-  border: 1px solid #ddd;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-family: inherit;
   font-size: 0.95rem;
@@ -454,7 +450,7 @@
 .formGroup input:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #6e8efb;
+  border-color: var(--accent-primary);
 }
 
 .formGroup textarea {
@@ -469,7 +465,7 @@
 }
 
 .saveBtn {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  background: var(--accent-gradient);
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -484,13 +480,13 @@
 
 .saveBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(110, 142, 251, 0.3);
+  box-shadow: 0 4px 12px rgba(194, 22, 65, 0.3);
 }
 
 .cancelBtn {
-  background: #f8f9fa;
-  color: #555;
-  border: 1px solid #ddd;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
   padding: 0.8rem 1.5rem;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -502,7 +498,8 @@
 }
 
 .cancelBtn:hover {
-  background: #e9ecef;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
 }
 
 .changeAvatarBtn {
@@ -534,10 +531,10 @@
 }
 
 .settingsCard {
-  background: #f8f9fa;
+  background: var(--bg-tertiary);
   border-radius: 12px;
   padding: 1.5rem;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .settingsCard h3 {
@@ -546,7 +543,7 @@
   gap: 0.5rem;
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #2c3e50;
+  color: var(--text-primary);
 }
 
 .checkboxGroup {
@@ -558,5 +555,5 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: #555;
+  color: var(--text-secondary);
 }

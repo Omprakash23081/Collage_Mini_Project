@@ -2,7 +2,7 @@ import apiClient from '../utils/axios';
 
 export const itemsService = {
   report: async (itemData) => {
-    const response = await apiClient.post('/items/report', itemData);
+    const response = await apiClient.post('/items/upload', itemData);
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const itemsService = {
   },
 
   updateStatus: async (id, status) => {
-    const response = await apiClient.put(`/items/${id}/status`, { status });
+    const response = await apiClient.patch(`/items/${id}`, { status });
     return response.data;
   },
 

@@ -2,7 +2,7 @@ import apiClient from '../utils/axios';
 
 export const pyqService = {
   upload: async (formData) => {
-    const response = await apiClient.post('/pyq/upload', formData, {
+    const response = await apiClient.post('/pyq/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;

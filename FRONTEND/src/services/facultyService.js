@@ -2,7 +2,7 @@ import apiClient from '../utils/axios';
 
 export const facultyService = {
   add: async (facultyData) => {
-    const response = await apiClient.post('/faculty/add', facultyData);
+    const response = await apiClient.post('/faculty/create', facultyData);
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const facultyService = {
   },
 
   update: async (id, facultyData) => {
-    const response = await apiClient.put(`/faculty/${id}`, facultyData);
+    const response = await apiClient.patch(`/faculty/${id}`, facultyData);
     return response.data;
   },
 

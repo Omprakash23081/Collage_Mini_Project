@@ -1,6 +1,6 @@
 .contaner {
-  background-color: rgb(49, 70, 49);
-  width: 80vw;
+  background-color: var(--bg-primary);
+  width: 100%;
   height: 100%;
   min-height: 100vh;
   margin-top: -2.24%;
@@ -8,15 +8,17 @@
 
 .questionName {
   height: 10%;
-  background-color: rgba(26, 177, 34, 0.801);
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .questionName h1 {
   padding-top: 1.5%;
+  color: var(--text-primary);
 }
 
 .questionName h1 b {
-  color: rgba(255, 0, 0, 0.699);
+  color: var(--accent-primary);
 }
 
 .subjectName {
@@ -26,10 +28,11 @@
 .subjectName h2 {
   padding: 10px 10px;
   display: inline;
+  color: var(--text-secondary);
 }
 
 .Solution .SolutionName {
-  color: aqua;
+  color: var(--accent-primary);
 }
 
 .Solution {
@@ -41,16 +44,19 @@
 }
 
 .Solution .solutionContent {
-  background-color: aliceblue;
+  background-color: var(--bg-tertiary);
   min-height: 60vh;
   width: 100%;
-  color: black;
+  color: var(--text-primary);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
 }
 
 .chapter_icon {
   width: 54px;
   height: 40px;
-  background: rgba(4, 24, 202, 0.26) !important;
+  background: rgba(194, 22, 65, 0.1) !important;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -60,8 +66,9 @@
   margin-left: 1%;
   font-size: 20px;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.185);
+  border: 1px solid var(--border-color);
   flex-shrink: 0;
+  color: var(--accent-primary);
 }
 
 /* Media Queries for Responsiveness */

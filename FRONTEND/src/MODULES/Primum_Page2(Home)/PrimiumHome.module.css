@@ -1,34 +1,64 @@
+.home {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  background-color: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 15px;
+  text-align: center;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.headerContainer {
+  background-color: var(--bg-tertiary);
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+  border: 1px solid var(--border-color);
+}
+
 .cardContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 20px 0;
   justify-items: center;
-  margin-top: 5%;
+  margin-top: 20px;
 }
 
 .card {
-  background: #fff;
+  background: var(--bg-secondary);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
   cursor: pointer;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border-color);
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(194, 22, 65, 0.1);
+  border-color: var(--accent-primary);
 }
 
 .profileImage {
   width: 100%;
-  height: 60%;
-  max-height: 200px; /* Set a max height for images */
-  object-fit: cover; /* Ensures the image covers the area without distortion */
+  height: 150px;
+  object-fit: cover;
   border-radius: 8px 8px 0 0;
   transition: transform 0.3s ease;
 }
@@ -38,62 +68,54 @@
 }
 
 .cardTitle {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin: 10px 0;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .cardDescription {
-  font-size: 0.95rem;
-  color: #666;
-  padding: 0 12px 15px;
-  margin-bottom: 15px;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  padding: 0 10px 15px;
+  margin-bottom: 10px;
+  line-height: 1.4;
 }
 
 .loginButton {
-  background-color: #3498db;
-  color: #fff;
+  background: var(--accent-gradient);
+  color: white;
   padding: 8px 18px;
   border: none;
   border-radius: 20px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
   margin-bottom: 15px;
 }
 
 .loginButton:hover {
-  background-color: #2980b9;
   transform: scale(1.05);
-}
-
-@media (max-width: 1200px) {
-  .card {
-    width: 100%;
-  }
+  box-shadow: 0 4px 12px rgba(194, 22, 65, 0.4);
 }
 
 @media (max-width: 768px) {
-  .cardTitle {
-    font-size: 1.1rem;
+  .home {
+    padding: 10px;
+  }
+  
+  .headerContainer {
+    padding: 10px;
   }
 
-  .cardDescription {
-    font-size: 0.85rem;
-  }
-
-  .loginButton {
-    padding: 6px 14px;
+  .cardContainer {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .profileImage {
-    max-height: 150px; /* Adjust max height for smaller screens */
+  .cardContainer {
+    grid-template-columns: 1fr;
   }
 }
-
-

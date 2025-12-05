@@ -3,9 +3,12 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  row-gap: 30px;
+  row-gap: 20px; /* Drastically reduced per user request */
   column-gap: 60px;
   font-family: "Arial", sans-serif !important;
+  background-color: var(--bg-primary);
+  width: 100%;
+  min-height: 100vh;
 }
 
 .Primum_contener {

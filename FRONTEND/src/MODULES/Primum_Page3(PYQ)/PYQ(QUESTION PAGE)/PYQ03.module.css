@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  --primary-bg: #0f1729;
-  --secondary-bg: #1a2236;
-  --accent-blue: #3b82f6;
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --card-bg: #040505;
+  --primary-bg: var(--bg-primary);
+  --secondary-bg: var(--bg-secondary);
+  --accent-blue: var(--accent-primary);
+  --text-primary: var(--text-primary);
+  --text-secondary: var(--text-secondary);
+  --card-bg: var(--bg-tertiary);
   --card-hover: #2d3a50;
 }
 
@@ -20,11 +20,9 @@
 .body {
   color: var(--text-primary);
   min-height: 100vh;
-  width: 79.94vw;
-  background-color: #1a2236;
-  margin-left: 0%;
+  width: 100%;
+  background-color: var(--bg-primary);
   transition: background 0.3s;
-  max-width: 100vw;
   overflow-x: hidden;
 }
 
@@ -48,8 +46,8 @@
 
 .back_button:hover {
   transform: translateX(-5px) scale(1.08);
-  color: var(--accent-blue);
-  background: rgba(59, 130, 246, 0.08);
+  color: var(--accent-primary);
+  background: rgba(194, 22, 65, 0.1);
 }
 
 .tabs {
@@ -58,7 +56,7 @@
   width: 100%;
   z-index: 999;
   justify-content: space-between;
-  background: var(--secondary-bg);
+  background: var(--bg-secondary);
   overflow-x: auto;
   scrollbar-width: none;
   transition: all 0.3s ease-in-out;
@@ -70,7 +68,7 @@
   top: 0;
   left: 19%;
   width: 81%;
-  background: var(--secondary-bg);
+  background: var(--bg-secondary);
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
 }
 
@@ -81,7 +79,7 @@
 .tab {
   padding: 0.75rem 1.2rem;
   margin-top: -0.5%;
-  color: white;
+  color: var(--text-secondary);
   cursor: pointer;
   width: 100%;
   transition: all 0.3s, box-shadow 0.2s;
@@ -90,22 +88,20 @@
   white-space: nowrap;
   border-radius: 8px 8px 0 0;
   margin-right: 0.2rem;
-  /* background: ; */
-  background-color: rgba(21, 78, 134, 0.26);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .tab:hover {
-  /* color: var(--accent-blue); */
-  color: white;
-  background: rgba(59, 131, 246, 0.199);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+  color: var(--text-primary);
+  background: rgba(194, 22, 65, 0.1);
+  box-shadow: 0 2px 8px rgba(194, 22, 65, 0.08);
 }
 
 .tab.active {
   color: white;
   font-weight: 600;
-  background: linear-gradient(90deg, #3b82f6 10%, #1a2236 100%);
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+  background: var(--accent-gradient);
+  box-shadow: 0 4px 16px rgba(194, 22, 65, 0.1);
 }
 
 .tab.active::after {
@@ -115,7 +111,7 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, goldenrod 60%, #3b82f6 100%);
+  background: linear-gradient(90deg, goldenrod 60%, var(--accent-primary) 100%);
   animation: slideIn 0.3s ease-out;
   border-radius: 2px;
 }
@@ -127,7 +123,7 @@
   position: fixed;
   color: white;
   border: none;
-  border-top: 1.5px solid #3b82f6;
+  border-top: 1.5px solid var(--accent-primary);
   opacity: 0.7;
 }
 
@@ -141,7 +137,7 @@
 
 .category_card,
 .question_item {
-  background-color: var(--card-bg);
+  background-color: var(--bg-tertiary);
   padding: 1.25rem 1.1rem;
   border-radius: 14px;
   cursor: pointer;
@@ -154,13 +150,15 @@
   position: relative;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease-out forwards;
+  border: 1px solid var(--border-color);
 }
 
 .category_card:hover,
 .question_item:hover {
   transform: translateY(-5px) scale(1.03);
-  background-color: var(--card-hover);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 24px rgba(194, 22, 65, 0.1);
+  border-color: var(--accent-primary);
 }
 
 .category_title {
@@ -168,25 +166,28 @@
   font-weight: 600;
   z-index: 1;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .category_icon {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(194, 22, 65, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.35rem;
   z-index: 1;
   margin-bottom: 0.7rem;
+  color: var(--accent-primary);
 }
 
 .question_text {
   font-size: 1.05rem;
   margin-bottom: 1rem;
   line-height: 1.6;
+  color: var(--text-primary);
 }
 
 .question_meta {
@@ -205,7 +206,7 @@
   left: -5px;
   width: 3px;
   height: 100%;
-  background: var(--accent-blue);
+  background: var(--accent-primary);
   animation: pulse 2s infinite;
 }
 
@@ -225,7 +226,7 @@
     position: fixed;
     color: white;
     border: none;
-    border-top: 1.5px solid #3b82f6;
+    border-top: 1.5px solid var(--accent-primary);
     opacity: 0.7;
   }
   .questions_container {
@@ -255,7 +256,7 @@
     position: fixed;
     color: white;
     border: none;
-    border-top: 1.5px solid #3b82f6;
+    border-top: 1.5px solid var(--accent-primary);
     opacity: 0.7;
   }
   .tabs {
@@ -294,7 +295,7 @@
     position: fixed;
     color: white;
     border: none;
-    border-top: 1.5px solid #3b82f6;
+    border-top: 1.5px solid var(--accent-primary);
     opacity: 0.7;
   }
   .tabs {

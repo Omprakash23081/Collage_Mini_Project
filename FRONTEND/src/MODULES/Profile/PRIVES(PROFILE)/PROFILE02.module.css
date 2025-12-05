@@ -4,7 +4,7 @@
 }
 
 .profile02 {
-  border: solid rgb(87, 89, 201) 2px;
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   height: 50px;
   display: flex;
@@ -13,6 +13,7 @@
   padding: 0 10px;
   margin-bottom: 10px;
   flex-wrap: wrap;
+  background: var(--bg-tertiary);
 }
 
 .profile02_content {
@@ -24,22 +25,24 @@
 .profile02_content_icon {
   margin-top: 20px;
   order: 1;
+  color: var(--accent-primary);
 }
 
 .profile02_content p {
   font-size: 18px;
   margin-left: 10px;
-  color: white;
+  color: var(--text-primary);
 }
 
 .arow {
   order: 2;
   margin-left: auto;
   cursor: pointer;
+  fill: var(--text-secondary);
 }
 
 .arow:hover {
-  fill: rgb(212, 151, 19);
+  fill: var(--accent-primary);
   transform: translateX(5px);
 }
 
@@ -54,7 +57,7 @@
 }
 
 .weekly_Activity {
-  border: solid black 1px;
+  border: 1px solid var(--border-color);
   border-radius: 15px;
   height: auto;
   width: calc(50% - 20px);
@@ -64,15 +67,17 @@
   align-items: center;
   flex-direction: column;
   text-align: center;
+  background: var(--bg-tertiary);
 }
 
 .weekly_Activity h3 {
   margin: 5px 0;
   font-size: large;
+  color: var(--text-primary);
 }
 
 .weekly_Activity p {
-  color: aliceblue;
+  color: var(--text-secondary);
   font-size: large;
 }
 
@@ -80,6 +85,7 @@
   font-size: 27px;
   margin-top: 30px;
   margin-bottom: -15px;
+  color: var(--text-primary);
 }
 
 /* Responsive */

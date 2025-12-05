@@ -30,17 +30,11 @@ function Facelity_Directery() {
           <option value="lecturer">Lecturer</option>
         </select>
 
-        <a href="http://localhost:5502/FRANTENTS/HTML/FACALITY_DIRECATORY.html">
+        <NavLink to="/faculty-directory" className={style.search_link}>
           <button className={style.search_button}>
-            {" "}
-            <NavLink
-              to="/Faculty&Directory"
-              className={(navData) => (navData.isActive ? "active" : "")}
-            >
-              <b>Search</b>
-            </NavLink>
+            <b>Search</b>
           </button>
-        </a>
+        </NavLink>
       </div>
       <div className={style.results}></div>
     </div>

@@ -1,34 +1,71 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+.layoutContainer {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-primary);
+}
+
+.sidebar {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.mainContent {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 .fs_4 {
   font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.nav-link {
+  color: var(--text-secondary) !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
 }
 
 .active {
-  box-shadow: white 0px -23px 25px 0px inset, white 0px -36px 30px 0px inset,
-    rgb(131, 122, 122) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px !important;
-  border-radius: 17px !important;
+  background: var(--accent-gradient) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(194, 22, 65, 0.4) !important;
+  border-radius: 12px !important;
+}
+
+.active .fs_4 {
+  color: white !important;
 }
 
 .activeBottom {
-  color: #0d6efd !important;
-  box-shadow: rgb(58, 43, 43) 0px -15px 20px 0px inset,
-    rgb(71, 61, 61) 0px -25px 25px 0px inset,
-    rgb(131, 122, 122) 0px -50px 30px 0px inset, rgba(0, 0, 0, 0.06) 0px 1px 1px,
-    rgba(0, 0, 0, 0.09) 0px 3px 2px, rgba(0, 0, 0, 0.09) 0px 6px 3px,
-    rgba(0, 0, 0, 0.09) 0px 12px 6px, rgba(0, 0, 0, 0.09) 0px 24px 12px !important;
+  color: var(--accent-primary) !important;
   border-radius: 12px !important;
   height: auto;
 }
 
 @media (max-width: 1024px) {
-  #SideBar {
-    width: 25%;
+  .layoutContainer {
+    grid-template-columns: 200px 1fr;
   }
-
+  
   .fs_4 {
     font-size: 0.9rem;
   }
@@ -39,8 +76,16 @@
 }
 
 @media (max-width: 768px) {
-  #SideBar {
+  .layoutContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
     display: none;
+  }
+  
+  .mainContent {
+    padding-bottom: 80px; /* Space for bottom bar */
   }
 
   .fs_4 {
@@ -55,22 +100,9 @@
     width: 28px;
     height: 28px;
   }
-
-  .active {
-    box-shadow: white 0px -15px 20px 0px inset, white 0px -25px 25px 0px inset,
-      rgb(131, 122, 122) 0px -50px 30px 0px inset,
-      rgba(0, 0, 0, 0.06) 0px 1px 1px, rgba(0, 0, 0, 0.09) 0px 3px 2px,
-      rgba(0, 0, 0, 0.09) 0px 6px 3px, rgba(0, 0, 0, 0.09) 0px 12px 6px,
-      rgba(0, 0, 0, 0.09) 0px 24px 12px !important;
-    border-radius: 12px !important;
-  }
 }
 
 @media (max-width: 480px) {
-  #SideBar {
-    display: none;
-  }
-
   .fs_4 {
     font-size: 0.75rem;
   }
@@ -82,14 +114,5 @@
   .dropdown img {
     width: 24px;
     height: 24px;
-  }
-
-  .active {
-    box-shadow: white 0px -10px 15px 0px inset, white 0px -20px 20px 0px inset,
-      rgb(131, 122, 122) 0px -40px 25px 0px inset,
-      rgba(0, 0, 0, 0.06) 0px 1px 1px, rgba(0, 0, 0, 0.09) 0px 2px 1px,
-      rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-      rgba(0, 0, 0, 0.09) 0px 16px 8px !important;
-    border-radius: 8px !important;
   }
 }

@@ -37,13 +37,9 @@ function AllPrimum() {
   };
 
   return (
-    <div className="d-flex">
+    <div className={style.layoutContainer}>
       {/* Sidebar for desktop */}
-      <div
-        id="SideBar"
-        className="d-none d-md-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
-        style={{ width: "19%", minHeight: "100vh", position: "fixed" }}
-      >
+      <div className={`${style.sidebar} d-none d-md-flex flex-column flex-shrink-0 p-3 text-white bg-dark`}>
         <Link
           to="/"
           className="d-flex align-items-center mb-3 text-white text-decoration-none"
@@ -120,8 +116,8 @@ function AllPrimum() {
       </div>
 
       {/* Main content area */}
-      <div className="flex-grow-1">
-        <Outlet /> {/* Add this to render child routes */}
+      <div className={style.mainContent}>
+        <Outlet />
       </div>
 
       {/* Bottom bar for mobile */}

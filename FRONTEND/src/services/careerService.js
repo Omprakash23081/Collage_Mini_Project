@@ -2,7 +2,7 @@ import apiClient from '../utils/axios';
 
 export const careerService = {
   add: async (careerData) => {
-    const response = await apiClient.post('/career/add', careerData);
+    const response = await apiClient.post('/career/', careerData);
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const careerService = {
   },
 
   update: async (id, careerData) => {
-    const response = await apiClient.put(`/career/${id}`, careerData);
+    const response = await apiClient.patch(`/career/${id}`, careerData);
     return response.data;
   },
 

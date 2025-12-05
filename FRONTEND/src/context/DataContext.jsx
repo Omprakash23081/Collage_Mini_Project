@@ -5,8 +5,9 @@ import { pyqService } from "../services/pyqService.js";
 export const DataContext = createContext(null);
 
 export const DataProvider = ({ children }) => {
-  const [notes, setnotes] = useState({});
-  const [pyq, setpyq] = useState({});
+  // initialize as arrays (safer if API returns list)
+  const [notes, setnotes] = useState([]);
+  const [pyq, setpyq] = useState([]);
 
   //this is running perfectely
   const Subject = {
@@ -71,15 +72,30 @@ export const DataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    let mounted = true; // prevent state updates after unmount
 
-  const fetchDashboardData = async () => {
-    const response = await notesService.getAll();
-    setnotes(response.data);
-    const pyqresponse = await pyqService.getAll();
-    setpyq(pyqresponse.data);
-  };
+    const fetchDashboardData = async () => {
+      try {
+        const response = await notesService.getAll();
+        if (mounted) setnotes(response?.data ?? []);
+      } catch (err) {
+        console.error("Error fetching notes:", err);
+      }
+
+      try {
+        const pyqresponse = await pyqService.getAll();
+        if (mounted) setpyq(pyqresponse?.data ?? []);
+      } catch (err) {
+        console.error("Error fetching pyq:", err);
+      }
+    };
+
+    fetchDashboardData();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <DataContext.Provider value={{ notes, Subject, pyq }}>

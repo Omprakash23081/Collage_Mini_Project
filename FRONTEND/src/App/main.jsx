@@ -5,11 +5,14 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
+import ErrorBoundary from "../components/ErrorBoundary.jsx";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
   <div className={style.contener}>
-    <App></App>
+    <ErrorBoundary>
+      <App></App>
+    </ErrorBoundary>
   </div>
   // </StrictMode>
 );

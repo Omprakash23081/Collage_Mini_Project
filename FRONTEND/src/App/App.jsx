@@ -37,7 +37,9 @@ import PremiumPage from "../MODULES/WebPrimum/WebPrimum.jsx";
 // import UploadPYQ from "../MODULES/Primum_Page3(PYQ)/UploadPYQ.jsx";
 // import EventsList from "../MODULES/Events/EventsList.jsx";
 // import LostFoundList from "../MODULES/Lost&Found/LostFoundList.jsx";
-// import CareerPathways from "../MODULES/Career/CareerPathways.jsx";
+import CareerPathways from "../MODULES/Career/CareerPathways.jsx";
+import ATSAnalyzer from "../MODULES/Career/ATSAnalyzer.jsx";
+import RoadmapGenerator from "../MODULES/Roadmap/RoadmapGenerator.jsx";
 
 function App() {
   useEffect(() => {
@@ -149,14 +151,9 @@ function App() {
                 }
               /> */}
 
-              {/* <Route
-                path="/career"
-                element={
-                  <ProtectedRoute>
-                    <CareerPathways />
-                  </ProtectedRoute>
-                }
-              /> */}
+              <Route path="/career" element={<CareerPathways />} />
+              <Route path="/career/ats-analyzer" element={<ATSAnalyzer />} />
+              <Route path="/roadmaps" element={<RoadmapGenerator />} />
             </Routes>
 
             {/* ---------- Toaster ---------- */}

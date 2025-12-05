@@ -1,33 +1,20 @@
+// this rourter will helf user routes like get all users update user delete user excetra handel user updates only for admin
 import { Router } from "express";
-import {
-  loginUser,
-  logoutUser,
-  refreshAccessToken,
-} from "../controller/login.controller.js";
-import { registerUser } from "../controller/rejester.controller.js";
-import multer from "../middleware/multer.middleware.js";
+import { getAllUsers } from "../controllers/user.controller.js";
 import verifyJWT from "../middleware/auth.middleware.js";
-import { information } from "../controller/information.controller.js";
 
 const router = Router();
 
-router.route("/register").post(
-  multer.fields([
-    {
-      name: "image",
-      maxCount: 1,
-    },
-  ]),
-  registerUser
-);
-router.route("/login").post(loginUser);
-router.route("/Logout").post(verifyJWT, logoutUser);
-router.route("/refreshToken").post(refreshAccessToken);
-// router.route("/protected").get(verifyJWT, (req, res) => {
-//   res.json({ message: "You are authorized to access this route." });
-// });
+//get all users (admin only)
+router.route("/getallusers").get(getAllUsers);
 
-//information of user
+//get specific user
+// router.route("/:id").get();
 
-router.route("/me").get(verifyJWT, information);
+//update user (e.g., role change)
+// router.route("/:id").put();
+
+//delete user (admin)
+// router.route("/:id").delete();
+
 export default router;

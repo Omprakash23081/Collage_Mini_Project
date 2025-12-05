@@ -2,7 +2,7 @@ import apiClient from "../utils/axios";
 
 export const eventsService = {
   create: async (eventData) => {
-    const response = await apiClient.post("/events/create", eventData);
+    const response = await apiClient.post("/events/", eventData);
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const eventsService = {
   },
 
   update: async (id, eventData) => {
-    const response = await apiClient.put(`/events/${id}`, eventData);
+    const response = await apiClient.patch(`/events/${id}`, eventData);
     return response.data;
   },
 

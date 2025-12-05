@@ -11,277 +11,65 @@ function Navbar() {
 
   return (
     <>
-      <div className="contener">
-        <div className="left_side_navaction_bar">
-          <div className="image_navigation">
+      <div className={style.contener}>
+        <div className={style.left_side_navaction_bar}>
+          <div className={style.image_navigation}>
             <img src={icon} alt="THE ACHIEVERS" />
             <Link to="/">
               <b>Studysharp</b>
             </Link>
           </div>
-          <div className="language_navigation">
-            <div className="language">
+          <div className={style.language_navigation}>
+            <div className={style.language}>
               <h2>Language</h2>
             </div>
-            <div className="language_name">
-              <div className="languages">
+            <div className={style.language_name}>
+              <div className={style.languages}>
                 <center>Hindi</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center>English</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center>Bengali</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center>Marathi</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center> Telugu</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center>Tamil</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center>Gujarati</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center> Urdu</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center> Kannada</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center> Odia</center>
               </div>
-              <div className="languages">
+              <div className={style.languages}>
                 <center>Malayalam</center>
               </div>
             </div>
           </div>
 
-          <div className="solutions_navigation">
-            <div className="solution">
-              <h4>Solution</h4>
-            </div>
-            <div className="box1">
-              <div className="solution1">
-                <div className="People_management">
-                  <div className="people_Management_name">
-                    <p>People Management</p>
-                  </div>
-                  <div className="inner_box1">
-                    <div className="HR_Administration">
-                      <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                        HR Administration
-                      </a>
-                    </div>
-                    <div className="Employee_Management">
-                      <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                        Employee Management
-                      </a>
-                    </div>
-                    <div className="Reporting_Analytics">
-                      <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                        Reporting & Analytics
-                      </a>
-                    </div>
-                    <div className="Mobile_App">
-                      <a href="https://www.orangehrm.com/en/solutions/people-management/orangehrm-mobile-app/">
-                        Mobile App
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="talent_management">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Talent Management</p>
-                    </div>
-                    <div className="inner_box2">
-                      <div className="HR_Administration">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                          Recruitment (ATS)
-                        </a>
-                      </div>
-                      <div className="Employee_Management">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                          On/Off-Boarding
-                        </a>
-                      </div>
-                      <div className="Reporting_Analytics">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                          Request Desk
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="compensation">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Compatatiom</p>
-                    </div>
-                    <div className="inner_box2">
-                      <div className="HR_Administration">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                          Payroll Connector
-                        </a>
-                      </div>
-                      <div className="Employee_Management">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                          PTO / Leave Management
-                        </a>
-                      </div>
-                      <div className="Reporting_Analytics">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                          Time Tracking
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="culture">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Culture</p>
-                    </div>
-                    <div className="inner_box2">
-                      <div className="HR_Administration">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                          Performance Management
-                        </a>
-                      </div>
-                      <div className="Employee_Management">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                          Career Development
-                        </a>
-                      </div>
-                      <div className="Reporting_Analytics">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                          Training
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="solutions_navigation" id="Why_orange_hrm_navigation">
-            <div className="solution">
-              <h4>Problem Sender</h4>
-            </div>
-            <div className="box2">
-              <div className="solution1">
-                <div className="People_management">
-                  <div className="people_Management_name">
-                    <p>Our Customers</p>
-                  </div>
-                  <div className="inner_box1">
-                    <div className="HR_Administration">
-                      <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                        Case Studies
-                      </a>
-                    </div>
-                    <div className="Employee_Management">
-                      <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                        Testimonials
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="talent_management">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Partners</p>
-                    </div>
-                    <div className="inner_box2">
-                      <div className="HR_Administration">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                          NGO's
-                        </a>
-                      </div>
-                      <div className="Employee_Management">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                          Grovemment
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="compensation">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Stakeholder Solutions</p>
-                    </div>
-                    <div className="inner_box2">
-                      <div className="HR_Administration">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                          HR Manager
-                        </a>
-                      </div>
-                      <div className="Employee_Management">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                          C-Suite
-                        </a>
-                      </div>
-                      <div className="Reporting_Analytics">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                          Recruiter
-                        </a>
-                      </div>
-                      <div className="Reporting_Analytics">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                          It Manager
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="culture">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Switch to OrangeHRM</p>
-                    </div>
-                    <div className="inner_box2">
-                      <div className="HR_Administration">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/hr-administration/">
-                          HR for All
-                        </a>
-                      </div>
-                      <div className="Employee_Management">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/employee-management/">
-                          CS & Support
-                        </a>
-                      </div>
-                      <div className="Reporting_Analytics">
-                        <a href="https://www.orangehrm.com/en/solutions/people-management/reporting-and-analytics/">
-                          Customizations
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="culture">
-                  <div className="People_management">
-                    <div className="people_Management_name">
-                      <p>Culture</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="Resource_navigation">
-            <div className="solution">
+
+          <div className={style.Resource_navigation}>
+            <div className={style.solution}>
               <h4>
-                <a href="/#hellow">Roadmaps</a>
+                <Link to="/roadmaps">Roadmaps</Link>
               </h4>
             </div>
           </div>
-          <div className="Company_navigation">
-            <div className="solution">
+          <div className={style.Company_navigation}>
+            <div className={style.solution}>
               <a href="#yearBook">
                 <h4>Features</h4>
               </a>
@@ -289,12 +77,12 @@ function Navbar() {
           </div>
         </div>
         <div
-          className="Right_side_navaction_bar"
+          className={style.Right_side_navaction_bar}
           // onClick={() => setActiveLink("Login")}
         >
           {!user ? (
             <div>
-              <button className="navigation_Butten1">
+              <button className={style.navigation_Butten1}>
                 <NavLink to="/Login">
                   <b>Login....</b>
                 </NavLink>
@@ -302,18 +90,24 @@ function Navbar() {
             </div>
           ) : (
             <div>
-              <button className="navigation_Butten1">
-                <a href="#yearBook">
-                  <b>Primum</b>
-                </a>
+              <button className={style.navigation_Butten1}>
+                {user.year ? (
+                  <Link to="/Primum">
+                    <b>Primum</b>
+                  </Link>
+                ) : (
+                  <a href="#yearBook">
+                    <b>Primum</b>
+                  </a>
+                )}
               </button>
             </div>
           )}
-          <div>
-            <div className="navigation_Butten2">
+          <div className={style.searchContainer}>
+            <div className={style.navigation_Butten2}>
               <input type="search" placeholder="Search..." />
             </div>
-            <div className="butten">
+            <div className={style.butten}>
               <button>Search</button>
             </div>
           </div>

@@ -37,7 +37,7 @@ function Lost_Found() {
     formData.append("image", items.image);
 
     try {
-      const res = await axios.post(`/items/postItems`, formData);
+      const res = await axios.post(`/items/upload`, formData);
 
       if (res.status < 400) {
         alert("item uploaded successfully ", res.data);
@@ -56,7 +56,7 @@ function Lost_Found() {
     const fatchData = async () => {
       setLoding(true);
       try {
-        const res = await axios.get(`/items/getItems`);
+        const res = await axios.get(`/items`);
         if (res.status < 400) {
           setData(res.data.data);
         }
@@ -70,7 +70,7 @@ function Lost_Found() {
   }, [lostManue]);
 
   return (
-    <>
+    <div className={styles.body}>
       <header className={styles.header}>
         <h1>Lost and Found</h1>
         <nav className={styles.condation}>
@@ -200,7 +200,7 @@ function Lost_Found() {
       <footer className={styles.footer}>
         <p>&copy; 2024 Student Sport Portal. All rights reserved.</p>
       </footer>
-    </>
+    </div>
   );
 }
 

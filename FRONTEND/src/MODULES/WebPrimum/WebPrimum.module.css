@@ -6,17 +6,49 @@
 }
 
 #body {
-  background-color: #000000;
-  color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   align-items: center;
-  margin-left: 30%;
-  margin-top: 4%;
-
   justify-content: center;
-  border-radius: 20px;
+  margin-left: 0;
+  margin-top: 0;
   padding: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.innerContainer {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ... existing styles ... */
+
+.selectedone {
+  background: var(--accent-gradient);
+  width: 25%;
+  height: 350px; /* Increased height slightly */
+  left: 50%;
+  top: 0;
+  border-radius: 20px 20px 0 0;
+  position: absolute;
+  z-index: 0;
+}
+
+.selectedtwo {
+  background: var(--accent-gradient);
+  width: 25%;
+  height: 350px; /* Increased height slightly */
+  left: 75%;
+  top: 0;
+  border-radius: 20px 20px 0 0;
+  position: absolute;
+  z-index: 0;
 }
 
 .pricing_container {
@@ -36,11 +68,11 @@
 
 .pricing_table td {
   padding: 16px;
-  color: #a1a1aa;
+  color: var(--text-secondary);
 }
 
 .pricing_table tr:not(:last-child) td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .pricing_table td:first-child {
@@ -53,18 +85,18 @@
 }
 
 .header td {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 1.1em;
 }
 
 .check {
-  color: #60a5fa;
+  color: var(--accent-primary);
   font-size: 20px;
   z-index: 9999999;
 }
 
 .x_mark {
-  color: #71717a;
+  color: var(--text-muted);
   font-size: 20px;
 }
 
@@ -77,29 +109,29 @@
 .billing_toggle {
   display: flex;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-tertiary);
   padding: 4px;
-  border: solid 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 24px;
   width: fit-content;
   margin-bottom: 24px;
 }
 
 .color {
-  color: #60a5fa;
-  border: solid 1px #60a5fa;
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
 }
 
 .billing_option {
   padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
-  color: #a1a1aa;
+  color: var(--text-secondary);
 }
 
 .billing_option.active {
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .price_cards {
@@ -110,36 +142,39 @@
 
 .price_card {
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: var(--bg-secondary);
 }
 
 .price_card.selected {
-  background: #1d1f26;
-  border-color: #60a5fa;
+  background: var(--bg-tertiary);
+  border-color: var(--accent-primary);
 }
 
 .price1 {
   font-size: 1.5em;
   font-weight: bold;
+  color: var(--text-primary);
 }
 
 .price1 span {
   font-size: 0.6em;
-  color: #a1a1aa;
+  color: var(--text-secondary);
   font-weight: normal;
 }
 .price2 {
   font-size: 1.5em;
   font-weight: bold;
+  color: var(--text-primary);
 }
 
 .price2 span {
   font-size: 0.6em;
-  color: #a1a1aa;
+  color: var(--text-secondary);
   font-weight: normal;
 }
 
@@ -147,12 +182,8 @@
   display: block;
   width: 100%;
   padding: 16px;
-  background: #60a5fa;
-  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
-    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  background: var(--accent-gradient);
+  box-shadow: 0 4px 15px rgba(194, 22, 65, 0.3);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -177,12 +208,8 @@
 }
 
 .cta_button:hover {
-  background: #3b82f6;
-  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
-    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  background: var(--accent-primary);
+  box-shadow: 0 6px 20px rgba(194, 22, 65, 0.5);
 }
 
 @media (max-width: 640px) {
@@ -195,37 +222,7 @@
   padding-left: 20px;
 }
 
-.selactedone {
-  background: #1d1f26d2;
-  width: 150px;
-  height: 45%;
-  margin-left: 61%;
-  margin-top: 7%;
-  border-radius: 10px;
-  position: absolute;
-}
-.selected {
-  padding-left: 20px;
-  margin-top: 10px;
-  color: #fff;
-  background-color: #c21641e5;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
-    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-  font-size: 1.2em;
-}
-.selactedtwo {
-  background: #1d1f26d2;
-  width: 150px;
-  height: 45%;
-  margin-left: 74%;
-  margin-top: 7%;
-  border-radius: 10px;
-  position: absolute;
-}
+
 @media (max-width: 768px) {
   #body {
     margin-left: 0;
@@ -246,29 +243,36 @@
   .selactedone {
     width: 120px;
     height: 40%;
-    margin-left: 60%;
-    margin-top: 5%;
+    left: 55%;
+    top: 15%;
   }
 
   .selactedtwo {
     width: 120px;
     height: 40%;
-    margin-left: 73%;
-    margin-top: 5%;
+    left: 75%;
+    top: 15%;
   }
 }
 
 .primumtext {
-  color: goldenrod;
+  color: var(--accent-primary);
 }
 
 #primumtext {
-  color: goldenrod;
+  color: var(--accent-primary);
 }
 
 .price2 span {
-  color: goldenrod;
+  color: var(--accent-primary);
 }
-.price2 h7 {
-  color: goldenrod;
+
+.selected {
+  padding-left: 20px;
+  margin-top: 10px;
+  color: #fff;
+  background-color: rgba(194, 22, 65, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(194, 22, 65, 0.3);
+  font-size: 1.2em;
 }

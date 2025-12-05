@@ -54,12 +54,16 @@ function Hackathon() {
           >
             <div className={styles.tag}>{item.name}</div>
             <h3 className={styles.cardTitle}>{item.description}</h3>
-            <p className={styles.registrationDate}>
-              <strong>Registration:</strong> {item.registrationDate}
-            </p>
-            <p className={styles.endDate}>
-              <strong>Ends:</strong> {item.endDate}
-            </p>
+            <div className={styles.cardFooter}>
+              <div className={styles.dateBadge}>
+                <span className={styles.label}>Registration:</span>
+                <span className={styles.value}>{item.registrationDate}</span>
+              </div>
+              <div className={`${styles.dateBadge} ${styles.endDate}`}>
+                <span className={styles.label}>Ends:</span>
+                <span className={styles.value}>{item.endDate}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>

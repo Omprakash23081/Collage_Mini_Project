@@ -12,7 +12,7 @@
 }
 
 .category_card {
-  background-color: #151529;
+  background-color: var(--bg-tertiary);
   padding: 1.25rem;
   border-radius: 12px;
   cursor: pointer;
@@ -23,6 +23,7 @@
   min-height: 80px;
   overflow: hidden;
   position: relative;
+  border: 1px solid var(--border-color);
 }
 
 .category_card::before {
@@ -48,28 +49,20 @@
 
 .category_card:hover {
   transform: translateY(-5px) scale(1.02);
-  background-color: var(--card-hover);
-  box-shadow: rgba(88, 81, 81, 0.17) 0px -23px 25px 0px inset,
-    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 24px rgba(194, 22, 65, 0.1);
+  border-color: var(--accent-primary);
 }
 
 .actives {
-  background-color: #0093e9;
-  background-image: linear-gradient(
-    45deg,
-    #0093e9 12%,
-    #36988d 63%,
-    #bba7a7 100%
-  );
+  background: var(--accent-gradient);
 }
 
 .category_title {
   font-size: 1.1rem;
   font-weight: 500;
   z-index: 1;
+  color: var(--text-primary);
 }
 
 .category_icon {
@@ -82,6 +75,7 @@
   justify-content: center;
   font-size: 1.25rem;
   z-index: 1;
+  color: var(--text-primary);
 }
 
 .filters {
@@ -89,7 +83,7 @@
   gap: 0.75rem;
   padding: 1rem 1.5rem;
   overflow-x: auto;
-  background: var(--secondary-bg);
+  background: var(--bg-secondary);
   scrollbar-width: none;
 }
 
@@ -99,10 +93,10 @@
 
 .filter_btn {
   padding: 0.3rem 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.356);
+  border: 1px solid var(--border-color);
   border-radius: 14px;
   /* background: transparent; */
-  background-color: rgb(23, 30, 41);
+  background-color: var(--bg-tertiary);
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -111,18 +105,11 @@
 }
 
 .filter_btn:hover {
-  border: 1px solid goldenrod;
+  border: 1px solid var(--accent-primary);
 }
 
 .filter_btn.active {
-  background-color: #0093e9;
-  background-image: linear-gradient(
-    45deg,
-    #0093e9 12%,
-    #36988d 63%,
-    #bba7a7 100%
-  );
-
+  background: var(--accent-gradient);
   border-color: transparent;
 }
 

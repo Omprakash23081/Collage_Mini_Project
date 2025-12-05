@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.models.js";
+import User from "../models/user.model.js";
 const verifyJWT = async (req, res, next) => {
   try {
     const token =
@@ -11,7 +11,6 @@ const verifyJWT = async (req, res, next) => {
         .json({ message: "plase login first you have not valid tocken" });
     }
 
-    console.log("user details ");
     //it will give all the acess of the fileds witch is defined in the payload
     //in the auth.js file
     const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);

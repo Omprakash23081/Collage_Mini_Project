@@ -4,14 +4,18 @@
   max-width: 1362px;
   height: 450px;
   overflow: hidden;
-  margin: 20px auto;
+  margin: 40px auto;
   border-radius: 20px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: var(--bg-secondary);
 }
 
 .carousel_slide {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   height: 100%;
+  width: 100%;
 }
 
 .carousel_slide img {
@@ -19,18 +23,31 @@
   flex-shrink: 0;
   height: 100%;
   object-fit: cover;
+  filter: brightness(0.9);
+  transition: filter 0.3s;
+}
+
+.carousel_container:hover .carousel_slide img {
+  filter: brightness(1);
 }
 
 /* Responsive adjustments */
+@media (max-width: 1024px) {
+  .carousel_container {
+    height: 400px;
+  }
+}
+
 @media (max-width: 768px) {
   .carousel_container {
-    height: 380px;
+    height: 300px;
+    width: 95%;
   }
 }
 
 @media (max-width: 480px) {
   .carousel_container {
-    height: 280px;
-    margin-bottom: -20px;
+    height: 220px;
+    margin: 20px auto;
   }
 }

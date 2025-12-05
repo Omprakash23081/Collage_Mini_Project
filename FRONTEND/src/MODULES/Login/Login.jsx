@@ -13,79 +13,99 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import toast from "react-hot-toast";
 
 function Login() {
+  const navigate = useNavigate();
+  const { login, register } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-  const { login, register, logout, updateUser, refreshToken } =
-    useContext(AuthContext);
+  // Separate state for login & signup
+  const [signupData, setSignupData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    image: null,
+  });
+
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     setupLogin();
   }, []);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    image: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
+  const handleSignupChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData((prev) => ({
+    setSignupData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
     }));
   };
 
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // ------------------ LOGIN FUNCTION ------------------
   const LoginUser = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const response = await login(formData.email, formData.password, "user");
+      await login(loginData.email, loginData.password, "user");
       toast.success("Welcome back!");
       navigate("/primum");
     } catch (error) {
-      toast.error(error?.response?.data?.message + " Login failed");
+      toast.error(error?.response?.data?.message || "Login failed. Try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  // ------------------ REGISTER FUNCTION ------------------
   const registerUser = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const formDataObj = new FormData();
-      formDataObj.append("name", formData.name);
-      formDataObj.append("email", formData.email);
-      formDataObj.append("password", formData.password);
-      formDataObj.append("profileImage", formData.image);
-      formDataObj.append("role", "user");
-      const response = await register(formDataObj);
 
+    try {
+      const fd = new FormData();
+      fd.append("name", signupData.name);
+      fd.append("email", signupData.email);
+      fd.append("password", signupData.password);
+      fd.append("profileImage", signupData.image);
+      fd.append("role", "user");
+
+      await register(fd);
       toast.success("Registration successful!");
-      navigate("/primum");
+      navigate("/");
     } catch (error) {
       toast.error(
-        "Error during registration: " +
-          (error.response?.data?.message || error.message)
+        error.response?.data?.message || "Registration failed. Try again."
       );
     } finally {
       setLoading(false);
     }
   };
 
-  {
-    loading && <div className="loading-overlay">Loading...</div>;
-  }
-
   return (
     <div id="container" className="container">
+      {/* GLOBAL LOADER */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loader">Loading...</div>
+        </div>
+      )}
+
       {/* SIGN UP FORM */}
       <div className="form-container sign-up">
         <form onSubmit={registerUser} method="post">
           <h1>Create Account</h1>
+
           <div className="social-icons">
             <a href="#" className="icon">
               <FontAwesomeIcon icon={faGooglePlusG} />
@@ -100,30 +120,42 @@ function Login() {
               <FontAwesomeIcon icon={faLinkedinIn} />
             </a>
           </div>
+
           <span>use your email for registration</span>
+
           <input
             name="name"
             type="text"
             placeholder="Enter your Name"
             required
-            onChange={handleChange}
+            onChange={handleSignupChange}
           />
-          <input name="image" type="file" required onChange={handleChange} />
+
+          <input
+            name="image"
+            type="file"
+            accept="image/*"
+            required
+            onChange={handleSignupChange}
+          />
+
           <input
             name="email"
             type="email"
             placeholder="Enter your Email"
             required
-            onChange={handleChange}
+            onChange={handleSignupChange}
           />
+
           <input
             name="password"
             type="password"
             placeholder="Enter your Password"
             required
             minLength={8}
-            onChange={handleChange}
+            onChange={handleSignupChange}
           />
+
           <button type="submit">Sign Up</button>
         </form>
       </div>
@@ -132,6 +164,7 @@ function Login() {
       <div className="form-container sign-in">
         <form onSubmit={LoginUser} method="post">
           <h1>Sign In</h1>
+
           <div className="social-icons">
             <a href="#" className="icon">
               <FontAwesomeIcon icon={faGooglePlusG} />
@@ -146,26 +179,30 @@ function Login() {
               <FontAwesomeIcon icon={faLinkedinIn} />
             </a>
           </div>
-          <span>or use your email password</span>
+
+          <span>or use your email & password</span>
+
           <input
+            name="email"
             type="email"
             placeholder="Email"
-            name="email"
             required
-            onChange={handleChange}
+            onChange={handleLoginChange}
           />
+
           <input
+            name="password"
             type="password"
             placeholder="Password"
-            name="password"
             required
             minLength={8}
-            onChange={handleChange}
+            onChange={handleLoginChange}
           />
+
           <a href="#" className="forgot-password">
-            <FontAwesomeIcon icon={faKey} style={{ marginRight: "6px" }} />
-            Forgot Your Password?
+            <FontAwesomeIcon icon={faKey} /> Forgot Your Password?
           </a>
+
           <button type="submit">Sign In</button>
         </form>
       </div>
@@ -175,17 +212,16 @@ function Login() {
         <div className="toggle">
           <div className="toggle-panel toggle-left">
             <h1>Welcome Back!</h1>
-            <p>Enter your personal details to use all of site features</p>
+            <p>Enter your personal details to use all features</p>
             <button className="login-button hidden" id="login">
               <FontAwesomeIcon icon={faRightToBracket} /> Sign In
             </button>
           </div>
+
           <div className="toggle-panel toggle-right">
             <h1>Hello, Friend!</h1>
-            <p>
-              Register with your personal details to use all of site features
-            </p>
-            <button id="register" className="login-button hidden">
+            <p>Register with your details to use all features</p>
+            <button className="login-button hidden" id="register">
               <FontAwesomeIcon icon={faRightToBracket} /> Sign Up
             </button>
           </div>

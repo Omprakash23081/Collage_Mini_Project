@@ -2,11 +2,11 @@
   display: flex;
   align-items: center;
   padding: 1rem 1.5rem;
-  background-color: #121621;
+  background-color: var(--bg-secondary);
   justify-content: space-between;
   width: 132%;
   z-index: 9999999;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 @media (max-width: 768px) {
@@ -28,6 +28,7 @@ header {
 
 .back_button:hover {
   transform: translateX(-5px);
+  color: var(--accent-primary);
 }
 .header_content {
   flex: 1;
@@ -36,6 +37,7 @@ header {
 .header_title {
   font-size: 1.25rem;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .header_subtitle {
@@ -53,7 +55,7 @@ header {
   width: 45px;
   height: 40px;
   margin-top: -10px;
-  color: rgb(185, 191, 208);
+  color: var(--text-secondary);
   /* display: flex;
   align-items: center;
   justify-content: center; */
@@ -64,12 +66,13 @@ header {
 
 .header_icon h3 {
   font-size: 0.79rem;
-  color: #b3b5bd;
-  margin-left: -12px;
+  color: var(--text-muted);
+  width: 100%;
 }
 
 .header_icon:hover {
   transform: translateY(-3px);
+  color: var(--text-primary);
 }
 
 .header_icons {
@@ -86,7 +89,7 @@ header {
   width: 45px;
   height: 40px;
   margin-top: -10px;
-  color: rgb(185, 191, 208);
+  color: var(--text-secondary);
   /* display: flex;
   align-items: center;
   justify-content: center; */
@@ -97,12 +100,13 @@ header {
 
 .header_icon h3 {
   font-size: 0.79rem;
-  color: #b3b5bd;
+  color: var(--text-muted);
   margin-left: -12px;
 }
 
 .header_icon:hover {
   transform: translateY(-3px);
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {

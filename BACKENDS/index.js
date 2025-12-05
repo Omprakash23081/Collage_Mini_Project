@@ -1,6 +1,7 @@
+//in this file we will start our server and connect to the database
 import dotenv from "dotenv";
 import app from "./app.js";
-import connectDB from "./DB/connect.js";
+import connectDB from "./config/db.js";
 dotenv.config({ path: "./.env" });
 
 const port = process.env.PORT || 3000;
@@ -16,8 +17,6 @@ connectDB()
     console.error("Error starting server:", error);
   });
 
-//write routes
-import UserRouter from "./routes/user.routes.js";
-import ItemRouter from "./routes/items.routes.js";
-app.use("/api/users", UserRouter);
-app.use("/api/items", ItemRouter);
+//import root router with all router and hear definig the base route witch is commain for all routes
+import root from "./routes/index.js";
+app.use("/api", root);

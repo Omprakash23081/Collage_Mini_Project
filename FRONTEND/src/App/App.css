@@ -1,3 +1,18 @@
+:root {
+  --bg-primary: #0b0c10;       /* Distinct Premium Dark (Deep Cool Grey) */
+  --bg-secondary: #0a0a0a;     /* Slightly lighter for cards/sidebars */
+  --bg-tertiary: #161b2c;      /* Dark Blue-ish Grey (from Premium page) */
+  
+  --accent-primary: #c21641;   /* The Premium Red */
+  --accent-gradient: linear-gradient(180deg, #c21641 0%, rgba(194, 22, 65, 0) 100%);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
 /* LOGIN PAGE CSSS is prasent afte line number 582*/
 
 * {
@@ -6,58 +21,9 @@
   box-sizing: border-box;
 }
 
-.body {
-  margin-top: 20px !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-h1 {
-  display: block;
-  font-size: 2em;
-  margin-block-start: 0.67em;
-  margin-block-end: 0.67em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  font-weight: bold;
-  unicode-bidi: isolate;
-}
-
-.contener {
-  padding: 20px;
-  max-height: 55px;
-  top: 20px;
-  display: flex;
-  justify-content: space-between;
-  border: solid rgba(51, 45, 45, 0.575) 1.3px;
-  position: fixed;
-  z-index: 99900;
-  border-radius: 25px;
-  width: 93%;
-  /* background-color: #8EC5FC;
-  background-image: linear-gradient(62deg, #6489ae58 0%, #E0C3FC 100%); */
-  background-color: rgba(255, 255, 255, 0.75);
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-  box-sizing: border-box;
-  justify-content: space-between;
-  /* overflow: hidden; */
-}
-
-/* background-image: linear-gradient(62deg, #6489ae 0%, #e0c3fc 100%); */
-.contener:hover {
-  background-color: #3f4a55;
-  background-image: linear-gradient(
-    62deg,
-    #ffffffea 12%,
-    #37323baf 59%,
-    #52414167 100%
-  );
-}
+/* Legacy styles removed for Premium Theme */
+/* .body { ... } */
+/* .contener { ... } */
 
 .left_side_navaction_bar {
   display: flex;
@@ -607,30 +573,10 @@ a:hover {
 }
 
 body {
-  background-image: url(BG.jpg);
-  /* Hospital-themed background image */
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  /* display: flex; */
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 100%;
-  position: relative;
-}
-
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* background: rgba(97, 145, 242, 0.55); */
-  /* Blue translucent overlay */
-  z-index: -1;
-  /* Place behind other content */
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-family: "Montserrat", sans-serif;
 }
 
 .container {
@@ -1119,13 +1065,11 @@ i {
 }
 
 .header_Primuam1_Contener {
-  /* margin-top: -4px; */
   padding: 40px;
-  margin-top: 70px;
+  margin-top: 20px;
   background-color: #1b2132;
   border-radius: 20px;
-  margin-left: 23.6%;
-  width: 80vw;
+  width: 100%;
   height: 100%;
 }
 
@@ -1136,13 +1080,14 @@ i {
   font-size: 1.5rem;
 }
 .header_Primuam1 {
-  position: fixed;
-  margin-left: 240px;
+  /* Removed fixed positioning to respect parent container */
   border-radius: 20px;
-  width: 90%;
-  height: 10%;
-  z-index: 99999;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
   background-color: #121621 !important;
+  display: flex;
+  justify-content: center;
 }
 
 .w-100 {
@@ -1170,13 +1115,10 @@ i {
 
 @media (max-width: 768px) {
   .header_Primuam1_Contener {
-    margin-left: 0;
-    min-width: 122%;
     padding: 20px;
   }
 
   .header_Primuam1 {
-    margin-left: 0;
     width: 100%;
   }
 
@@ -1295,5 +1237,28 @@ i {
     height: 40px;
     font-size: 0.9rem;
     margin-left: -10%;
+  }
+}
+
+/* Layout fix for AllPrimum sidebar offset */
+.main-content-area {
+  margin-left: 19%;
+  width: 81%;
+  position: relative;
+  min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .main-content-area {
+    margin-left: 25%;
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content-area {
+    margin-left: 0;
+    width: 100%;
+    padding-bottom: 80px;
   }
 }

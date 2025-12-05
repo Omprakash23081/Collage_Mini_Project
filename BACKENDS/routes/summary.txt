@@ -1,0 +1,69 @@
+Till now this section is done 
+
+/api
+ ├── /auth → Authentication Module
+ ├── /users → User Management
+ ├── /notes → Study Material Upload
+ ├── /pyq → Previous Year Questions
+ ├── /events → Event Management
+ ├── /items → Lost & Found System
+ ├── /faculty → Faculty Directory
+ └── /career → Career Pathways & Guidance
+
+
+/api
+│
+├── 🔐 /auth
+│   ├── POST   /register           → Register new user (student/faculty)
+│   ├── POST   /login              → Login user
+│   ├── GET    /profile            → Get logged-in user profile
+│   ├── PUT    /update-profile     → Update user information
+│   └── POST   /logout             → Logout user
+│
+├── 👤 /users
+│   ├── GET    /                   → Get all users (admin only)
+│   ├── GET    /:id                → Get specific user by ID
+│   ├── PUT    /:id                → Update user (e.g., role change)
+│   └── DELETE /:id                → Delete user (admin only)
+│
+├── 📚 /notes
+│   ├── POST   /upload             → Upload study material (faculty)
+│   ├── GET    /                   → Get all notes
+│   ├── GET    /:subject           → Get notes by subject
+│   ├── GET    /:id                → Get single note
+│   └── DELETE /:id                → Delete uploaded note
+│
+├── ❓ /pyq
+│   ├── POST   /upload             → Upload previous year question paper
+│   ├── GET    /                   → Get all question papers
+│   ├── GET    /:subject           → Get questions by subject
+│   └── DELETE /:id                → Delete question paper
+│
+├── 📅 /events
+│   ├── POST   /create             → Create new event (admin)
+│   ├── GET    /                   → Get all events
+│   ├── GET    /:id                → Get single event
+│   ├── PUT    /:id                → Update event details
+│   ├── DELETE /:id                → Delete event
+│   └── POST   /:id/register       → RSVP/Register for event
+│
+├── 🧾 /items   (Lost & Found)
+│   ├── POST   /report             → Report a lost item
+│   ├── GET    /                   → Get all lost/found items
+│   ├── GET    /:id                → Get details of one item
+│   ├── PUT    /:id/status         → Update item status (found/unclaimed)
+│   └── DELETE /:id                → Remove item report
+│
+├── 👩‍🏫 /faculty
+│   ├── POST   /add                → Add new faculty (admin)
+│   ├── GET    /                   → Get all faculty members
+│   ├── GET    /:id                → Get faculty by ID
+│   ├── PUT    /:id                → Update faculty info
+│   └── DELETE /:id                → Delete faculty record
+│
+└── 🧭 /career
+    ├── POST   /add                → Add new career pathway (admin)
+    ├── GET    /                   → Get all career pathways
+    ├── GET    /:id                → Get single career pathway
+    ├── PUT    /:id                → Update career pathway
+    └── DELETE /:id                → Delete career pathway

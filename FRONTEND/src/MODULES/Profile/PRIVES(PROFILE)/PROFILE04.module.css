@@ -1,11 +1,11 @@
 #primum04_id {
-  margin-left: 288px;
+  width: 100%;
   width: 77% !important;
 }
 
 #sow_more {
   width: 500px;
-  margin-left: 100%;
+  width: 100%;
 }
 span {
   font-size: 5px;
@@ -28,28 +28,30 @@ span {
   margin-left: 10px;
 }
 .color {
-  border: solid black 2px;
+  border: 1px solid var(--border-color);
   border-radius: 20px;
-  background-color: #e03c57;
+  background-color: var(--accent-primary);
 }
 #actions :hover {
-  color: mediumblue;
+  color: var(--accent-primary);
 }
 #actions svg {
   margin-top: 3px;
   padding-left: 7px;
+  fill: var(--text-primary);
 }
 #actions p {
   margin-right: 70px;
   margin-top: 10px;
-  color: black;
+  color: var(--text-primary);
 }
 
 .hader2 {
   margin-top: 10px;
 }
 #primum04_id hr {
-  color: black;
+  color: var(--border-color);
   width: 100%;
   margin-top: -3px;
+  border-color: var(--border-color);
 }
