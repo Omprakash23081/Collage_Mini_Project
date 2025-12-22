@@ -1,121 +1,256 @@
 .home {
   width: 100%;
-  padding: 20px;
+  padding: 2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-.header {
-  background-color: var(--bg-secondary);
-  border-radius: 20px;
-  padding: 15px;
-  text-align: center;
+/* --- HERO SECTION --- */
+.heroSection {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 30px;
+  padding: 3rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-deep);
+}
+
+.heroSection::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.heroContent {
+  z-index: 1;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.2;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
-.header h1 {
-  margin: 0;
-  font-size: 1.5rem;
+.highlightName {
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -o-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-right: 5px; /* Prevent text clipping */
 }
 
-.headerContainer {
-  background-color: var(--bg-tertiary);
-  border-radius: 20px;
-  padding: 20px;
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.neonText {
+  color: var(--neon-blue);
+  text-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+  font-weight: 600;
+}
+
+.heroStats {
+  display: flex;
+  gap: 3rem;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.heroVisual {
+  z-index: 1;
+  position: relative;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+}
+
+.heroImage {
   width: 100%;
-  border: 1px solid var(--border-color);
+  max-width: 350px;
+  filter: drop-shadow(0 0 30px rgba(37, 99, 235, 0.3));
+  animation: float 6s ease-in-out infinite;
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* --- SECTION HEADER --- */
+.sectionHeader h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding-left: 1rem;
+  border-left: 4px solid var(--neon-magenta);
+}
+
+/* --- CARD GRID --- */
 .cardContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
-  justify-items: center;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
 }
 
 .card {
-  background: var(--bg-secondary);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
-  cursor: pointer;
-  border: 1px solid var(--border-color);
+  background: transparent;
+  perspective: 1000px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(194, 22, 65, 0.1);
-  border-color: var(--accent-primary);
+.cardInner {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover .cardInner {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+.card:hover .cardInner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  box-shadow: inset 0 0 20px rgba(37, 99, 235, 0.2);
+  pointer-events: none;
 }
 
 .profileImage {
   width: 100%;
-  height: 150px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 8px 8px 0 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.6s ease;
 }
 
 .card:hover .profileImage {
-  transform: scale(1.05);
+  transform: scale(1.1);
+}
+
+.cardContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
 }
 
 .cardTitle {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 10px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--text-primary);
+  margin-bottom: 0.5rem;
 }
 
 .cardDescription {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  padding: 0 10px 15px;
-  margin-bottom: 10px;
-  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  flex-grow: 1;
 }
 
 .loginButton {
-  background: var(--accent-gradient);
+  background: var(--grad-primary);
   color: white;
-  padding: 8px 18px;
+  padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: bold;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 15px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(255, 31, 106, 0.3);
 }
 
 .loginButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(194, 22, 65, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 31, 106, 0.5);
+  filter: brightness(1.1);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .heroSection {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .heroContent {
+    margin-top: 2rem;
+  }
+  
+  .heroVisual {
+    width: 100%;
+  }
+
+  .heroStats {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
   .home {
-    padding: 10px;
+    padding: 1rem;
+    gap: 2rem;
+    width: 100vw;
+    box-sizing: border-box;
   }
   
-  .headerContainer {
-    padding: 10px;
-  }
-
-  .cardContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .cardContainer {
-    grid-template-columns: 1fr;
+  .heroTitle {
+    font-size: 2rem;
   }
 }

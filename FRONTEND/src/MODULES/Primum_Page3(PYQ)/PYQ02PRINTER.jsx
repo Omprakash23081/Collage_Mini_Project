@@ -5,7 +5,7 @@ function PYQ02PRINTER({ value, chapter, set }) {
   return (
     <div
       className={`${style.subject_card} ${style[value]} `}
-      onClick={(event) => set(["second", value])}
+      onClick={(event) => set(["third", value])}
     >
       <div>
         <h2 className={style.subject_title}>{value}</h2>

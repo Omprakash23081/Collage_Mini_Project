@@ -3,7 +3,7 @@ function SubjectArea() {
     <>
       <div className="subjectcontainer">
         <h1>Subject Areas</h1>
-        <div className="grid">
+        <div className="subjectGrid">
           <div className="subjectcard">
             <svg
               className="subjecticon"

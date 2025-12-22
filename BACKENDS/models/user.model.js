@@ -32,6 +32,27 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["year1", "year2", "year3", "year4"],
     },
+    bio: {
+      type: String,
+      default: "",
+    },
+    courses: [
+      {
+        name: String,
+        progress: Number,
+        timeSpent: String,
+        lastAccessed: { type: Date, default: Date.now },
+      },
+    ],
+    achievements: [
+      {
+        title: String,
+        description: String,
+        date: { type: Date, default: Date.now },
+        icon: String, 
+        earned: { type: Boolean, default: true } 
+      },
+    ],
   },
   { timestamps: true }
 );

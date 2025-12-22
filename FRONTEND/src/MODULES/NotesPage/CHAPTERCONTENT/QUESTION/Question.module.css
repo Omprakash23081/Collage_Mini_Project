@@ -6,8 +6,8 @@
   --accent-blue: var(--accent-primary);
   --text-primary: var(--text-primary);
   --text-secondary: var(--text-secondary);
-  --card-bg: var(--bg-tertiary);
-  --card-hover: #2d3a50;
+  --card-bg: #1A1D25; /* Matte Card BG */
+  --card-border: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -27,336 +27,204 @@
 }
 
 .questions_contener {
-  padding: 1rem 1.5rem;
-  max-width: 1200px;
+  padding: 2rem;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.back_button {
-  color: var(--text-primary);
-  text-decoration: none;
-  margin-right: 1rem;
-  font-size: 1.5rem;
-  transition: transform 0.3s ease, color 0.3s;
-  border-radius: 50%;
-  padding: 0.3rem 0.6rem;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.back_button:hover {
-  transform: translateX(-5px) scale(1.08);
-  color: var(--accent-primary);
-  background: rgba(194, 22, 65, 0.1);
-}
-
+/* --- GLOWING RIBBON TABS --- */
 .tabs {
   display: flex;
-  padding: 0.5rem 0px;
+  gap: 1rem;
+  padding: 1rem 2rem;
   width: 100%;
   z-index: 999;
-  justify-content: space-between;
-  background: var(--bg-secondary);
-  overflow-x: auto;
-  scrollbar-width: none;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.sticky {
-  position: fixed;
+  justify-content: center; /* Center tabs */
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  position: sticky;
   top: 0;
-  left: 19%;
-  width: 81%;
-  background: var(--bg-secondary);
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
 }
 
-.tabs::-webkit-scrollbar {
-  display: none;
+.tabs.sticky {
+  background: rgba(5, 6, 10, 0.95);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  padding: 0.8rem 2rem;
 }
 
 .tab {
-  padding: 0.75rem 1.2rem;
+  padding: 0.8rem 2rem;
   color: var(--text-secondary);
   cursor: pointer;
-  width: 100%;
-  transition: all 0.3s, box-shadow 0.2s;
+  width: auto; /* Auto width */
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   position: relative;
-  font-size: 1rem;
-  white-space: nowrap;
-  border-radius: 8px 8px 0 0;
-  margin-right: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 50px; /* Pill Shape */
   background: transparent;
+  border: 1px solid transparent;
 }
 
 .tab:hover {
-  color: var(--accent-primary);
-  background: rgba(194, 22, 65, 0.06);
-  box-shadow: 0 2px 8px rgba(194, 22, 65, 0.08);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
+/* Active Glowing Ribbon State */
 .tab.active {
   color: white;
-  font-weight: 600;
-  background: var(--accent-gradient);
-  box-shadow: 0 4px 16px rgba(194, 22, 65, 0.1);
+  background: var(--grad-primary); /* Magenta/Blue Gradient */
+  box-shadow: 0 0 20px rgba(255, 31, 106, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
 }
 
+/* Removing old underline effect in favor of pill glow */
 .tab.active::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, goldenrod 60%, var(--accent-primary) 100%);
-  animation: slideIn 0.3s ease-out;
-  border-radius: 2px;
+  display: none;
 }
 
 .hr {
-  margin-top: 3.6%;
-  z-index: 999999999;
-  width: 81%;
-  position: fixed;
-  color: white;
-  border: none;
-  border-top: 1.5px solid var(--accent-primary);
-  opacity: 0.7;
+  display: none; /* Hide old HR line */
 }
 
+/* --- FLOATING MATTE CARDS --- */
 .categories,
 .questions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.2rem;
-  padding: 1rem 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+  margin-top: 1rem;
 }
 
 .category_card,
 .question_item {
-  background-color: var(--bg-tertiary);
-  padding: 1.25rem 1.1rem;
-  border-radius: 14px;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.3s ease, box-shadow 0.2s;
+  transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-height: 90px;
-  overflow: hidden;
+  min-height: 120px;
   position: relative;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.5s ease-out forwards;
-  border: 1px solid var(--border-color);
+  overflow: hidden; /* For inner glow effects */
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
+/* Soft Lighting Hover Effect */
 .category_card:hover,
 .question_item:hover {
-  transform: translateY(-5px) scale(1.03);
-  background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 24px rgba(194, 22, 65, 0.1);
-  border-color: var(--accent-primary);
+  transform: translateY(-8px) scale(1.02);
+  background: linear-gradient(145deg, #232732, #1A1D25);
+  border-color: var(--accent-magenta);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4), 
+              0 0 15px rgba(255, 31, 106, 0.1); /* Magenta Glow */
 }
 
 .category_title {
-  font-size: 1.13rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   z-index: 1;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: #fff;
+  letter-spacing: 0.5px;
 }
 
 .category_icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(194, 22, 65, 0.1);
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(207, 166, 106, 0.2), rgba(207, 166, 106, 0.05));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   z-index: 1;
-  margin-bottom: 0.7rem;
-  color: var(--accent-primary);
+  margin-bottom: 1rem;
+  color: var(--c-gold);
+  border: 1px solid rgba(207, 166, 106, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .question_text {
-  font-size: 1.05rem;
-  margin-bottom: 1rem;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
   color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Metallic/Premium Number Badge */
+.question_text span {
+    color: var(--accent-blue);
+    font-family: 'JetBrains Mono', monospace; /* Tech feel */
+    font-size: 0.9em;
+    opacity: 0.8;
 }
 
 .question_meta {
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  position: relative;
+  gap: 0.8rem;
   margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  width: 100%;
 }
 
+/* Status Indicator Pill */
 .question_meta::before {
-  content: "";
-  position: absolute;
-  left: -5px;
-  width: 3px;
-  height: 100%;
-  background: var(--accent-primary);
-  animation: pulse 2s infinite;
+  content: "ACTIVE";
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  display: inline-block;
+  margin-right: auto; /* Push year to right? or keep left */
 }
 
+
+/* Responsive */
 @media (max-width: 1024px) {
-  .body {
-    width: 100vw;
-    margin-left: 0;
-  }
-  .sticky {
-    left: 0;
-    width: 100vw;
-  }
-  .hr {
-    margin-top: 8.7%;
-    z-index: 999999999;
-    width: 100%;
-    position: fixed;
-    color: white;
-    border: none;
-    border-top: 1.5px solid var(--accent-primary);
-    opacity: 0.7;
-  }
-  .questions_container {
-    padding: 1rem 0.5rem;
-  }
-  .categories,
-  .questions {
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 0.8rem;
-    padding: 0.7rem 0.5rem;
-  }
-}
-
-@media (max-width: 700px) {
-  .body {
-    width: 100vw;
-    padding: 0;
-  }
-  .sticky {
-    left: 0;
-    width: 100vw;
-  }
-  .hr {
-    margin-top: 8.7%;
-    z-index: 999999999;
-    width: 100%;
-    position: fixed;
-    color: white;
-    border: none;
-    border-top: 1.5px solid var(--accent-primary);
-    opacity: 0.7;
-  }
-  .tabs {
-    font-size: 0.95rem;
-    padding: 0.3rem 0;
-  }
-  .tab {
-    padding: 0.6rem 0.7rem;
-    font-size: 0.95rem;
-  }
-  .categories,
-  .questions {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-    padding: 0.5rem 0.2rem;
-  }
-  .category_card,
-  .question_item {
-    padding: 1rem 0.7rem;
-    min-height: 70px;
-  }
-}
-
-@media (max-width: 480px) {
-  .body {
-    width: 100vw;
-    padding: 0;
-  }
   .questions_contener {
-    padding: 0.5rem 0.1rem;
+    padding: 1rem;
   }
-  .hr {
-    margin-top: 8.7%;
-    z-index: 999999999;
-    width: 100%;
-    position: fixed;
-    color: white;
-    border: none;
-    border-top: 1.5px solid var(--accent-primary);
-    opacity: 0.7;
-  }
+}
+
+@media (max-width: 768px) {
   .tabs {
-    font-size: 0.9rem;
-    padding: 0.2rem 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 1rem;
+    gap: 0.8rem;
   }
+  
   .tab {
-    padding: 0.5rem 0.5rem;
+    padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
+    white-space: nowrap;
   }
-  .categories,
-  .questions {
+  
+  .categories, .questions {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
-    padding: 0.2rem 0.1rem;
-  }
-  .category_card,
-  .question_item {
-    padding: 0.7rem 0.4rem;
-    min-height: 55px;
   }
 }
 
-@keyframes slideIn {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
+/* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* @keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-} */
-
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -1,11 +1,15 @@
 import style from "./SubjectPRINTER.module.css";
+import { authService } from "../../../services/authService.js";
 
 function PYQ02PRINTER({ value, chapter, set }) {
   const subject = ["physics", "chemistry", "mathematics"];
   return (
     <div
       className={`${style.subject_card} ${style[value]} `}
-      onClick={() => set(["AllQuestions", value])}
+      onClick={() => {
+          set(["AllQuestions", value]);
+          authService.trackActivity(value, "Notes");
+      }}
     >
       <div>
         <h2 className={style.subject_title}>{value}</h2>

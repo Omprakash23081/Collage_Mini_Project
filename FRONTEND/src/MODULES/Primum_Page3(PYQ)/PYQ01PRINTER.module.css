@@ -25,6 +25,17 @@
   height: 80px;
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .chapter_card:hover {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.05);
@@ -71,19 +82,20 @@
 .chapter_icon {
   width: 44px;
   height: 44px;
-  background: rgba(42, 43, 54, 0.7);
+  background: rgba(194, 22, 65, 0.1);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   flex-shrink: 0;
+  color: var(--accent-primary);
 }
 
 .chapter_info p {
-  color: #8a8a8a;
+  color: var(--text-secondary);
   font-size: 13px;
   display: flex;
   align-items: center;
@@ -92,7 +104,7 @@
 
 .chapter_info p::before {
   content: "•";
-  color: #1a84ff;
+  color: var(--accent-primary);
   font-size: 16px;
 }
 
@@ -104,7 +116,7 @@
 .chapter_info h3 {
   font-size: 15px;
   margin-bottom: 4px;
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;

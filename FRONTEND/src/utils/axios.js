@@ -24,4 +24,13 @@ apiClient.interceptors.response.use(
   }
 );
 
+apiClient.interceptors.request.use((config) => {
+  console.log(
+    `[AXIOS] Sending ${config.method.toUpperCase()} request to: ${
+      config.baseURL
+    }${config.url}`
+  );
+  return config;
+});
+
 export default apiClient;

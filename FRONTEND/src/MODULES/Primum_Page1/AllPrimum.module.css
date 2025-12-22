@@ -1,118 +1,207 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+/* Premium Sidebar & Layout Stying */
+
 .layoutContainer {
-  display: grid;
-  grid-template-columns: 250px 1fr;
+  display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: var(--bg-primary);
+  background: var(--bg-darker);
+  /* Subtle Wood Texture Overlay via CSS noise/pattern if desired, 
+     or just relying on the rich dark gradient from body */
 }
 
+/* Sidebar Styling - Glassmorphism & Neon */
 .sidebar {
+  width: 280px;
   height: 100vh;
   position: sticky;
   top: 0;
-  overflow-y: auto;
-  border-right: 1px solid var(--border-color);
-  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: var(--bg-dark); /* Matte dark base */
+  border-right: 1px solid rgba(255, 255, 255, 0.05); /* Subtle smooth border */
   color: var(--text-primary);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.4); /* Deep shadow */
 }
 
-.mainContent {
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+/* Brand/Logo Area */
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.fs_4 {
-  font-size: 1rem;
+.brandText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  margin-left: 12px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(37, 99, 235, 0.5); /* Neon Blue Glow */
+}
+
+/* Navigation Links */
+.navItem {
+  margin-bottom: 0.5rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 1rem;
   color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  border: 1px solid transparent;
 }
 
-.nav-link {
-  color: var(--text-secondary) !important;
+.navLink:hover {
+  background: rgba(37, 99, 235, 0.08); /* Subtle Blue Tint */
+  color: var(--text-primary);
+  transform: translateX(4px);
+  border-color: rgba(37, 99, 235, 0.2); /* Neon Border Hint */
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
+}
+
+.navLink i {
+  font-size: 1.2rem;
+  margin-right: 12px;
+  width: 24px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover i {
+  color: var(--neon-blue);
+}
+
+/* Active State - Glowing Magenta Pill */
+.active {
+  background: var(--grad-primary);
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(255, 31, 106, 0.4);
+  border: none;
+}
+
+.active:hover {
+  transform: none;
+  background: var(--grad-primary);
+  box-shadow: 0 6px 20px rgba(255, 31, 106, 0.6);
+}
+
+.active i {
+  color: white !important;
+}
+
+/* User Profile Section - Glass Capsule */
+.userSection {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.userDropdown {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 50px; /* Capsule shape */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
 }
 
-.nav-link:hover {
-  color: var(--text-primary) !important;
-  background-color: rgba(255, 255, 255, 0.05);
+.userDropdown:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Main Content Area */
+.mainContent {
+  flex: 1;
+  background-color: var(--bg-darker); /* Deepest dark base */
+  background-image: var(--bg-gradient-base); /* Subtle gradient */
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding: 0; 
+}
+
+/* Bottom Navigation Bar (Mobile Only) - Premium */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(5, 6, 10, 0.95); /* High opacity dark */
+  backdrop-filter: blur(12px); /* Blur effect */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.75rem 0;
+  z-index: 1000;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.bottomNavLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.7rem;
+  padding: 0.5rem;
   border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
-.active {
-  background: var(--accent-gradient) !important;
-  color: white !important;
-  box-shadow: 0 4px 15px rgba(194, 22, 65, 0.4) !important;
-  border-radius: 12px !important;
+.bottomNavLink i {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  transition: transform 0.2s ease;
 }
 
-.active .fs_4 {
-  color: white !important;
+.bottomNavLink.activeBottom {
+  color: var(--neon-magenta);
 }
 
-.activeBottom {
-  color: var(--accent-primary) !important;
-  border-radius: 12px !important;
-  height: auto;
+.bottomNavLink.activeBottom i {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 0 8px rgba(255, 31, 106, 0.6));
 }
 
-@media (max-width: 1024px) {
-  .layoutContainer {
-    grid-template-columns: 200px 1fr;
-  }
-  
-  .fs_4 {
-    font-size: 0.9rem;
-  }
-
-  .nav-link h6 {
-    font-size: 0.85rem;
-  }
-}
-
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .layoutContainer {
-    grid-template-columns: 1fr;
+  .sidebar {
+    display: none; 
   }
 
-  .sidebar {
+  .mainContent {
+    padding-bottom: 90px; /* More space for premium bottom bar */
+  }
+
+  .layoutContainer {
+    display: block; 
+  }
+}
+
+@media (min-width: 769px) {
+  .bottomNav {
     display: none;
   }
-  
-  .mainContent {
-    padding-bottom: 80px; /* Space for bottom bar */
-  }
-
-  .fs_4 {
-    font-size: 0.875rem;
-  }
-
-  .nav-link h6 {
-    font-size: 0.75rem;
-  }
-
-  .dropdown img {
-    width: 28px;
-    height: 28px;
-  }
 }
 
-@media (max-width: 480px) {
-  .fs_4 {
-    font-size: 0.75rem;
-  }
 
-  .nav-link h6 {
-    font-size: 0.65rem;
-  }
-
-  .dropdown img {
-    width: 24px;
-    height: 24px;
-  }
-}

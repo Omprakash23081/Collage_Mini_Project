@@ -22,38 +22,6 @@ function PYQ03MANUE({ currentfilter, setcurrentfilter }) {
 
   return (
     <>
-      <div className={style.categories}>
-        <div
-          className={`${style.category_card} ${
-            currentquestion === "Beginner" && style.actives
-          } `}
-          onClick={() => set1("Beginner")}
-        >
-          <div className={style.category_title}>Basics</div>
-          <div className={style.category_icon}>
-            <img
-              src="https://web.getmarks.app/_next/image?url=https%3A%2F%2Fcdn-assets.getmarks.app%2Fapp_assets%2Fimg%2Fpyq_buckets%2Fic_bucket_beginner.png&w=48&q=75"
-              alt=""
-            />
-          </div>
-        </div>
-
-        <div
-          className={`${style.category_card} ${
-            currentquestion === "Advance Climb" && style.actives
-          } `}
-          onClick={() => set1("Advance Climb")}
-        >
-          <div className={style.category_title}>Advance Climb</div>
-          <div className={style.category_icon}>
-            <img
-              src="https://web.getmarks.app/_next/image?url=https%3A%2F%2Fcdn-assets.getmarks.app%2Fapp_assets%2Fimg%2Fpyq_buckets%2Fic_bucket_advance_climb.png&w=48&q=75"
-              alt=""
-            />
-          </div>
-        </div>
-      </div>
-
       <div className={style.filters}>
         <button className={style.filter_btn}>
           <svg
@@ -73,7 +41,7 @@ function PYQ03MANUE({ currentfilter, setcurrentfilter }) {
           }`}
           onClick={(event) => set2("All")}
         >
-          All
+          ST-1
         </button>
         <button
           className={`${style.filter_btn} ${
@@ -81,7 +49,7 @@ function PYQ03MANUE({ currentfilter, setcurrentfilter }) {
           }`}
           onClick={(event) => set2("important")}
         >
-          important
+          ST-2
         </button>
         <button
           className={`${style.filter_btn} ${
@@ -89,7 +57,7 @@ function PYQ03MANUE({ currentfilter, setcurrentfilter }) {
           }`}
           onClick={(event) => set2("Most important")}
         >
-          Most important
+          PUT
         </button>
         <button
           className={`${style.filter_btn} ${
@@ -97,15 +65,7 @@ function PYQ03MANUE({ currentfilter, setcurrentfilter }) {
           }`}
           onClick={(event) => set2("Attempted")}
         >
-          Attempted
-        </button>
-        <button
-          className={`${style.filter_btn} ${
-            currentfilter === "Not Attempted" && style.active
-          }`}
-          onClick={(event) => set2("Not Attempted")}
-        >
-          Not Attempted
+          AKTU EXAM
         </button>
       </div>
     </>

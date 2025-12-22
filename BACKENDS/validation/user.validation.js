@@ -8,6 +8,7 @@ export const registerValidation = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   role: Joi.string().valid("user", "admin").required(),
+  year: Joi.string().valid("year1", "year2", "year3", "year4").optional(),
 });
 
 //this is used for validation during login of user and admin also

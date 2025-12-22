@@ -6,6 +6,11 @@ import cookiesParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler.middleware.js";
 const app = express();
 
+app.use((req, res, next) => {
+  console.log(`[GLOBAL LOG] Received ${req.method} request for: ${req.url}`);
+  next();
+});
+
 app.use(
   // Enable CORS for specified origins
   cors({
@@ -13,6 +18,7 @@ app.use(
       "https://hellowduniya.netlify.app",
       "http://localhost:5174",
       "http://localhost:5173",
+      "http://localhost:5176",
       "https://collage-mini-project-090y.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],

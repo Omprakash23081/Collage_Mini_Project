@@ -20,83 +20,102 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 function PROFILE() {
   const [activeTab, setActiveTab] = useState("activity");
   const [isEditing, setIsEditing] = useState(false);
+  const { user, updateUser, changePassword } = useContext(AuthContext);
+  
+  // Password Change State
+  const [passwordData, setPasswordData] = useState({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: ""
+  });
+  const [loadingPass, setLoadingPass] = useState(false);
 
-  const { user } = useContext(AuthContext);
+  const handleUpdatePassword = async () => {
+      if (passwordData.newPassword !== passwordData.confirmPassword) {
+          alert("New passwords do not match!");
+          return;
+      }
+      if (!passwordData.currentPassword || !passwordData.newPassword) {
+            alert("Please fill all fields");
+            return;
+      }
 
-  console.log(user);
+      setLoadingPass(true);
+      try {
+          await changePassword({
+              oldPassword: passwordData.currentPassword,
+              newPassword: passwordData.newPassword
+          });
+          alert("Password updated successfully!");
+          setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      } catch (error) {
+          console.error(error);
+          alert(error.response?.data?.message || "Failed to update password");
+      } finally {
+          setLoadingPass(false);
+      }
+  };
 
- 
+  // Initialize editData with user data when editing starts
+  const [editData, setEditData] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    year: "",
+    achievements: [],
+  });
 
-  // const [userData, setUserData] = useState({
-  //   name: "Omprakash",
-  //   email: "omprakash@example.com",
-  //   joinDate: "January 15, 2023",
-  //   membership: "Premium",
-  //   avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-  //   completedCourses: 12,
-  //   ongoingCourses: 3,
-  //   achievements: 5,
-  //   lastActive: "2 hours ago",
-  //   bio: "Computer Science student passionate about web development and AI.",
-  // });
-
-  const [editData, setEditData] = useState(null);
-
-  const [activityData] = useState([
-    {
-      id: 1,
-      course: "Python Programming",
-      progress: 85,
-      date: "Today",
-      timeSpent: "2h 30m",
-    },
-    {
-      id: 2,
-      course: "Data Structures",
-      progress: 65,
-      date: "Yesterday",
-      timeSpent: "1h 45m",
-    },
-    {
-      id: 3,
-      course: "Machine Learning",
-      progress: 42,
-      date: "3 days ago",
-      timeSpent: "3h 10m",
-    },
-  ]);
-
-  const [achievements] = useState([
-    {
-      id: 1,
-      title: "Fast Learner",
-      description: "Completed 5 courses in one month",
-      icon: <FiAward />,
-      earned: true,
-    },
-    {
-      id: 2,
-      title: "Perfect Score",
-      description: "Scored 100% in PYQ test",
-      icon: <BsCheckCircleFill />,
-      earned: true,
-    },
-  ]);
+  const handleEditClick = () => {
+    setEditData({
+      name: user?.name || "",
+      email: user?.email || "",
+      bio: user?.bio || "",
+      year: user?.year || "",
+      achievements: user?.achievements || [],
+    });
+    setIsEditing(true);
+  };
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveProfile = () => {
-    setUserData(editData);
-    setIsEditing(false);
+  // Achievement management hooks
+  const handleAddAchievement = () => {
+    setEditData(prev => ({
+        ...prev,
+        achievements: [...prev.achievements, { title: "", description: "", earned: true }]
+    }));
+  };
+
+  const handleAchievementChange = (index, field, value) => {
+    const newAchievements = [...editData.achievements];
+    newAchievements[index] = { ...newAchievements[index], [field]: value };
+    setEditData(prev => ({ ...prev, achievements: newAchievements }));
+  };
+
+  const handleRemoveAchievement = (index) => {
+    const newAchievements = editData.achievements.filter((_, i) => i !== index);
+    setEditData(prev => ({ ...prev, achievements: newAchievements }));
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      await updateUser(editData);
+      // toast.success("Profile updated successfully"); // Assuming toast is available or add import 
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update profile", error);
+      // toast.error("Failed to update profile");
+    }
   };
 
   const handleCancelEdit = () => {
-    setEditData(userData);
     setIsEditing(false);
   };
+  
+  if (!user) return <div className="text-white">Loading profile...</div>;
 
   return (
     <div className={style.profileContainer}>
@@ -104,7 +123,7 @@ function PROFILE() {
       <div className={style.profileHeader}>
         <div className={style.avatarContainer}>
           <img
-            src={user?.profileImage}
+            src={user?.profileImage || "https://via.placeholder.com/150"}
             alt="Profile"
             className={style.avatar}
           />
@@ -114,128 +133,88 @@ function PROFILE() {
         {isEditing ? (
           <div className={style.editForm}>
             <div className={style.formGroup}>
-              <label>
-                <FiUser /> Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={editData.name}
-                onChange={handleEditChange}
-              />
+              <label><FiUser /> Name</label>
+              <input type="text" name="name" value={editData.name} onChange={handleEditChange} />
             </div>
             <div className={style.formGroup}>
-              <label>
-                <FiMail /> Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={editData.email}
-                onChange={handleEditChange}
-                disabled
-              />
+              <label><FiMail /> Email</label>
+              <input type="email" name="email" value={editData.email} disabled className="text-gray-500 cursor-not-allowed" />
+            </div>
+             <div className={style.formGroup}>
+              <label><FiCalendar /> Year</label>
+              <select name="year" value={editData.year} onChange={handleEditChange} className={style.inputField}>
+                  <option value="">Select Year</option>
+                  <option value="year1">Year 1</option>
+                  <option value="year2">Year 2</option>
+                  <option value="year3">Year 3</option>
+                  <option value="year4">Year 4</option>
+              </select>
             </div>
             <div className={style.formGroup}>
-              <label>
-                <FiUser /> Bio
-              </label>
-              <textarea
-                name="bio"
-                value={editData.bio}
-                onChange={handleEditChange}
-                rows="3"
-              />
+              <label><FiUser /> Bio</label>
+              <textarea name="bio" value={editData.bio} onChange={handleEditChange} rows="3" placeholder="Tell us about yourself..." />
             </div>
+
+            {/* Achievement Edit Section */}
+             <div className={style.formGroup}>
+                <label className="flex justify-between items-center">
+                    <span><FiAward /> Achievements</span>
+                    <button type="button" onClick={handleAddAchievement} className="text-sm bg-green-600 px-2 py-1 rounded">+ Add</button>
+                </label>
+                <div className="space-y-2 mt-2">
+                    {editData.achievements.map((achievement, index) => (
+                        <div key={index} className="flex gap-2 items-center bg-gray-800 p-2 rounded flex-col md:flex-row">
+                            <input type="text" placeholder="Title" value={achievement.title} onChange={(e) => handleAchievementChange(index, "title", e.target.value)} className="w-full md:w-1/3 bg-gray-700 p-1 rounded text-white" />
+                            <input type="text" placeholder="Description" value={achievement.description} onChange={(e) => handleAchievementChange(index, "description", e.target.value)} className="w-full md:w-1/2 bg-gray-700 p-1 rounded text-white" />
+                            <button type="button" onClick={() => handleRemoveAchievement(index)} className="text-red-500 self-end md:self-center"><FiX /></button>
+                        </div>
+                    ))}
+                     {editData.achievements.length === 0 && <p className="text-gray-500 text-sm">No achievements added.</p>}
+                </div>
+            </div>
+
             <div className={style.formButtons}>
-              <button className={style.saveBtn} onClick={handleSaveProfile}>
-                <FiSave /> Save Changes
-              </button>
-              <button className={style.cancelBtn} onClick={handleCancelEdit}>
-                <FiX /> Cancel
-              </button>
+              <button className={style.saveBtn} onClick={handleSaveProfile}><FiSave /> Save Changes</button>
+              <button className={style.cancelBtn} onClick={handleCancelEdit}><FiX /> Cancel</button>
             </div>
           </div>
         ) : (
           <div className={style.userInfo}>
             <div className={style.headerActions}>
               <h1 className={style.userName}>{user?.name}</h1>
-              <button
-                className={style.editBtn}
-                onClick={() => setIsEditing(true)}
-              >
-                <FiEdit /> Edit Profile
-              </button>
+              <button className={style.editBtn} onClick={handleEditClick}><FiEdit /> Edit Profile</button>
             </div>
             <p className={style.userEmail}>{user?.email}</p>
-            <p className={style.userBio}>{null}</p>
+            <p className={style.userBio}>{user?.bio || "No bio added yet."}</p>
             <div className={style.userStats}>
               <div className={style.statItem}>
                 <FiCalendar className={style.statIcon} />
-                <span>Joined: {user?.createdAt?.substring(0, 10)}</span>
+                <span>Joined: {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A"}</span>
               </div>
               <div className={style.statItem}>
-                <FiBook className={style.statIcon} />
-                <span>{null} Courses</span>
-                {/* <span>{userData.completedCourses} Courses</span> */}
-              </div>
-              <div className={style.statItem}>
-                <BsGraphUp className={style.statIcon} />
-                <span>{null} Active</span>
-                {/* <span>{userData.ongoingCourses} Active</span> */}
-              </div>
-              <div className={style.statItem}>
-                <FiAward className={style.statIcon} />
-                <span>{null} Achievements</span>
-                {/* <span>{userData.achievements} Achievements</span> */}
+                 <FiBook className={style.statIcon} />
+                 <span>{user?.year?.toUpperCase() || "N/A"} Student</span>
               </div>
             </div>
           </div>
         )}
 
-        <div className={style.lastActive}>
-          Last active: {user?.updatedAt?.substring(0, 10)}
-          {/* Last active: {userData.lastActive} */}
-        </div>
+
       </div>
 
       {/* Profile Navigation */}
       <div className={style.profileNav}>
-        <button
-          className={`${style.navButton} ${
-            activeTab === "activity" ? style.active : ""
-          }`}
-          onClick={() => setActiveTab("activity")}
-        >
-          <FiActivity className={style.navIcon} />
-          Activity
+        <button className={`${style.navButton} ${activeTab === "activity" ? style.active : ""}`} onClick={() => setActiveTab("activity")}>
+          <FiActivity className={style.navIcon} /> Activity
         </button>
-        <button
-          className={`${style.navButton} ${
-            activeTab === "courses" ? style.active : ""
-          }`}
-          onClick={() => setActiveTab("courses")}
-        >
-          <FiBook className={style.navIcon} />
-          My Courses
+        <button className={`${style.navButton} ${activeTab === "courses" ? style.active : ""}`} onClick={() => setActiveTab("courses")}>
+          <FiBook className={style.navIcon} /> My Courses
         </button>
-        <button
-          className={`${style.navButton} ${
-            activeTab === "achievements" ? style.active : ""
-          }`}
-          onClick={() => setActiveTab("achievements")}
-        >
-          <FiAward className={style.navIcon} />
-          Achievements
+        <button className={`${style.navButton} ${activeTab === "achievements" ? style.active : ""}`} onClick={() => setActiveTab("achievements")}>
+          <FiAward className={style.navIcon} /> Achievements
         </button>
-        <button
-          className={`${style.navButton} ${
-            activeTab === "settings" ? style.active : ""
-          }`}
-          onClick={() => setActiveTab("settings")}
-        >
-          <FiSettings className={style.navIcon} />
-          Settings
+        <button className={`${style.navButton} ${activeTab === "settings" ? style.active : ""}`} onClick={() => setActiveTab("settings")}>
+          <FiSettings className={style.navIcon} /> Settings
         </button>
       </div>
 
@@ -245,30 +224,28 @@ function PROFILE() {
           <div className={style.activitySection}>
             <h2 className={style.sectionTitle}>Recent Activity</h2>
             <div className={style.activityGrid}>
-              {activityData.map((activity) => (
-                <div key={activity.id} className={style.activityCard}>
+              {user?.courses && user.courses.length > 0 ? (
+                 user.courses.map((activity, index) => (
+                <div key={index} className={style.activityCard}>
                   <div className={style.activityHeader}>
-                    <h3>{activity.course}</h3>
-                    <span className={style.activityDate}>{activity.date}</span>
+                    <h3>{activity.name}</h3>
+                    <span className={style.activityDate}>{activity.lastAccessed ? new Date(activity.lastAccessed).toLocaleDateString() : "N/A"}</span>
                   </div>
                   <div className={style.progressContainer}>
-                    <div
-                      className={style.progressBar}
-                      style={{ width: `${activity.progress}%` }}
-                    ></div>
-                    <span className={style.progressText}>
-                      {activity.progress}%
-                    </span>
+                    <div className={style.progressBarTrack}>
+                        <div className={style.progressBar} style={{ width: `${activity.progress}%` }}></div>
+                    </div>
+                    <span className={style.progressText}>{activity.progress}%</span>
                   </div>
                   <div className={style.activityFooter}>
-                    <span className={style.timeSpent}>
-                      <FiActivity className={style.timeIcon} />
-                      {activity.timeSpent}
-                    </span>
+                    <span className={style.timeSpent}><FiActivity className={style.timeIcon} />{activity.timeSpent}</span>
                     <button className={style.continueButton}>Continue</button>
                   </div>
                 </div>
-              ))}
+              ))
+              ) : (
+                  <p className="text-gray-400">No recent activity found. Edit profile to add.</p>
+              )}
             </div>
           </div>
         )}
@@ -277,27 +254,20 @@ function PROFILE() {
           <div className={style.achievementsSection}>
             <h2 className={style.sectionTitle}>Your Achievements</h2>
             <div className={style.achievementsGrid}>
-              {achievements.map((achievement) => (
-                <div
-                  key={achievement.id}
-                  className={`${style.achievementCard} ${
-                    achievement.earned ? style.earned : style.locked
-                  }`}
-                >
-                  <div className={style.achievementIcon}>
-                    {achievement.icon}
-                  </div>
+              {user?.achievements && user.achievements.length > 0 ? (
+                 user.achievements.map((achievement, index) => (
+                <div key={index} className={`${style.achievementCard} ${style.earned}`}>
+                  <div className={style.achievementIcon}><FiAward /></div>
                   <div className={style.achievementInfo}>
                     <h3>{achievement.title}</h3>
                     <p>{achievement.description}</p>
                   </div>
-                  {achievement.earned ? (
-                    <span className={style.achievementBadge}>Earned</span>
-                  ) : (
-                    <span className={style.achievementBadge}>Locked</span>
-                  )}
+                  <span className={style.achievementBadge}>Earned</span>
                 </div>
-              ))}
+              ))
+              ) : (
+                   <p className="text-gray-400">No achievements added. Edit profile to add.</p>
+              )}
             </div>
           </div>
         )}
@@ -306,44 +276,36 @@ function PROFILE() {
           <div className={style.settingsSection}>
             <h2 className={style.sectionTitle}>Account Settings</h2>
             <div className={style.settingsCard}>
-              <h3>
-                <FiLock /> Change Password
-              </h3>
+              <h3><FiLock /> Change Password</h3>
               <div className={style.formGroup}>
                 <label>Current Password</label>
-                <input type="password" placeholder="Enter current password" />
+                <input 
+                  type="password" 
+                  placeholder="Enter current password" 
+                  value={passwordData.currentPassword}
+                  onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                />
               </div>
               <div className={style.formGroup}>
                 <label>New Password</label>
-                <input type="password" placeholder="Enter new password" />
+                <input 
+                  type="password" 
+                  placeholder="Enter new password" 
+                  value={passwordData.newPassword}
+                  onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                />
               </div>
               <div className={style.formGroup}>
                 <label>Confirm New Password</label>
-                <input type="password" placeholder="Confirm new password" />
+                <input 
+                  type="password" 
+                  placeholder="Confirm new password" 
+                  value={passwordData.confirmPassword}
+                  onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                />
               </div>
-              <button className={style.saveBtn}>
-                <FiSave /> Update Password
-              </button>
-            </div>
-
-            <div className={style.settingsCard}>
-              <h3>
-                <FiMail /> Email Preferences
-              </h3>
-              <div className={style.checkboxGroup}>
-                <label>
-                  <input type="checkbox" defaultChecked />
-                  Course updates and announcements
-                </label>
-              </div>
-              <div className={style.checkboxGroup}>
-                <label>
-                  <input type="checkbox" defaultChecked />
-                  Weekly progress reports
-                </label>
-              </div>
-              <button className={style.saveBtn}>
-                <FiSave /> Update Preferences
+              <button className={style.saveBtn} onClick={handleUpdatePassword} disabled={loadingPass}>
+                  {loadingPass ? "Updating..." : <><FiSave /> Update Password</>}
               </button>
             </div>
           </div>

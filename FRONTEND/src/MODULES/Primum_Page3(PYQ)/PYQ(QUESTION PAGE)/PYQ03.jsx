@@ -1,16 +1,18 @@
 import style from "./PYQ03.module.css";
 import PYQ03ALLQUESTION from "./PYQ03ALLQUESTION.jsx";
 import PYQ03TOPICKWISE from "./PYQ03TOPICKWISE.jsx";
-import PYQ03SUBTOPICWISE from "./PYQ03(ALLTOPICK).jsx";
+// import PYQ03SUBTOPICWISE from "./PYQ03(ALLTOPICK).jsx"; // Unused now
+import PYQ03MANUE from "./PYQ03MANUE.jsx"; // Imported
 import PYQ03HEADERS from "./PYQ03HEADER.jsx";
 import { useState, useRef, useEffect } from "react";
 import Solution from "./Solution.jsx";
 
 function PYQ03({ setcontents, currentsubject }) {
   const [solution, SetSolution] = useState({});
-  const [showMenu, setShowMenu] = useState("All");
+  const [showMenu, setShowMenu] = useState("TopicWise"); // Default to TopicWise
   const [selectedTopic, setSelectedTopic] = useState("");
   const [id, SetId] = useState("");
+  const [currentfilter, setcurrentfilter] = useState("All"); // Added filter state
   const navbarRef = useRef();
 
   useEffect(() => {
@@ -60,7 +62,7 @@ function PYQ03({ setcontents, currentsubject }) {
                 }`}
                 onClick={() => handleMenuChange(["All"])}
               >
-                <center>All Questions</center>
+                <center>All Questions (PYQ)</center>
               </div>
               <div
                 className={`${style.tab} ${
@@ -70,19 +72,24 @@ function PYQ03({ setcontents, currentsubject }) {
                 }`}
                 onClick={() => handleMenuChange(["TopicWise"])}
               >
-                <center>
-                  Topic-Wise{selectedTopic && `: ${selectedTopic}`}
-                </center>
+                <center>Chapater-Wise (PYQ)</center>
               </div>
             </nav>
             {/* <hr className={style.hr} /> */}
 
+            {(showMenu === "TopicWise" || showMenu === "All") && (
+              <PYQ03MANUE
+                currentfilter={currentfilter}
+                setcurrentfilter={setcurrentfilter}
+              />
+            )}
+
             <div className={style.questions_contener}>
-              {showMenu === "TopicWise" && (
-                <PYQ03SUBTOPICWISE handleMenuChange={handleMenuChange} />
-              )}
               {showMenu === "All" && (
-                <PYQ03ALLQUESTION handleMenuChange={handleMenuChange} />
+                <PYQ03ALLQUESTION
+                  handleMenuChange={handleMenuChange}
+                  currentFilter={currentfilter}
+                />
               )}
               {showMenu === "Topic" && (
                 <PYQ03TOPICKWISE selectedTopic={selectedTopic} />

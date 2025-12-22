@@ -29,7 +29,21 @@ upload.fields([
 //defining routes for user
 
 // register new user (student/faculty)
-router.route("/register").post(upload.single("profileImage"), registerUser);
+router.route("/register").post(
+  (req, res, next) => {
+    console.log("DEBUG: Register route received request");
+    console.log("DEBUG: Content-Type:", req.headers["content-type"]);
+    next();
+  },
+  upload.single("profileImage"),
+  (req, res, next) => {
+    console.log("DEBUG: Multer finished");
+    console.log("DEBUG: File:", req.file);
+    console.log("DEBUG: Body after multer:", req.body);
+    next();
+  },
+  registerUser
+);
 
 //login with email & password
 router.route("/login").post(loginUser);
@@ -45,8 +59,16 @@ router
 //refresh access token
 router.route("/refreshToken").post(refreshAccessToken);
 
+//track activity
+import { trackActivity } from "../controllers/auth.controller.js";
+router.route("/activity").post(verifyJWT, trackActivity);
+
+//change password
+import { changePassword } from "../controllers/auth.controller.js";
+router.route("/change-password").post(verifyJWT, changePassword);
+
 //logout user
-router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/logout").post(logoutUser);
 
 export default router;
 

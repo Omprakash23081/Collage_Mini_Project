@@ -1,5 +1,5 @@
 //import css from './Navbars.module.css'we can import like this and use like className= {css["variable_like_className"]}
-import icon from "../PHOTO/icon.png";
+import icon from "../PHOTO/StudySharpLogo.png";
 import style from "./Navbars.module.css";
 import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
@@ -14,9 +14,9 @@ function Navbar() {
       <div className={style.contener}>
         <div className={style.left_side_navaction_bar}>
           <div className={style.image_navigation}>
-            <img src={icon} alt="THE ACHIEVERS" />
+            <img src={icon} alt="StudySharp" className="rounded-lg bg-white" />
             <Link to="/">
-              <b>Studysharp</b>
+              <b>StudySharp</b>
             </Link>
           </div>
           <div className={style.language_navigation}>

@@ -85,66 +85,70 @@ const uplodeNotes = async (req, res) => {
 };
 
 const updateNotes = async (req, res) => {
-  const { subjectName, description, teacherName, year, type } = req.body;
-  let updateData = null;
-  if (subjectName) updateData.subjectName = subjectName;
-  if (description) updateData.description = description;
-  if (teacherName) updateData.teacherName = teacherName;
-  if (year) updateData.year = year;
-  if (type) updateData.type = type;
+  try {
+    const { subjectName, description, teacherName, year, type } = req.body;
+    let updateData = {}; // Fixed: Initialize as object
+    if (subjectName) updateData.subjectName = subjectName;
+    if (description) updateData.description = description;
+    if (teacherName) updateData.teacherName = teacherName;
+    if (year) updateData.year = year;
+    if (type) updateData.type = type;
 
-  await UpdatevalidateNotes.validateAsync(req.body).catch((err) => {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, err, "Enter valid inputs"));
-  });
+    await UpdatevalidateNotes.validateAsync(req.body).catch((err) => {
+      throw new Error(err.message || "Validation Error");
+    });
 
-  if (req.user.role === "admin") {
-    const response = StudyMaterial.findByIdAndUpdate(
-      req.params,
-      {
-        updateData,
-      },
-      { new: true, runValidators: true }
-    );
+    if (req.user.role === "admin") {
+      const response = await StudyMaterial.findByIdAndUpdate(
+        req.params.id, // Fixed: req.params.id
+        updateData, // Passed directly
+        { new: true, runValidators: true }
+      );
 
-    if (response) {
-      return res
-        .status(200)
-        .json(new ApiResponse(200, response, "Notes update Sucessfully"));
+      if (response) {
+        return res
+          .status(200)
+          .json(new ApiResponse(200, response, "Notes update Sucessfully"));
+      } else {
+        return res
+          .status(404) // Changed to 404 for not found
+          .json(new ApiResponse(404, null, "Note not found"));
+      }
     } else {
       return res
-        .status(500)
-        .json(new ApiResponse(500, null, "Faild to uplode in db"));
+        .status(403) // Changed to 403
+        .json(new ApiResponse(403, null, "Notes can only update by admin"));
     }
-  } else {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, null, "Notes can only update by admin"));
+  } catch (error) {
+     return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 };
 
 const delateNotes = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  if (req.user.role !== "admin") {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, null, "Notes can only Delete by admin"));
-  }
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json(new ApiResponse(403, null, "Notes can only Delete by admin"));
+    }
 
-  const response = await StudyMaterial.findByIdAndDelete(id);
+    const response = await StudyMaterial.findByIdAndDelete(id);
 
-  if (response) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, response, "Notes Delete Sucessfully"));
-  } else {
-    return res
-      .status(500)
-      .json(
-        new ApiResponse(500, null, "Gating errer or this item is not present ")
-      );
+    if (response) {
+      return res
+        .status(200)
+        .json(new ApiResponse(200, response, "Notes Delete Sucessfully"));
+    } else {
+      return res
+        .status(404)
+        .json(
+          new ApiResponse(404, null, "Item not found")
+        );
+    }
+  } catch (error) {
+      return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 };
 

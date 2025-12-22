@@ -10,10 +10,17 @@ import YearBooks from "../MODULES/Home/YearBooks.jsx";
 import Lost_Found from "../MODULES/Home/Lost_Found.jsx";
 import Facelity_Directery from "../MODULES/Home/Facelity_Directery.jsx";
 
+import rocket from "../MODULES/PHOTO/rocket.gif";
+
 function Home() {
   return (
     <div className={style.App_contaniar}>
-      <>
+      <div className={style.background_animation}>
+        <img src={rocket} alt="" className={style.rocket_bg} />
+        <div className={style.stars}></div>
+        <div className={style.stars2}></div>
+      </div>
+      <div className={style.content_wrapper}>
         <Navbar />
         <Header />
         <ScrolBar />
@@ -22,7 +29,7 @@ function Home() {
         <Lost_Found />
         <Facelity_Directery />
         <Feedback />
-      </>
+      </div>
       <Footer />
     </div>
   );

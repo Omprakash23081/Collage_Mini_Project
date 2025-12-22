@@ -5,10 +5,25 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const verifySession = async () => {
+      try {
+        await refreshToken();
+      } catch (error) {
+
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    verifySession();
+  }, []);
 
   const login = async (email, password, role) => {
     const data = await authService.login(email, password, role);
-    console.log(data);
+
 
     setUser(data.data);
     return data;
@@ -21,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    console.log("comming for log out ");
+
     await authService.logout();
     setUser(null);
   };
@@ -32,9 +47,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const refreshToken = async () => {
-    console.log("refresh token comming");
+
     const data = await authService.refreshToken();
-    console.log(data);
+
     setUser(data.data);
   };
 
@@ -47,6 +62,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         updateUser,
         refreshToken,
+        changePassword: authService.changePassword,
+        loading,
       }}
     >
       {children}

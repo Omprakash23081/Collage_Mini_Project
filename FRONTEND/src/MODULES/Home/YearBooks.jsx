@@ -1,12 +1,13 @@
 import image from "../PHOTO/rocket.gif";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./YearBooks.module.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
 function YearBooks() {
   const { user, updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const years = [
     { title: "FIRST YEAR", desc: "....................." },
@@ -21,11 +22,7 @@ function YearBooks() {
       return;
     }
 
-    const yearValue = index + 1; // Sending 1, 2, 3, 4 as number or string based on backend expectation. 
-    // Previous code used `year${index+1}`. I'll stick to that if that's what the backend expects, 
-    // but usually "1", "2" etc is cleaner. Let's check the previous code... 
-    // It was `const yearValue = 'year${index + 1}';`
-    // I will keep it consistent.
+    setLoading(true);
     const yearString = `year${index + 1}`;
 
     try {
@@ -33,12 +30,19 @@ function YearBooks() {
       navigate("/Primum");
     } catch (error) {
       console.error("Failed to update year:", error);
-      // You might want to add a toast notification here
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className={style.yearSection}>
+      {/* GLOBAL LOADER */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loader">Loading...</div>
+        </div>
+      )}
       <div className={style.yearContainer}>
         <h1 className={style.header} id="yearBook">
           EXPLORE AS PER YEAR

@@ -10,36 +10,34 @@ function Pyq01({ icons, SubjectName, setcontents, currentsubject }) {
   return (
     <>
       <div className={style.pyq} id={style.body}>
-        <div className={style.chapter_icon} id={style.back_icon} onClick={(event) => setcontents(["first"])}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#0000F5"
-          >
-            <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
-          </svg>
-        </div>
-
         <div className={style.pyq_container}>
           <header>
             <div className={style.subject_header}>
+              <div className={style.chapter_icon} id={style.back_icon} onClick={(event) => setcontents(["first"])}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </div>
               <div className={style.subject_name}>
-                <div className={style.subject_icon}>📚</div>
                 <div className={style.subject_info}>
                   <h1>{currentsubject}</h1>
                 </div>
               </div>
-              <div className={style.SubjectDetails}>
-                <p className={style.Chapter}>32 Chapters, 5292 Qs</p>
-                <p>Filter chapters as per latest syllabus</p>
-              </div>
+
             </div>
 
             <div className={style.AllSyllabes}>
-              <button className={style.syllabes}>As per syllabus</button>
-              <button>Easy Chapter</button>
+              <button className={style.syllabes}>Chapter wise</button>
+              <button>All</button>
             </div>
           </header>
           <div className={style.chapters_grid} >

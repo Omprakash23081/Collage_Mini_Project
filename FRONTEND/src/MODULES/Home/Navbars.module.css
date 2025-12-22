@@ -1,105 +1,76 @@
+/* Premium Navbar Styling */
+
 .contener {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px; /* Reduced padding */
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 3%;
+  background: rgba(15, 23, 42, 0.6); /* Glass Transparent Dark */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   width: 100%;
-  box-sizing: border-box; /* Ensure padding is included in width */
+  box-sizing: border-box;
 }
 
 .left_side_navaction_bar {
   display: flex;
   align-items: center;
-  gap: 25px; /* Increased gap for better spacing */
+  gap: 40px;
 }
 
+/* Logo Area */
 .image_navigation {
   display: flex;
   align-items: center;
-  gap: 12px; /* Increased gap */
+  gap: 12px;
   text-decoration: none;
+  padding: 4px 0;
 }
 
 .image_navigation img {
-  width: 35px; /* Slightly smaller logo */
-  height: 35px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: white; /* Ensure logo bg is clean */
+  padding: 2px;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
 }
 
 .image_navigation a {
   text-decoration: none;
-  color: var(--text-primary);
-  font-size: 1.4rem; /* Slightly smaller text */
+  color: white;
+  font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: -0.5px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* Nav Items */
 .language_navigation,
 .solutions_navigation,
 .Resource_navigation,
 .Company_navigation {
   position: relative;
   cursor: pointer;
-  padding: 8px 12px; /* Increased padding */
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-/* Dropdowns */
-.language_name {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 10px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  z-index: 1001;
-  min-width: 150px;
-  animation: fadeIn 0.2s ease-out;
-}
-
-.language_navigation:hover .language_name {
-  display: block;
-}
-
-.languages center {
   padding: 8px 12px;
-  color: var(--text-secondary);
-  transition: all 0.2s;
-  border-radius: 6px;
-  cursor: pointer;
-  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
-.languages center:hover {
-  background: var(--accent-primary);
-  color: white;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Navigation Text Visibility */
 .language h2,
 .solution h4,
 .solution a {
-  font-size: 1.3rem;
+  font-size: 0.95rem;
   margin: 0;
-  color: var(--text-primary);
-  font-weight: 600;
-  transition: color 0.3s;
+  color: #94a3b8;
+  font-weight: 500;
+  transition: color 0.3s ease;
   text-decoration: none;
 }
 
@@ -109,29 +80,34 @@
 .Company_navigation:hover .solution h4,
 .Resource_navigation:hover .solution a,
 .Company_navigation:hover .solution a {
-  color: var(--accent-primary);
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+/* Right Side Actions */
 .Right_side_navaction_bar {
   display: flex;
   align-items: center;
-  gap: 25px; /* Increased gap */
+  gap: 20px;
 }
 
+/* Primum/Login Button */
 .navigation_Butten1 a {
   text-decoration: none;
   color: white;
-  background: var(--accent-gradient);
-  padding: 10px 25px;
-  border-radius: 25px;
-  font-weight: bold;
-  transition: all 0.3s;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  padding: 0.6rem 1.8rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
   display: inline-block;
-  box-shadow: 0 4px 15px rgba(194, 22, 65, 0.3);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+  font-size: 0.95rem;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .navigation_Butten1 a:hover {
-  box-shadow: 0 6px 20px rgba(194, 22, 65, 0.5);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.6);
   transform: translateY(-2px);
   filter: brightness(1.1);
 }
@@ -142,84 +118,157 @@
   padding: 0;
 }
 
+/* Search Bar */
 .searchContainer {
   display: flex;
   align-items: center;
-  gap: 0; /* Connected input and button */
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 25px;
-  padding: 4px;
-  transition: border-color 0.3s;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 3px 4px 3px 15px;
+  transition: all 0.3s ease;
+  width: 300px;
 }
 
 .searchContainer:focus-within {
-  border-color: var(--accent-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
 }
 
 .navigation_Butten2 input {
   background: transparent;
   border: none;
-  color: var(--text-primary);
-  padding: 8px 15px;
+  color: white;
+  padding: 5px;
   outline: none;
-  width: 200px;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.navigation_Butten2 input::placeholder {
+  color: #64748b;
 }
 
 .butten button {
-  background: var(--accent-primary);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 8px 20px;
-  border-radius: 20px;
+  padding: 6px 18px;
+  border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   font-weight: 600;
+  font-size: 0.85rem;
 }
 
 .butten button:hover {
-  background: #a01236; /* Darker shade of accent */
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
 }
 
+/* Dropdown Menu (Language) */
+.language_name {
+  display: none;
+  position: absolute;
+  top: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  min-width: 160px;
+  backdrop-filter: blur(10px);
+  margin-top: 15px;
+}
 
+/* Invisible bridge */
+.language_name::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+}
 
-@media (max-width: 1200px) {
+.language_navigation:hover .language_name {
+  display: block;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.languages center {
+  padding: 8px;
+  color: #cbd5e1;
+  transition: all 0.2s;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.languages center:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Responsiveness - Updated Breakpoints */
+@media (max-width: 900px) {
   .contener {
-    padding: 15px 20px;
+    padding: 0.8rem 1.5rem;
   }
-  
   .left_side_navaction_bar {
-    gap: 15px;
+    gap: 20px;
+  }
+  .searchContainer {
+    width: 200px;
+  }
+  .image_navigation a {
+    font-size: 1.4rem;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .contener {
     flex-direction: column;
-    gap: 20px;
-    height: auto;
+    gap: 15px;
+    padding: 1rem;
     position: relative;
-    padding: 20px;
+    background: rgba(15, 23, 42, 0.95); /* Solid background on mobile */
   }
   
   .left_side_navaction_bar {
-    flex-wrap: wrap;
-    justify-content: center;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow wrapping */
   }
   
   .Right_side_navaction_bar {
     width: 100%;
-    justify-content: center;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: space-between;
+    gap: 10px;
   }
   
   .searchContainer {
     width: 100%;
-    justify-content: space-between;
   }
   
-  .navigation_Butten2 input {
+  .input[type="search"] {
     width: 100%;
   }
+
+  .butten button {
+    display: block; /* Keep search button visible */
+  }
 }
+
+

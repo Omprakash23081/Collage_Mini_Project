@@ -55,7 +55,6 @@ function Login() {
   const LoginUser = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       await login(loginData.email, loginData.password, "user");
       toast.success("Welcome back!");
@@ -72,6 +71,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
+
     try {
       const fd = new FormData();
       fd.append("name", signupData.name);
@@ -84,6 +84,14 @@ function Login() {
       toast.success("Registration successful!");
       navigate("/");
     } catch (error) {
+      console.error("DEBUG: Registration Error Object:", error);
+      if (error.response) {
+          console.error("DEBUG: Server Response:", error.response.status, error.response.data);
+      } else if (error.request) {
+          console.error("DEBUG: No Response (Network Error?):", error.request);
+      } else {
+          console.error("DEBUG: Error checking:", error.message);
+      }
       toast.error(
         error.response?.data?.message || "Registration failed. Try again."
       );
@@ -93,7 +101,7 @@ function Login() {
   };
 
   return (
-    <div id="container" className="container">
+    <div id="container" className="login-container">
       {/* GLOBAL LOADER */}
       {loading && (
         <div className="loading-overlay">
@@ -157,6 +165,21 @@ function Login() {
           />
 
           <button type="submit">Sign Up</button>
+
+          <div className="mobile-toggle">
+            <p>
+              Already have an account?{" "}
+              <span
+                onClick={() =>
+                  document
+                    .getElementById("container")
+                    .classList.remove("active")
+                }
+              >
+                Sign In
+              </span>
+            </p>
+          </div>
         </form>
       </div>
 
@@ -204,6 +227,19 @@ function Login() {
           </a>
 
           <button type="submit">Sign In</button>
+
+          <div className="mobile-toggle">
+            <p>
+              Don't have an account?{" "}
+              <span
+                onClick={() =>
+                  document.getElementById("container").classList.add("active")
+                }
+              >
+                Sign Up
+              </span>
+            </p>
+          </div>
         </form>
       </div>
 

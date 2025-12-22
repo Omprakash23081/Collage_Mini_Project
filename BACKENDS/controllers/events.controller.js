@@ -7,129 +7,145 @@ import {
 import { Upload } from "../config/cloudinary.js";
 
 const getEvents = async (req, res) => {
-  const response = await Event.find({});
-  if (response) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, response, "Faculty details"));
-  } else {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, null, "Faild to Events on Db"));
+  try {
+    const response = await Event.find({});
+    if (response) {
+      return res
+        .status(200)
+        .json(new ApiResponse(200, response, "Faculty details"));
+    } else {
+      return res
+        .status(404) // Fixed: 404
+        .json(new ApiResponse(404, [], "No events found"));
+    }
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 };
 
 const createEvents = async (req, res) => {
-  const { err } = eventValidation.validate(req.body);
+  try {
+    const { error } = eventValidation.validate(req.body); // Fixed: error instead of err
 
-  if (err) {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, err, "Plase enter valid Inputs"));
-  }
+    if (error) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, error.message));
+    }
 
-  const { name, title, description, link, endDate } = req.body;
+    const { name, title, description, link, endDate } = req.body;
 
-  if (req.user.role !== "admin") {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, null, "event only can uplode by admin"));
-  }
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json(new ApiResponse(403, null, "event only can uplode by admin"));
+    }
 
-  let imageUrl = null;
+    let imageUrl = null;
 
-  if (req.file?.path) {
-    imageUrl = await Upload(req.file.path);
-  }
+    if (req.file?.path) {
+      imageUrl = await Upload(req.file.path);
+    }
 
-  const response = await Event.create({
-    name,
-    description,
-    endDate,
-    image: imageUrl,
-    title,
-    link,
-  });
+    const response = await Event.create({
+      name,
+      description,
+      endDate,
+      image: imageUrl,
+      title,
+      link,
+    });
 
-  if (response) {
-    return res.status(200).json(new ApiResponse(200, response, ""));
-  } else {
-    return res.status(500).json(new ApiResponse(500, null, "faild to uplode "));
+    if (response) {
+      return res.status(200).json(new ApiResponse(200, response, "Event Created Successfully"));
+    } else {
+      return res.status(500).json(new ApiResponse(500, null, "faild to uplode "));
+    }
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 };
 
 const updateEvents = async (req, res) => {
-  const { err } = UpdateeventValidation.validate(req.body);
+  try {
+    const { error } = UpdateeventValidation.validate(req.body); // Fixed destructuring
 
-  if (err) {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, err, "Plase enter valid Inputs"));
-  }
+    if (error) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, error.message));
+    }
 
-  const { endDate, name, link, title, description } = req.body;
+    const { endDate, name, link, title, description } = req.body;
 
-  if (req.user.role !== "admin") {
-    return res
-      .status(400)
-      .json(
-        new ApiResponse(400, null, "Faculty detais only can update by Admin")
-      );
-  }
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json(
+          new ApiResponse(403, null, "Faculty detais only can update by Admin")
+        );
+    }
 
-  let updateData = {};
-  if (name) updateData.name = name;
-  if (title) updateData.title = title;
-  if (description) updateData.description = description;
-  if (link) updateData.link = link;
-  if (endDate) updateData.endDate = endDate;
+    let updateData = {};
+    if (name) updateData.name = name;
+    if (title) updateData.title = title;
+    if (description) updateData.description = description;
+    if (link) updateData.link = link;
+    if (endDate) updateData.endDate = endDate;
 
-  if (req.file?.path) {
-    const imageUrl = await Upload(req.file.path);
-    updateData.image = imageUrl;
-  }
+    if (req.file?.path) {
+      const imageUrl = await Upload(req.file.path);
+      updateData.image = imageUrl;
+    }
 
-  const response = await Event.findByIdAndUpdate(req.params.id, updateData, {
-    new: true,
-    runValidators: true,
-  });
+    const response = await Event.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
-  if (response) {
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(200, response, "Events details updates Sucessfily")
-      );
-  } else {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, null, "Faild to uplode on Db"));
+    if (response) {
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(200, response, "Events details updates Sucessfily")
+        );
+    } else {
+      return res
+        .status(500)
+        .json(new ApiResponse(500, null, "Faild to uplode on Db"));
+    }
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 };
 
 const delateEvents = async (req, res) => {
-  if (!req.params.id) {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, err, "Plase Select valid events"));
-  }
+  try {
+    if (!req.params.id) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Plase Select valid events"));
+    }
 
-  if (req.user.role !== "admin") {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, err, "Event only can delate by admin"));
-  }
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json(new ApiResponse(403, null, "Event only can delate by admin"));
+    }
 
-  const response = await Event.findByIdAndDelete(req.params.id);
+    const response = await Event.findByIdAndDelete(req.params.id);
 
-  if (response) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, response, "Event delete Sucessfily"));
-  } else {
-    return res
-      .status(500)
-      .json(new ApiResponse(500, null, "Faild to delate Events"));
+    if (response) {
+      return res
+        .status(200)
+        .json(new ApiResponse(200, response, "Event delete Sucessfily"));
+    } else {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, "Faild to delate Events"));
+    }
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 };
 

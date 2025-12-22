@@ -1,0 +1,174 @@
+/* Premium Footer CSS */
+
+.footerContainer {
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4rem 2rem 2rem;
+  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  width: 100%; /* Force full width within flex container */
+  box-sizing: border-box; /* Ensure padding doesn't overflow width */
+}
+
+.footerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Equal columns for balance */
+  gap: 40px;
+  margin-bottom: 3rem;
+}
+
+/* New class to ensure perfect internal alignment */
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Forces content to left */
+  text-align: left;
+}
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.footerLogo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.brandText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.description {
+  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 300px;
+}
+
+.sectionHeader {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+/* Underline removed as requested */
+.sectionHeader::after {
+  content: none;
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linkItem {
+  margin-bottom: 0;
+}
+
+.link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.link:hover {
+  color: var(--accent-primary);
+  transform: translateX(4px);
+}
+
+.socialIcons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100px; /* Constrain width to keep them tight */
+}
+
+.socialIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 1.2rem;
+}
+
+/* "Eye" look: Odds to right, Evens to left for a tight cluster */
+.socialIcon:nth-child(odd) {
+  justify-self: end;
+}
+
+.socialIcon:nth-child(even) {
+  justify-self: start;
+}
+
+.socialIcon:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-glow-blue);
+  transform: translateY(-3px);
+  color: white;
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .footerContent {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footerContent {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: left; /* Revert to left align */
+  }
+
+  .section {
+    align-items: flex-start; /* Revert to left align */
+  }
+
+  /* Reset margin for social icons to align left */
+  .socialIcons {
+    margin: 0;
+  }
+
+  .footerLogo {
+    justify-content: flex-start;
+  }
+}

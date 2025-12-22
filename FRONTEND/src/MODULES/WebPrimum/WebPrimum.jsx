@@ -16,11 +16,7 @@ function WebPrimum() {
     <>
       <div className={style.pricing_container} id={style.body}>
         <div className={style.innerContainer}>
-          <div
-            className={
-              currentPrice === "Super" ? style.selectedone : style.selectedtwo
-            }
-          ></div>
+
           <table className={style.pricing_table}>
             <tbody>
               <tr className={style.header}>
@@ -29,8 +25,7 @@ function WebPrimum() {
                   Super
                 </td>
                 <td
-                  id={style.premiumtext}
-                  className={currentPrice === "Premium" && style.selected}
+                  className={`${style.premiumtext} ${currentPrice === "Premium" ? style.selected : ""}`}
                 >
                   Premium
                 </td>

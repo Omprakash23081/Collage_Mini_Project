@@ -1,16 +1,54 @@
 :root {
-  --bg-primary: #0b0c10;       /* Distinct Premium Dark (Deep Cool Grey) */
-  --bg-secondary: #0a0a0a;     /* Slightly lighter for cards/sidebars */
-  --bg-tertiary: #161b2c;      /* Dark Blue-ish Grey (from Premium page) */
+  /* GLOBAL MASTER PALETTE (Premium EdTech) */
   
-  --accent-primary: #c21641;   /* The Premium Red */
-  --accent-gradient: linear-gradient(180deg, #c21641 0%, rgba(194, 22, 65, 0) 100%);
+  /* Backgrounds */
+  --bg-dark: #05060A;
+  --bg-darker: #0C0F16;
+  --bg-gradient-base: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+  --bg-glass: rgba(12, 15, 22, 0.7);
+  --bg-glass-heavy: rgba(12, 15, 22, 0.9);
   
+  /* Accents */
+  --neon-blue: #2563EB;
+  --neon-magenta: #FF1F6A;
+  --neon-magenta-dark: #C30A4F;
+  --gold: #CFA66A;
+  
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, var(--neon-magenta) 0%, var(--neon-magenta-dark) 100%);
+  --grad-blue: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  --grad-glass: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  
+  /* Text */
   --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-gold: #CFA66A;
   
-  --border-color: rgba(255, 255, 255, 0.1);
+  /* Borders & Shadows */
+  --border-glass: 1px solid rgba(255, 255, 255, 0.08);
+  --border-neon-blue: 0 0 10px rgba(37, 99, 235, 0.3);
+  --shadow-deep: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+  --shadow-glow-blue: 0 0 20px rgba(37, 99, 235, 0.15);
+  
+  /* Legacy/Compat Mappings */
+  --bg-primary: var(--bg-dark);
+  --bg-secondary: var(--bg-darker);
+  --accent-primary: var(--neon-magenta);
+  --accent-gradient: var(--grad-primary);
+  --border-color: rgba(255, 255, 255, 0.08);
+  
+  /* Wood Texture Overlay (Simulated with noise/pattern if image missing, 
+     but assuming we might add an image later. For now using subtle noise) */
+}
+
+/* Global Reset & Typography */
+body {
+  background: var(--bg-dark); /* Fallback */
+  background-image: var(--bg-gradient-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  min-height: 100vh;
 }
 
 /* LOGIN PAGE CSSS is prasent afte line number 582*/
@@ -579,39 +617,75 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-.container {
-  background-color: #ffffff9f;
+.login-container {
+  background-color: #ffffff;
   border-radius: 25px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   position: relative;
   overflow: hidden;
   width: 768px;
-  margin-top: 90px;
+  margin-top: 150px;
   max-width: 100%;
   min-height: 480px;
+  color: #333; /* Ensure text is dark on white bg */
 }
 
-.container p {
+.login-container h1 {
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.login-container p {
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.3px;
   margin: 20px 0;
 }
 
-.container span {
+/* ... existing styles ... */
+
+.social-icons {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.social-icons a {
+  border: 1px solid #ccc;
+  border-radius: 20%; /* Rounded square/circle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  width: 40px;
+  height: 40px;
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+.login-container span {
   font-size: 12px;
 }
 
-.container a {
+.login-container a {
   color: #333;
   font-size: 13px;
   text-decoration: none;
   margin: 15px 0 10px;
 }
 
-.container button {
+.login-container button {
   background-color: #1565c0;
-  /* Darker blue for buttons */
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
@@ -624,12 +698,12 @@ body {
   cursor: pointer;
 }
 
-.container button.hidden {
+.login-container button.hidden {
   background-color: transparent;
   border-color: #fff;
 }
 
-.container form {
+.login-container form {
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -639,10 +713,8 @@ body {
   height: 100%;
 }
 
-.container input {
+.login-container input {
   background-color: #f0f4f8;
-  /* Lighter blue shade for input background */
-  /* border: none; */
   margin: 8px 0;
   padding: 10px 15px;
   font-size: 13px;
@@ -664,10 +736,6 @@ body {
   z-index: 2;
 }
 
-.container.active .sign-in {
-  transform: translateX(100%);
-}
-
 .sign-up {
   left: 0;
   width: 50%;
@@ -675,40 +743,15 @@ body {
   z-index: 1;
 }
 
-.container.active .sign-up {
+.login-container.active .sign-in {
+  transform: translateX(100%);
+}
+
+.login-container.active .sign-up {
   transform: translateX(100%);
   opacity: 1;
   z-index: 5;
   animation: move 0.6s;
-}
-
-@keyframes move {
-  0%,
-  49.99% {
-    opacity: 0;
-    z-index: 1;
-  }
-
-  50%,
-  100% {
-    opacity: 1;
-    z-index: 5;
-  }
-}
-
-.social-icons {
-  margin: 20px 0;
-}
-
-.social-icons a {
-  border: 1px solid #1d1515;
-  border-radius: 20%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 3px;
-  width: 40px;
-  height: 40px;
 }
 
 .toggle-container {
@@ -723,14 +766,13 @@ body {
   z-index: 1000;
 }
 
-.container.active .toggle-container {
+.login-container.active .toggle-container {
   transform: translateX(-100%);
   border-radius: 0 50px 50px 0;
 }
 
 .toggle {
   background-color: #1976d2;
-  /* Blue gradient background */
   height: 100%;
   background: linear-gradient(to right, #2156f3, #1947d2);
   color: #fff;
@@ -742,7 +784,7 @@ body {
   transition: all 0.6s ease-in-out;
 }
 
-.container.active .toggle {
+.login-container.active .toggle {
   transform: translateX(50%);
 }
 
@@ -765,23 +807,96 @@ body {
   transform: translateX(-200%);
 }
 
-.container.active .toggle-left {
-  transform: translateX(0);
-}
-
 .toggle-right {
   right: 0;
   transform: translateX(0);
 }
 
-.container.active .toggle-right {
+.login-container.active .toggle-left {
+  transform: translateX(0);
+}
+
+.login-container.active .toggle-right {
   transform: translateX(200%);
+}
+
+/* Mobile Toggle Default Hidden */
+.mobile-toggle {
+  display: none;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.mobile-toggle p {
+  font-size: 14px;
+  color: #333;
+}
+
+.mobile-toggle span {
+  font-weight: bold;
+  color: #1565c0;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 /* Small devices (phones, 600px and down) */
 @media (max-width: 500px) {
-  .container {
+  .login-container {
+    width: 90%;
+    min-height: 600px; /* Slightly taller to fit signup fields */
+    margin-top: 100px;
+    transform: scale(1);
+    display: block;
+  }
+
+  .form-container {
+    width: 100%;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s;
+  }
+
+  .toggle-container {
     display: none;
+  }
+  
+  .mobile-toggle {
+    display: block; /* Show on mobile */
+  }
+
+  /* Default State: Sign In Visible, Sign Up Hidden */
+  .sign-in {
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    opacity: 1;
+    visibility: visible;
+    transform: none; /* Reset desktop transforms */
+  }
+
+  .sign-up {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1;
+      transform: none; /* Reset desktop transforms */
+      position: absolute; /* Keep it on top */
+      top: 0;
+  }
+
+  /* Active State: Sign Up Visible, Sign In Hidden */
+  .login-container.active .sign-up {
+      opacity: 1;
+      visibility: visible;
+      z-index: 10;
+      transform: none; /* No sliding, just fade/appear */
+      animation: none; /* Disable desktop keyframes */
+  }
+  
+  .login-container.active .sign-in {
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1;
+      transform: none;
   }
 }
 
@@ -1151,9 +1266,11 @@ i {
   font-weight: 500;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+.subjectGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   margin-bottom: 40px;
 }
@@ -1167,23 +1284,28 @@ i {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
+  flex: 1 1 280px; /* Flex-grow, Flex-shrink, Basis */
+  max-width: 350px; /* Prevent them from getting too wide */
 }
 
 .subjectcard:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--neon-blue); /* Adding visual feedback */
 }
 
 .subjecticon {
   width: 28px;
   height: 28px;
   color: #4caf50;
+  flex-shrink: 0;
 }
 
 .card-title {
   font-size: 1rem;
   color: #333;
   font-weight: 500;
+  white-space: nowrap; /* Prevent text wrapping if desired, or remove */
 }
 
 .explore-button {
@@ -1261,4 +1383,34 @@ i {
     width: 100%;
     padding-bottom: 80px;
   }
+}
+
+/* GLOBAL LOADER STYLES */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1565c0; /* Blue accent */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  font-size: 0; /* Hide text */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
