@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
       try {
         await refreshToken();
       } catch (error) {
-
         setUser(null);
       } finally {
         setLoading(false);
@@ -23,9 +22,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, role) => {
     const data = await authService.login(email, password, role);
-
-
     setUser(data.data);
+    console.log(data);
     return data;
   };
 
@@ -36,7 +34,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-
     await authService.logout();
     setUser(null);
   };
@@ -47,7 +44,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const refreshToken = async () => {
-
     const data = await authService.refreshToken();
 
     setUser(data.data);

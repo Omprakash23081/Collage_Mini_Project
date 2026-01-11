@@ -21,10 +21,13 @@ function AllPrimum() {
   const { user, logout, loading: authLoading } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log("[AllPrimum] Auth Check:", { authLoading, user: user ? user.name : "null" });
     if (!authLoading) {
       if (!user) {
+        console.log("[AllPrimum] No user, redirecting to /login");
         navigate("/login");
       } else if (!user.year) {
+        console.log("[AllPrimum] No year, redirecting to /");
         toast.error("Please select your year first");
         navigate("/");
       }

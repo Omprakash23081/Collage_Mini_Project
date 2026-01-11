@@ -56,7 +56,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(loginData.email, loginData.password, "user");
+      await login(loginData.email, loginData.password, "student");
       toast.success("Welcome back!");
       navigate("/primum");
     } catch (error) {
@@ -78,7 +78,7 @@ function Login() {
       fd.append("email", signupData.email);
       fd.append("password", signupData.password);
       fd.append("profileImage", signupData.image);
-      fd.append("role", "user");
+      fd.append("role", "student");
 
       await register(fd);
       toast.success("Registration successful!");

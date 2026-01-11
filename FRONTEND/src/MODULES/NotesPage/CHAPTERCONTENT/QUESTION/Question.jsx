@@ -64,7 +64,7 @@ function Question({ setcontents, currentsubject }) {
 
       <div className={style.questions_contener}>
         {activeTab === "TopicWise" ? (
-          <TopicwisePrinter questions={questions} />
+          <TopicwisePrinter questions={questions.filter((q) => q.isImportant)} />
         ) : (
           <AllPrinter questions={questions} />
         )}

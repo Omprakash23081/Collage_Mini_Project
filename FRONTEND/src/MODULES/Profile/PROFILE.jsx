@@ -20,7 +20,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 function PROFILE() {
   const [activeTab, setActiveTab] = useState("activity");
   const [isEditing, setIsEditing] = useState(false);
-  const { user, updateUser, changePassword } = useContext(AuthContext);
+  const { user, updateUser, changePassword, logout } = useContext(AuthContext);
   
   // Password Change State
   const [passwordData, setPasswordData] = useState({
@@ -128,6 +128,11 @@ function PROFILE() {
             className={style.avatar}
           />
           <div className={style.membershipBadge}>{user?.role}</div>
+          {user?.isPremium && (
+             <div style={{ marginTop: '0.5rem', background: 'linear-gradient(45deg, #F59E0B, #B45309)', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                 <FiAward size={12}/> PREMIUM
+             </div>
+          )}
         </div>
 
         {isEditing ? (
@@ -275,6 +280,8 @@ function PROFILE() {
         {activeTab === "settings" && (
           <div className={style.settingsSection}>
             <h2 className={style.sectionTitle}>Account Settings</h2>
+            
+            {/* Change Password Card */}
             <div className={style.settingsCard}>
               <h3><FiLock /> Change Password</h3>
               <div className={style.formGroup}>
@@ -308,8 +315,41 @@ function PROFILE() {
                   {loadingPass ? "Updating..." : <><FiSave /> Update Password</>}
               </button>
             </div>
+
+            {/* Premium & Session Card */}
+            <div className={style.settingsCard} style={{ marginTop: '2rem' }}>
+                 <h3><FiActivity /> Subscription & Session</h3>
+                 
+                 {user?.isPremium && (
+                     <div style={{ padding: '1rem', background: 'rgba(245, 158, 11, 0.1)', borderRadius: '8px', border: '1px solid rgba(245, 158, 11, 0.3)', marginBottom: '1.5rem' }}>
+                         <p style={{ color: '#F59E0B', fontWeight: 'bold' }}>You are a Premium Member</p>
+                         <p style={{ color: '#A1A1AA', fontSize: '0.9rem' }}>
+                             Expires on: {user?.premiumExpiry ? new Date(user.premiumExpiry).toLocaleDateString() : 'Lifetime'}
+                         </p>
+                     </div>
+                 )}
+
+                 {!user?.isPremium && (
+                      <div style={{ padding: '1rem', background: 'rgba(39, 39, 42, 0.5)', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                         <p style={{ color: '#A1A1AA' }}>Free Plan</p>
+                         <button style={{ marginTop: '0.5rem', color: '#F43F5E', fontSize: '0.9rem' }}>Upgrade to Premium</button>
+                     </div>
+                 )}
+
+                 <button 
+                    onClick={() => {
+                        if (window.confirm("Are you sure you want to logout?")) {
+                            logout();
+                        }
+                    }}
+                    style={{ width: '100%', padding: '0.75rem', background: '#EF4444', color: 'white', borderRadius: '0.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                 >
+                     <FiLogOut /> Log Out
+                 </button>
+            </div>
           </div>
         )}
+
       </div>
     </div>
   );

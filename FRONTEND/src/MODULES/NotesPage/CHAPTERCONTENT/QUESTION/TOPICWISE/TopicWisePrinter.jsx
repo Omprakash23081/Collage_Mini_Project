@@ -12,7 +12,7 @@ function TopicWisePrinter({ questions: topics }) {
             <div className={style.question_item} key={values}>
               <div className={style.question_text}>
                 <span>
-                  0{i++} {values.description}
+                  0{i++} <span style={{color: '#ffffff', margin: '0 8px'}}>{values.teacherName}</span> {values.description}
                 </span>{" "}
               </div>
               <div className={style.question_meta}>
