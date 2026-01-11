@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
-import { Search, Plus, Upload, FileQuestion, Loader2 } from 'lucide-react';
+import ConfirmModal from '../components/ConfirmModal';
+import BulkActionToolbar from '../components/BulkActionToolbar';
+import { Search, Plus, Upload, FileQuestion, Loader2, Shield, AlertCircle } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const PYQ = () => {
   const [pyqs, setPyqs] = useState([]);
@@ -12,19 +15,27 @@ const PYQ = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  // Selection & Bulk Actions
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmConfig, setConfirmConfig] = useState(null);
+
   // Form State
   const [formData, setFormData] = useState({
+    questionNumber: '',
     subjectName: '',
     question: '',
-    years: '',
     tag: '',
+    years: '',
     answer: '',
-    questionNumber: '',
+    isPremium: false,
+    status: 'draft',
+    difficulty: 'medium',
     file: null
   });
 
   useEffect(() => {
-    fetchPyqs();
+    fetchPYQs();
   }, []);
 
   useEffect(() => {
@@ -34,13 +45,12 @@ const PYQ = () => {
         const lower = searchTerm.toLowerCase();
         setFilteredPyqs(pyqs.filter(p => 
             p.subjectName?.toLowerCase().includes(lower) || 
-            p.question?.toLowerCase().includes(lower) ||
-            p.tag?.toLowerCase().includes(lower)
+            p.question?.toLowerCase().includes(lower)
         ));
     }
   }, [searchTerm, pyqs]);
 
-  const fetchPyqs = async () => {
+  const fetchPYQs = async () => {
     try {
       setLoading(true);
       const response = await api.get('/pyq');
@@ -56,8 +66,11 @@ const PYQ = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ 
+        ...prev, 
+        [name]: type === 'checkbox' ? checked : value 
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -66,71 +79,127 @@ const PYQ = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate required fields (optional but good practice)
-    
     try {
         setSubmitting(true);
-        const data = new FormData();
-        data.append('subjectName', formData.subjectName);
-        data.append('question', formData.question);
-        data.append('years', formData.years);
-        data.append('tag', formData.tag);
-        data.append('answer', formData.answer);
-        data.append('questionNumber', formData.questionNumber);
+        // Transform user friendly years string "2020, 2021" to array
+        const yearsArray = formData.years.split(',').map(y => y.trim()).filter(y => y);
+        
+        const payload = new FormData();
+        payload.append('questionNumber', formData.questionNumber);
+        payload.append('subjectName', formData.subjectName);
+        payload.append('question', formData.question);
+        payload.append('tag', formData.tag);
+        payload.append('answer', formData.answer);
+        payload.append('isPremium', formData.isPremium);
+        payload.append('status', formData.status);
+        payload.append('difficulty', formData.difficulty);
+        yearsArray.forEach(year => payload.append('years', year)); // Handle array
+        
         if (formData.file) {
-            data.append('image', formData.file);
+            payload.append('image', formData.file);
         }
 
-        await api.post('/pyq/create', data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        // Note: Controller expects JSON for some fields if not using multer properly for everything or specific handling. 
+        // Based on pyq.controller.js implementation of `addPYQ`:
+        // It extracts body fields. If using FormData globally, express might need multer to parse body fields too.
+        // Assuming the route uses `upload.single('image')` middleware which parses fields too.
+        
+        await api.post('/pyq/upload', payload);
 
-        alert("PYQ added successfully!");
+        toast.success("PYQ added successfully!");
         setIsModalOpen(false);
-        setFormData({ subjectName: '', question: '', years: '', tag: '', answer: '', questionNumber: '', file: null });
-        fetchPyqs();
+        setFormData({ 
+            questionNumber: '', subjectName: '', question: '', tag: '', years: '', answer: '',
+            isPremium: false, status: 'draft', difficulty: 'medium', file: null
+        });
+        fetchPYQs();
     } catch (error) {
         console.error("Upload failed", error);
-        alert(error.response?.data?.message || "Failed to add PYQ");
+        toast.error(error.response?.data?.message || "Failed to add PYQ");
     } finally {
         setSubmitting(false);
     }
   };
 
   const deletePYQ = async (id) => {
-      if(!window.confirm("Are you sure you want to delete this PYQ?")) return;
-      try {
-          await api.delete(`/pyq/${id}`);
-          fetchPyqs();
-      } catch (error) {
-          console.error("Delete failed", error);
-          alert("Failed to delete PYQ");
-      }
+      setConfirmConfig({
+          title: "Delete PYQ?",
+          message: "This action cannot be undone.",
+          isDestructive: true,
+          confirmText: "Delete",
+          onConfirm: async () => {
+              try {
+                  await api.delete(`/pyq/${id}`);
+                  fetchPYQs();
+                  toast.success("PYQ deleted");
+              } catch (error) {
+                  console.error("Delete failed", error);
+                  toast.error("Failed to delete PYQ");
+              }
+          }
+      });
+      setIsConfirmOpen(true);
   }
 
+  // Bulk Actions
+  const handleSelect = (id, checked) => {
+       if (checked) setSelectedItems(prev => [...prev, id]);
+       else setSelectedItems(prev => prev.filter(i => i !== id));
+  };
+
+  const handleSelectAll = (checked) => {
+      setSelectedItems(checked ? filteredPyqs.map(p => p._id) : []);
+  };
+
+  const handleBulkAction = (actionType) => {
+      setConfirmConfig({
+          title: "Bulk Action",
+          message: `Are you sure you want to ${actionType} ${selectedItems.length} items?`,
+          isDestructive: actionType === 'delete',
+          confirmText: "Proceed",
+          onConfirm: async () => {
+              try {
+                  for(const id of selectedItems) {
+                      if (actionType === 'delete') await api.delete(`/pyq/${id}`);
+                      else if (actionType === 'publish') await api.patch(`/pyq/${id}`, { status: 'published' });
+                      else if (actionType === 'draft') await api.patch(`/pyq/${id}`, { status: 'draft' });
+                      else if (actionType === 'premium') await api.patch(`/pyq/${id}`, { isPremium: true });
+                  }
+                  fetchPYQs();
+                  setSelectedItems([]);
+                  toast.success("Bulk action completed");
+              } catch (err) {
+                  toast.error("Some actions failed");
+              }
+          }
+      });
+      setIsConfirmOpen(true);
+  };
+
   const columns = [
-    { header: "Q.No", accessor: "questionNumber", render: (row) => <span className="font-mono">{row.questionNumber}</span> },
+    { header: "Q.No", accessor: "questionNumber", render: (row) => <span className="font-mono text-zinc-400">#{row.questionNumber}</span> },
     { 
-        header: "Question", 
-        accessor: "question",
+        header: "Subject", 
+        accessor: "subjectName",
         render: (row) => (
-            <div className="max-w-xs">
-                <p className="font-medium text-zinc-200 line-clamp-2">{row.question}</p>
-                <div className="flex gap-2 mt-1">
-                    <span className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded text-zinc-400">{row.years}</span>
-                    <span className="text-xs bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded uppercase">{row.tag}</span>
+             <div>
+                <div className="flex items-center gap-2">
+                    <span className="font-medium text-zinc-200">{row.subjectName}</span>
+                    {row.isPremium && <Shield size={14} className="text-amber-500" />}
+                </div>
+                <div className="flex gap-2 text-[10px] mt-1">
+                    {row.status === 'draft' && <span className="bg-zinc-700 px-1 rounded text-zinc-400">Draft</span>}
+                    <span className={`px-1 rounded ${
+                        row.difficulty === 'hard' ? 'bg-red-500/20 text-red-500' :
+                        row.difficulty === 'medium' ? 'bg-yellow-500/20 text-yellow-500' :
+                        'bg-green-500/20 text-green-500'
+                    }`}>{row.difficulty || 'medium'}</span>
                 </div>
             </div>
         )
     },
-    { header: "Subject", accessor: "subjectName" },
-    { 
-        header: "Answer", 
-        accessor: "answer", 
-        render: (row) => (
-            <div className="max-w-xs text-xs text-zinc-400 line-clamp-2">{row.answer}</div>
-        ) 
-    },
+    { header: "Question", accessor: "question", render: (row) => <div className="max-w-xs truncate text-zinc-400" title={row.question}>{row.question}</div> },
+    { header: "Years", accessor: "years", render: (row) => <span className="text-xs bg-zinc-800 px-2 py-1 rounded text-zinc-400">{Array.isArray(row.years) ? row.years.join(", ") : row.years}</span> },
   ];
 
   return (
@@ -145,16 +214,16 @@ const PYQ = () => {
             className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2.5 rounded-xl hover:bg-rose-700 transition-colors font-medium shadow-lg shadow-rose-500/20"
         >
             <Plus size={18} />
-            <span>Add PYQ</span>
+            <span>Add Question</span>
         </button>
       </div>
 
-      <div className="bg-zinc-900 p-4 rounded-xl shadow-sm border border-white/5">
+       <div className="bg-zinc-900 p-4 rounded-xl shadow-sm border border-white/5">
         <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={20} />
             <input 
                 type="text" 
-                placeholder="Search PYQs..." 
+                placeholder="Search questions..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-zinc-950 border border-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500/20 text-zinc-200 font-medium placeholder-zinc-500"
@@ -167,117 +236,115 @@ const PYQ = () => {
         data={filteredPyqs} 
         isLoading={loading}
         onDelete={(row) => deletePYQ(row._id)}
+        selectedItems={selectedItems}
+        onSelect={handleSelect}
+        onSelectAll={handleSelectAll}
       />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Add Previous Year Question">
+      <BulkActionToolbar 
+          selectedCount={selectedItems.length} 
+          onClear={() => setSelectedItems([])} 
+          onAction={handleBulkAction} 
+      />
+
+      <ConfirmModal 
+          isOpen={isConfirmOpen} 
+          onClose={() => setIsConfirmOpen(false)} 
+          {...confirmConfig} 
+      />
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Add New PYQ">
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Subject Name</label>
-                    <input 
-                        type="text" 
-                        name="subjectName"
-                        value={formData.subjectName}
-                        onChange={handleInputChange}
-                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                        required
-                    />
+                    <label className="text-sm font-medium text-zinc-400">Question No.</label>
+                    <input type="number" name="questionNumber" value={formData.questionNumber} onChange={handleInputChange} className="input-field" required />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Question Number</label>
-                    <input 
-                        type="text" 
-                        name="questionNumber"
-                        value={formData.questionNumber}
-                        onChange={handleInputChange}
-                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                        required
-                    />
+                    <label className="text-sm font-medium text-zinc-400">Subject</label>
+                    <input type="text" name="subjectName" value={formData.subjectName} onChange={handleInputChange} className="input-field" required />
                 </div>
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Question Text</label>
-                <textarea 
-                    name="question"
-                    value={formData.question}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                    required
-                />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Year (e.g., 2023)</label>
-                    <input 
-                        type="text" 
-                        name="years"
-                        value={formData.years}
-                        onChange={handleInputChange}
-                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                        required
-                    />
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Tag (e.g., MST, End Sem)</label>
-                    <input 
-                        type="text" 
-                        name="tag"
-                        value={formData.tag}
-                        onChange={handleInputChange}
-                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                        required
-                    />
-                </div>
+                <label className="text-sm font-medium text-zinc-400">Question</label>
+                <textarea name="question" value={formData.question} onChange={handleInputChange} rows={3} className="input-field" required />
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Answer / Explanation</label>
-                <textarea 
-                    name="answer"
-                    value={formData.answer}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                />
+                <label className="text-sm font-medium text-zinc-400">Answer (Markdown Supported)</label>
+                <textarea name="answer" value={formData.answer} onChange={handleInputChange} rows={5} className="input-field font-mono text-sm" required />
             </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Upload Image (Optional)</label>
-                <div className="border-2 border-dashed border-zinc-700 rounded-xl p-6 text-center cursor-pointer hover:bg-zinc-800/50 transition-colors relative">
-                    <input 
-                        type="file" 
-                        onChange={handleFileChange}
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                    />
-                    <Upload className="mx-auto text-zinc-500 mb-2" size={24} />
-                    <p className="text-zinc-400 text-xs">
-                        {formData.file ? formData.file.name : "Click to upload image"}
-                    </p>
+             <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Years (comma separated)</label>
+                    <input type="text" name="years" value={formData.years} onChange={handleInputChange} placeholder="2020, 2021" className="input-field" required />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Tag</label>
+                    <input type="text" name="tag" value={formData.tag} onChange={handleInputChange} className="input-field" />
                 </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-4 border border-zinc-800 p-3 rounded-xl bg-zinc-950/30">
+                 <div className="flex items-center gap-3">
+                    <div className={`w-4 h-4 rounded-full border ${formData.status === 'published' ? 'bg-green-500 border-green-500' : 'border-zinc-500'}`} />
+                    <select name="status" value={formData.status} onChange={handleInputChange} className="bg-transparent text-sm focus:outline-none w-full">
+                        <option value="draft">Save as Draft</option>
+                        <option value="published">Publish Now</option>
+                    </select>
+                </div>
+                 <div className="flex items-center gap-3">
+                    <span className="text-sm text-zinc-400">Diff:</span>
+                    <select name="difficulty" value={formData.difficulty} onChange={handleInputChange} className="bg-transparent text-sm focus:outline-none w-full text-zinc-200">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
+             <div className="space-y-2">
+                <label className="flex items-center gap-3 cursor-pointer p-2">
+                    <input type="checkbox" name="isPremium" checked={formData.isPremium} onChange={handleInputChange} className="accent-amber-500 w-4 h-4" />
+                    <span className="text-sm font-medium text-amber-500 flex items-center gap-2"><Shield size={14}/> Premium Content</span>
+                </label>
+             </div>
+             
+             <div className="space-y-2">
+                 <label className="text-sm font-medium text-zinc-400">Optional Image</label>
+                  <div className="border-2 border-dashed border-zinc-700 rounded-xl p-4 text-center cursor-pointer hover:bg-zinc-800/50 transition-colors relative">
+                    <input type="file" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                    <Upload className="mx-auto text-zinc-500 mb-2" size={20} />
+                    <p className="text-zinc-400 text-xs">{formData.file ? formData.file.name : "Click to upload"}</p>
+                </div>
+             </div>
 
             <div className="pt-4 flex justify-end gap-3">
-                <button 
-                    type="button" 
-                    onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors"
-                >
-                    Cancel
-                </button>
-                <button 
-                    type="submit" 
-                    disabled={submitting}
-                    className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700 transition-colors flex items-center gap-2"
-                >
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800">Cancel</button>
+                <button type="submit" disabled={submitting} className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700 flex items-center gap-2">
                     {submitting && <Loader2 className="animate-spin" size={18} />}
-                    {submitting ? 'Saving...' : 'Add PYQ'}
+                    {submitting ? 'Saving...' : 'Save PYQ'}
                 </button>
             </div>
         </form>
       </Modal>
+
+      <style>{`
+        .input-field {
+            width: 100%;
+            background-color: rgb(39 39 42); 
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: rgb(244 244 245);
+        }
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.5);
+        }
+      `}</style>
     </div>
   );
 };

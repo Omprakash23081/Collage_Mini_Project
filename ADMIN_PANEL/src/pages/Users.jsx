@@ -1,13 +1,33 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import Table from '../components/Table';
-import { Search, Plus } from 'lucide-react';
+import Modal from '../components/Modal';
+import ConfirmModal from '../components/ConfirmModal';
+import { Search, Plus, Shield, Crown, User as UserIcon } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmConfig, setConfirmConfig] = useState(null);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    year: '',
+    role: 'user',
+    isPremium: false,
+    file: null,
+    id: null
+  });
 
   useEffect(() => {
     fetchUsers();
@@ -29,67 +49,24 @@ const Users = () => {
     try {
       setLoading(true);
       const response = await api.get('/users/getallusers');
-      // Adjust based on actual API response structure
       if (response.data && response.data.data) {
         setUsers(response.data.data);
         setFilteredUsers(response.data.data);
       }
     } catch (error) {
-      console.error("Failed to fetch users", error);
+      console.error("Failed to fetch users (Full Error):", error);
+      toast.error(`Failed to load users: ${error.response?.data?.message || error.message || "Unknown error"}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const columns = [
-    { 
-        header: "User", 
-        accessor: "name",
-        render: (row) => (
-            <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 font-bold text-xs uppercase overflow-hidden">
-                    {row.profileImage ? (
-                        <img src={row.profileImage} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                        row.name?.[0] || 'U'
-                    )}
-                </div>
-                <div>
-                    <p className="font-semibold text-zinc-200">{row.name}</p>
-                    <p className="text-xs text-zinc-500">{row.email}</p>
-                </div>
-            </div>
-        )
-    },
-    { header: "Role", accessor: "role", render: (row) => (
-        <span className={`px-2 py-1 rounded-md text-xs font-semibold capitalize ${
-            row.role === 'admin' ? 'bg-rose-500/10 text-rose-400' : 'bg-zinc-800 text-zinc-400'
-        }`}>
-            {row.role}
-        </span>
-    )},
-    { header: "Year", accessor: "year", render: (row) => row.year || '-' },
-    { 
-        header: "Joined", 
-        accessor: "createdAt", 
-        render: (row) => row.createdAt ? new Date(row.createdAt).toLocaleDateString() : '-' 
-    }
-  ];
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    year: '',
-    role: 'user', // Default role
-    file: null
-  });
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ 
+        ...prev, 
+        [name]: type === 'checkbox' ? checked : value 
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -103,54 +80,65 @@ const Users = () => {
         const data = new FormData();
         data.append('name', formData.name);
         data.append('email', formData.email);
-        data.append('password', formData.password);
         data.append('year', formData.year);
+        // data.append('role', formData.role); // Role usually fixed on register, but updated separately if admin edit
         
-        if (formData.file) {
-            data.append('profileImage', formData.file);
-        }
+        if (formData.password) data.append('password', formData.password);
+        if (formData.file) data.append('profileImage', formData.file);
 
         if (formData.id) {
-            // Update
-            await api.patch(`/users/${formData.id}`, {
+            // Update User (Admin Override)
+            // Use JSON for update if file not present, or handle accordingly. 
+            // My route expects JSON mostly for role/premium updates via patch.
+            // Let's separate "Edit Profile" (name/email) from "Admin Actions" (Role/Premium).
+            // But here we are editing EVERYTHING.
+            
+            const updatePayload = {
                 name: formData.name,
                 email: formData.email,
                 role: formData.role,
-                year: formData.year
-            }); // Note: File upload for update not implemented in this snippet for simplicity, or needs separate endpoint
-             alert("User updated successfully!");
+                year: formData.year,
+                isPremium: formData.isPremium
+            };
+            
+            await api.patch(`/users/${formData.id}`, updatePayload);
+            toast.success("User updated successfully");
         } else {
-             // Create
-            if (formData.file) {
-                // Already appended above
-            }
-             await api.post('/auth/register', data, {
+             // Create New User (Register)
+            await api.post('/auth/register', data, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-             alert("User added successfully!");
+            toast.success("User added successfully");
         }
 
-        // Alert handled inside conditional blocks
         setIsModalOpen(false);
-        setFormData({ name: '', email: '', password: '', year: '', role: 'user', file: null });
+        setFormData({ name: '', email: '', password: '', year: '', role: 'user', isPremium: false, file: null, id: null });
         fetchUsers();
     } catch (error) {
-        console.error("Registration/Update failed", error);
-        alert(error.response?.data?.message || (formData.id ? "Failed to update user" : "Failed to add user"));
+        console.error("Operation failed", error);
+        toast.error(error.response?.data?.message || "Operation failed");
     } finally {
         setSubmitting(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
-    try {
-      await api.delete(`/users/${id}`);
-      fetchUsers();
-    } catch (error) {
-      console.error("Delete failed", error);
-      alert(error.response?.data?.message || "Failed to delete user");
-    }
+    setConfirmConfig({
+        title: "Delete User?",
+        message: "This action cannot be undone. All user data will be lost.",
+        isDestructive: true,
+        confirmText: "Delete User",
+        onConfirm: async () => {
+            try {
+                await api.delete(`/users/${id}`);
+                fetchUsers();
+                toast.success("User deleted");
+            } catch (error) {
+                toast.error(error.response?.data?.message || "Failed to delete user");
+            }
+        }
+    });
+    setIsConfirmOpen(true);
   };
 
   const handleEdit = (user) => {
@@ -160,11 +148,52 @@ const Users = () => {
           password: '',
           role: user.role,
           year: user.year || '',
+          isPremium: user.isPremium || false,
           id: user._id, 
           file: null
       });
       setIsModalOpen(true);
   };
+
+  const columns = [
+    { 
+        header: "User", 
+        accessor: "name",
+        render: (row) => (
+            <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 overflow-hidden border border-white/5">
+                    {row.profileImage ? (
+                        <img src={row.profileImage} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                        <UserIcon size={14} />
+                    )}
+                </div>
+                <div>
+                     <div className="flex items-center gap-2">
+                        <p className="font-semibold text-zinc-200">{row.name}</p>
+                        {row.isPremium && <Crown size={12} className="text-amber-500 fill-amber-500" />}
+                    </div>
+                    <p className="text-xs text-zinc-500">{row.email}</p>
+                </div>
+            </div>
+        )
+    },
+    { header: "Role", accessor: "role", render: (row) => (
+        <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+            row.role === 'admin' ? 'bg-rose-500/10 text-rose-400' : 
+            row.role === 'moderator' ? 'bg-violet-500/10 text-violet-400' :
+            'bg-zinc-800 text-zinc-400'
+        }`}>
+            {row.role}
+        </span>
+    )},
+    { header: "Year", accessor: "year", render: (row) => <span className="text-zinc-400 text-xs">{row.year || '-'}</span> },
+    { 
+        header: "Joined", 
+        accessor: "createdAt", 
+        render: (row) => <span className="text-zinc-500 text-xs">{row.createdAt ? new Date(row.createdAt).toLocaleDateString() : '-'}</span>
+    }
+  ];
 
   return (
     <div className="space-y-6">
@@ -175,7 +204,7 @@ const Users = () => {
         </div>
         <button 
             onClick={() => {
-                setFormData({ name: '', email: '', password: '', year: '', role: 'user', file: null, id: null });
+                setFormData({ name: '', email: '', password: '', year: '', role: 'user', isPremium: false, file: null, id: null });
                 setIsModalOpen(true);
             }}
             className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2.5 rounded-xl hover:bg-rose-700 transition-colors font-medium shadow-lg shadow-rose-500/20"
@@ -206,80 +235,84 @@ const Users = () => {
         onDelete={(row) => handleDelete(row._id)}
       />
 
-      {/* Add User Modal */}
+      <ConfirmModal 
+          isOpen={isConfirmOpen} 
+          onClose={() => setIsConfirmOpen(false)} 
+          {...confirmConfig} 
+      />
+
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <div className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-lg p-6 space-y-4">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-bold text-zinc-100">{formData.id ? 'Edit User' : 'Add New User'}</h2>
-                    <button onClick={() => setIsModalOpen(false)} className="text-zinc-400 hover:text-white">✕</button>
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={formData.id ? 'Edit User' : 'Add New User'}>
+             <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-zinc-400">Full Name</label>
-                        <input 
-                            type="text" 
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100" 
-                            required 
-                        />
+                        <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="input-field" required />
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Email</label>
-                        <input 
-                            type="email" 
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100" 
-                            required 
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Password</label>
-                        <input 
-                            type="password" 
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100" 
-                            required={!formData.id} // Not required during edit
-                            placeholder={formData.id ? "Leave blank to keep current password" : "Enter password"}
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Year</label>
-                        <select 
-                            name="year"
-                            value={formData.year}
-                            onChange={handleInputChange}
-                            className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100" 
-                            required 
-                        >
-                            <option value="" disabled>Select Year</option>
-                            <option value="year1">1st Year</option>
-                            <option value="year2">2nd Year</option>
-                            <option value="year3">3rd Year</option>
-                            <option value="year4">4th Year</option>
+                     <div className="space-y-2">
+                        <label className="text-sm font-medium text-zinc-400">Role</label>
+                        <select name="role" value={formData.role} onChange={handleInputChange} className="input-field">
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
+                            <option value="moderator">Moderator</option>
+                            <option value="content_manager">Content Manager</option>
                         </select>
                     </div>
-                    
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-zinc-400">Profile Image</label>
-                        <input type="file" onChange={handleFileChange} className="text-zinc-400 text-sm" />
-                    </div>
+                </div>
 
-                    <div className="flex justify-end gap-3 pt-2">
-                        <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-zinc-400 hover:text-white">Cancel</button>
-                        <button type="submit" disabled={submitting} className="bg-rose-600 px-4 py-2 rounded-lg text-white hover:bg-rose-700">
-                            {submitting ? (formData.id ? 'Updating...' : 'Adding...') : (formData.id ? 'Update User' : 'Add User')}
-                        </button>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Email</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input-field" required />
+                </div>
+
+                {!formData.id && (
+                     <div className="space-y-2">
+                        <label className="text-sm font-medium text-zinc-400">Password</label>
+                        <input type="password" name="password" value={formData.password} onChange={handleInputChange} className="input-field" required />
                     </div>
-                </form>
-            </div>
-        </div>
+                )}
+                
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Year</label>
+                    <select name="year" value={formData.year} onChange={handleInputChange} className="input-field">
+                        <option value="" disabled>Select Year</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                    </select>
+                </div>
+
+                 <div className="border border-zinc-700/50 rounded-xl p-3 bg-zinc-950/30">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" name="isPremium" checked={formData.isPremium} onChange={handleInputChange} className="accent-amber-500 w-4 h-4" />
+                        <span className="text-sm font-medium text-amber-500 flex items-center gap-2"><Shield size={14}/> Premium User</span>
+                    </label>
+                </div>
+
+                <div className="pt-4 flex justify-end gap-3">
+                    <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800">Cancel</button>
+                    <button type="submit" disabled={submitting} className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700 flex items-center gap-2">
+                        {submitting && <Loader2 className="animate-spin" size={18} />}
+                        {submitting ? 'Saving...' : 'Save User'}
+                    </button>
+                </div>
+            </form>
+             <style>{`
+                .input-field {
+                    width: 100%;
+                    background-color: rgb(39 39 42); 
+                    border: none;
+                    border-radius: 0.5rem;
+                    padding: 0.75rem;
+                    color: rgb(244 244 245);
+                }
+                .input-field:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.5);
+                }
+            `}</style>
+        </Modal>
       )}
     </div>
   );
