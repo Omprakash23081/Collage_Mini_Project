@@ -21,7 +21,10 @@ function AllPrimum() {
   const { user, logout, loading: authLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log("[AllPrimum] Auth Check:", { authLoading, user: user ? user.name : "null" });
+    console.log("[AllPrimum] Auth Check:", {
+      authLoading,
+      user: user ? user.name : "null",
+    });
     if (!authLoading) {
       if (!user) {
         console.log("[AllPrimum] No user, redirecting to /login");
@@ -43,7 +46,6 @@ function AllPrimum() {
       toast.success("Good By");
       navigate("/login");
     } catch (error) {
-
       toast.error(error?.response?.data?.message + " Login failed");
     } finally {
       setLoadingLocal(false);
@@ -54,21 +56,27 @@ function AllPrimum() {
 
   return (
     <div className={style.layoutContainer}>
-      
       {/* Sidebar for Desktop */}
-      <aside
-        className={`${style.sidebar} d-none d-md-flex`}
-      >
+      <aside className={`${style.sidebar} d-none d-md-flex`}>
         <div className={style.sidebarHeader}>
-           <Link to="/" className="d-flex align-items-center text-decoration-none">
-            <img src={icon} alt="logo" width="32" height="32" className="rounded bg-white"/>
+          <Link
+            to="/"
+            className="d-flex align-items-center text-decoration-none"
+          >
+            <img
+              src={icon}
+              alt="logo"
+              width="32"
+              height="32"
+              className="rounded bg-white"
+            />
             <span className={style.brandText}>StudySharp</span>
-           </Link>
+          </Link>
         </div>
 
         <nav className="flex-grow-1">
           {menuItems.map((item) => (
-             <div key={item.name} className={style.navItem}>
+            <div key={item.name} className={style.navItem}>
               <NavLink
                 to={item.go === "" ? "/primum" : `/primum/${item.go}`}
                 end={item.go === ""}
@@ -84,7 +92,7 @@ function AllPrimum() {
         </nav>
 
         <div className={style.userSection}>
-           <div className="dropdown">
+          <div className="dropdown">
             <a
               href="#"
               className={style.userDropdown}
@@ -105,9 +113,19 @@ function AllPrimum() {
               className="dropdown-menu dropdown-menu-dark text-small shadow"
               aria-labelledby="dropdownUser1"
             >
-              <li><Link className="dropdown-item" to="/primum/profile">Profile</Link></li>
-              <li><hr className="dropdown-divider" /></li>
-              <li onClick={LogoutUser}><a className="dropdown-item" href="#">Sign out</a></li>
+              <li>
+                <Link className="dropdown-item" to="/primum/profile">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <li onClick={LogoutUser}>
+                <a className="dropdown-item" href="#">
+                  Sign out
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -121,17 +139,17 @@ function AllPrimum() {
       {/* Bottom Navigation Bar (Mobile) */}
       <div className={style.bottomNav}>
         {menuItems.map((item) => (
-           <NavLink
-             key={item.name}
-             to={item.go === "" ? "/primum" : `/primum/${item.go}`}
-             end={item.go === ""}
-             className={({ isActive }) =>
-               `${style.bottomNavLink} ${isActive ? style.activeBottom : ""}`
-             }
-           >
-             <i className={`bi ${item.icon}`}></i>
-             <span>{item.name}</span>
-           </NavLink>
+          <NavLink
+            key={item.name}
+            to={item.go === "" ? "/primum" : `/primum/${item.go}`}
+            end={item.go === ""}
+            className={({ isActive }) =>
+              `${style.bottomNavLink} ${isActive ? style.activeBottom : ""}`
+            }
+          >
+            <i className={`bi ${item.icon}`}></i>
+            <span className="naveLinckName">{item.name}</span>
+          </NavLink>
         ))}
       </div>
     </div>

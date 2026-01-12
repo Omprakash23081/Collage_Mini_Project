@@ -6,8 +6,16 @@ import PYQ03MANUE from "./PYQ03MANUE.jsx"; // Imported
 import PYQ03HEADERS from "./PYQ03HEADER.jsx";
 import { useState, useRef, useEffect } from "react";
 import Solution from "./Solution.jsx";
+import TopicwisePrinter from "../../NotesPage/CHAPTERCONTENT/QUESTION/TOPICWISE/ChepterNamePrinter.jsx";
 
 function PYQ03({ setcontents, currentsubject }) {
+  const chepter = [
+    "Chepter 1",
+    "Chepter 2",
+    "Chepter 3",
+    "Chepter 4",
+    "Chepter 5",
+  ];
   const [solution, SetSolution] = useState({});
   const [showMenu, setShowMenu] = useState("TopicWise"); // Default to TopicWise
   const [selectedTopic, setSelectedTopic] = useState("");
@@ -77,13 +85,12 @@ function PYQ03({ setcontents, currentsubject }) {
             </nav>
             {/* <hr className={style.hr} /> */}
 
-            {(showMenu === "TopicWise" || showMenu === "All") && (
+            {showMenu === "All" && (
               <PYQ03MANUE
                 currentfilter={currentfilter}
                 setcurrentfilter={setcurrentfilter}
               />
             )}
-
             <div className={style.questions_contener}>
               {showMenu === "All" && (
                 <PYQ03ALLQUESTION
@@ -91,8 +98,8 @@ function PYQ03({ setcontents, currentsubject }) {
                   currentFilter={currentfilter}
                 />
               )}
-              {showMenu === "Topic" && (
-                <PYQ03TOPICKWISE selectedTopic={selectedTopic} />
+              {showMenu === "TopicWise" && (
+                <TopicwisePrinter chepter={chepter} />
               )}
             </div>
           </div>

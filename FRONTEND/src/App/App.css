@@ -1,43 +1,55 @@
 :root {
   /* GLOBAL MASTER PALETTE (Premium EdTech) */
-  
+
   /* Backgrounds */
-  --bg-dark: #05060A;
-  --bg-darker: #0C0F16;
-  --bg-gradient-base: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+  --bg-dark: #05060a;
+  --bg-darker: #0c0f16;
+  --bg-gradient-base: linear-gradient(
+    135deg,
+    var(--bg-dark) 0%,
+    var(--bg-darker) 100%
+  );
   --bg-glass: rgba(12, 15, 22, 0.7);
   --bg-glass-heavy: rgba(12, 15, 22, 0.9);
-  
+
   /* Accents */
-  --neon-blue: #2563EB;
-  --neon-magenta: #FF1F6A;
-  --neon-magenta-dark: #C30A4F;
-  --gold: #CFA66A;
-  
+  --neon-blue: #2563eb;
+  --neon-magenta: #ff1f6a;
+  --neon-magenta-dark: #c30a4f;
+  --gold: #cfa66a;
+
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, var(--neon-magenta) 0%, var(--neon-magenta-dark) 100%);
-  --grad-blue: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-  --grad-glass: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-  
+  --grad-primary: linear-gradient(
+    135deg,
+    var(--neon-magenta) 0%,
+    var(--neon-magenta-dark) 100%
+  );
+  --grad-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --grad-glass: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+
   /* Text */
   --text-primary: #ffffff;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --text-gold: #CFA66A;
-  
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-gold: #cfa66a;
+
   /* Borders & Shadows */
   --border-glass: 1px solid rgba(255, 255, 255, 0.08);
   --border-neon-blue: 0 0 10px rgba(37, 99, 235, 0.3);
   --shadow-deep: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
   --shadow-glow-blue: 0 0 20px rgba(37, 99, 235, 0.15);
-  
+
   /* Legacy/Compat Mappings */
   --bg-primary: var(--bg-dark);
   --bg-secondary: var(--bg-darker);
   --accent-primary: var(--neon-magenta);
   --accent-gradient: var(--grad-primary);
   --border-color: rgba(255, 255, 255, 0.08);
-  
+
   /* Wood Texture Overlay (Simulated with noise/pattern if image missing, 
      but assuming we might add an image later. For now using subtle noise) */
 }
@@ -47,7 +59,7 @@ body {
   background: var(--bg-dark); /* Fallback */
   background-image: var(--bg-gradient-base);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
   min-height: 100vh;
 }
 
@@ -631,9 +643,9 @@ body {
 }
 
 .login-container h1 {
-    font-weight: bold;
-    margin: 0;
-    color: #333;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
 }
 
 .login-container p {
@@ -668,9 +680,9 @@ body {
 }
 
 .social-icons a:hover {
-    background-color: #333;
-    color: #fff;
-    border-color: #333;
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
 }
 
 .login-container span {
@@ -857,7 +869,7 @@ body {
   .toggle-container {
     display: none;
   }
-  
+
   .mobile-toggle {
     display: block; /* Show on mobile */
   }
@@ -873,30 +885,30 @@ body {
   }
 
   .sign-up {
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      visibility: hidden;
-      z-index: 1;
-      transform: none; /* Reset desktop transforms */
-      position: absolute; /* Keep it on top */
-      top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+    transform: none; /* Reset desktop transforms */
+    position: absolute; /* Keep it on top */
+    top: 0;
   }
 
   /* Active State: Sign Up Visible, Sign In Hidden */
   .login-container.active .sign-up {
-      opacity: 1;
-      visibility: visible;
-      z-index: 10;
-      transform: none; /* No sliding, just fade/appear */
-      animation: none; /* Disable desktop keyframes */
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    transform: none; /* No sliding, just fade/appear */
+    animation: none; /* Disable desktop keyframes */
   }
-  
+
   .login-container.active .sign-in {
-      opacity: 0;
-      visibility: hidden;
-      z-index: 1;
-      transform: none;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+    transform: none;
   }
 }
 
@@ -1411,6 +1423,13 @@ i {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.naveLinckName {
+  margin-right: 0.8rem;
 }

@@ -1,11 +1,19 @@
 import style from "./Question.module.css";
 import AllPrinter from "../QUESTION/ALLQUESTION/AllQuestionPrinter.jsx";
-import TopicwisePrinter from "../QUESTION/TOPICWISE/TopicWisePrinter.jsx";
+import TopicwisePrinter from "./TOPICWISE/ChepterNamePrinter.jsx";
 import { useState, useRef, useEffect, useContext } from "react";
 import { DataContext } from "../../../../context/DataContext.jsx";
 
 function Question({ setcontents, currentsubject }) {
   let { notes: questions } = useContext(DataContext);
+
+  const chepter = [
+    "Chepter 1",
+    "Chepter 2",
+    "Chepter 3",
+    "Chepter 4",
+    "Chepter 5",
+  ];
   if (questions.length > 0) {
     questions = questions?.filter(
       (obj) => obj?.subjectName?.toUpperCase() === currentsubject.toUpperCase()
@@ -49,7 +57,7 @@ function Question({ setcontents, currentsubject }) {
           className={`${style.tab} ${activeTab === "All" ? style.active : ""}`}
           onClick={() => setActiveTab("All")}
         >
-          <center>All Questions (Notes)</center>
+          <center>All Chepter (Notes)</center>
         </div>
         <div
           className={`${style.tab} ${
@@ -57,14 +65,14 @@ function Question({ setcontents, currentsubject }) {
           }`}
           onClick={() => setActiveTab("TopicWise")}
         >
-          <center>Important Questions (Notes)</center>
+          <center>Chepter wise (Notes)</center>
         </div>
         <hr className={style.hr} />
       </nav>
 
       <div className={style.questions_contener}>
         {activeTab === "TopicWise" ? (
-          <TopicwisePrinter questions={questions.filter((q) => q.isImportant)} />
+          <TopicwisePrinter chepter={chepter} />
         ) : (
           <AllPrinter questions={questions} />
         )}

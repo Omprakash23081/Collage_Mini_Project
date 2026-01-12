@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 .body {
-
   width: 100%;
   min-height: 100vh;
   background: var(--bg-dark);
@@ -16,23 +15,23 @@
   padding: 1rem 2rem;
   width: 100%;
   z-index: 999;
-  justify-content: center; /* Center tabs */
+  justify-content: center;
   background: var(--bg-glass);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
 }
 
-.tabs.sticky { /* This assumes JSX uses `${style.tabs} ${isSticky ? style.sticky : ""}` */
+.tabs.sticky {
   background: rgba(5, 6, 10, 0.95);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   padding: 0.8rem 2rem;
 }
 
 /* Fallback if JSX uses separate sticky class logic */
-.sticky { 
+.sticky {
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -46,7 +45,7 @@
   padding: 0.8rem 2rem;
   color: var(--text-secondary);
   cursor: pointer;
-  width: auto;
+  width: auto; /* Auto width */
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   position: relative;
   font-size: 0.95rem;
@@ -54,15 +53,23 @@
   border-radius: 50px; /* Pill Shape */
   background: transparent;
   border: 1px solid transparent;
-  text-align: center; /* Ensure text key is centered */
-  display: flex; /* Ensure center */
-  justify-content: center;
-  align-items: center;
 }
 
 .tab:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.05);
+}
+
+.tab.active {
+  color: white;
+  background: var(--grad-primary); /* Magenta/Blue Gradient */
+  box-shadow: 0 0 20px rgba(255, 31, 106, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.tab.active::after {
+  display: none;
 }
 
 /* Active Glowing Ribbon State */
@@ -82,3 +89,19 @@
   display: none;
 }
 
+@media (max-width: 768px) {
+  .tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 1rem;
+    gap: 0.8rem;
+    margin: auto;
+  }
+
+  .tab {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+}
