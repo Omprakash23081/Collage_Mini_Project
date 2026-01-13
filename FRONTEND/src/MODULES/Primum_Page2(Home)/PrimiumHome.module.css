@@ -7,6 +7,10 @@
   max-width: 1600px;
   margin: 0 auto;
 }
+.homeContainer {
+  padding: 2rem;
+  color: white;
+}
 
 /* --- HERO SECTION --- */
 .heroSection {
@@ -238,6 +242,10 @@
     padding: 2rem;
   }
 
+  .homeContainer {
+    padding: 1rem;
+  }
+
   .heroContent {
     margin-top: 2rem;
   }
@@ -250,6 +258,7 @@
     display: flex;
     margin-top: 20px;
     gap: 2rem;
+    margin-left: 1rem;
     flex-direction: column;
     justify-content: center;
   }
