@@ -14,7 +14,6 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 
 // Contexts
 import { AppProvider } from "../context/AppContext.jsx";
-import { AuthProvider } from "../context/AuthContext.jsx";
 
 // Components
 import Navbar from "../MODULES/Home/Navbars.jsx";
@@ -53,70 +52,68 @@ function App() {
   return (
     <Router>
       <AppProvider>
-        <AuthProvider>
-          <Routes>
-            {/* ---------- Public Layout ---------- */}
-            <Route element={<PublicLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/lost-found" element={<Lost_Found />} />
-              <Route path="/faculty" element={<FacultyDirectory />} />
-              <Route path="/career" element={<CareerPathways />} />
-              <Route
-                path="/faculty-directory"
-                element={<Navigate to="/faculty" />}
-              />
-            </Route>
-
-            {/* ---------- Premium Routes ---------- */}
+        <Routes>
+          {/* ---------- Public Layout ---------- */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/lost-found" element={<Lost_Found />} />
+            <Route path="/faculty" element={<FacultyDirectory />} />
+            <Route path="/career" element={<CareerPathways />} />
             <Route
-              path="/primum"
-              element={
-                <ProtectedRoute>
-                  <AllPrimum />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<PrimiumHome />} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="notes" element={<NotesPage />} />
-              <Route path="pyq" element={<PYQPage />} />
-              <Route path="premium" element={<PremiumPage />} />
-            </Route>
+              path="/faculty-directory"
+              element={<Navigate to="/faculty" />}
+            />
+          </Route>
 
-            {/* ---------- Career Tools ---------- */}
-            <Route path="/career/ats-analyzer" element={<ATSAnalyzer />} />
-            <Route path="/roadmaps" element={<RoadmapGenerator />} />
-          </Routes>
+          {/* ---------- Premium Routes ---------- */}
+          <Route
+            path="/primum"
+            element={
+              <ProtectedRoute>
+                <AllPrimum />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<PrimiumHome />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="notes" element={<NotesPage />} />
+            <Route path="pyq" element={<PYQPage />} />
+            <Route path="premium" element={<PremiumPage />} />
+          </Route>
 
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                zIndex: 9999,
-                marginTop: "5%",
-                background: "white",
-                color: "var(--toast-color, #111)",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
-                borderRadius: "8px",
-                fontWeight: 500,
+          {/* ---------- Career Tools ---------- */}
+          <Route path="/career/ats-analyzer" element={<ATSAnalyzer />} />
+          <Route path="/roadmaps" element={<RoadmapGenerator />} />
+        </Routes>
+
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              zIndex: 9999,
+              marginTop: "5%",
+              background: "white",
+              color: "var(--toast-color, #111)",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+              borderRadius: "8px",
+              fontWeight: 500,
+            },
+            success: {
+              iconTheme: {
+                primary: "#22c938ff",
+                secondary: "#fff",
               },
-              success: {
-                iconTheme: {
-                  primary: "#22c938ff",
-                  secondary: "#fff",
-                },
+            },
+            error: {
+              iconTheme: {
+                primary: "#EF4444",
+                secondary: "#fff",
               },
-              error: {
-                iconTheme: {
-                  primary: "#EF4444",
-                  secondary: "#fff",
-                },
-              },
-            }}
-          />
-        </AuthProvider>
+            },
+          }}
+        />
       </AppProvider>
     </Router>
   );

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { notesService } from "../services/notesService.js";
 import { pyqService } from "../services/pyqService.js";
+import { AuthContext } from "./AuthContext.jsx";
 
 export const DataContext = createContext(null);
 
@@ -8,6 +9,7 @@ export const DataProvider = ({ children }) => {
   // initialize as arrays (safer if API returns list)
   const [notes, setNotes] = useState([]);
   const [pyq, setPyq] = useState([]);
+  const { user } = useContext(AuthContext);
 
   const Subject = {
     //for 1 and 2 semester
@@ -72,6 +74,7 @@ export const DataProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!user) return;
     const controller = new AbortController();
 
     const fetchDashboardData = async () => {
@@ -94,7 +97,7 @@ export const DataProvider = ({ children }) => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [user]);
 
   return (
     <DataContext.Provider value={{ notes, Subject, pyq }}>
