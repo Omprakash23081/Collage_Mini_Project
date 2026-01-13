@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { notesService } from '../services/notesService';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
@@ -18,20 +18,18 @@ const Notes = () => {
 
   // Selection & Bulk Actions
   const [selectedItems, setSelectedItems] = useState([]);
-  const [bulkAction, setBulkAction] = useState(null); // { type: 'delete' | 'publish' | 'draft' | 'premium' }
+  const [bulkAction, setBulkAction] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [confirmConfig, setConfirmConfig] = useState(null); // { title, message, onConfirm, isDestructive }
+  const [confirmConfig, setConfirmConfig] = useState(null);
 
   // Form State
   const [formData, setFormData] = useState({
     subjectName: '',
-    description: '',
     teacherName: '',
     year: '',
-    type: 'notes',
-    difficulty: 'medium',
+    isFull: false,
+    chapterName: '',
     isPremium: false,
-    isImportant: false,
     status: 'draft',
     file: null
   });
@@ -55,13 +53,14 @@ const Notes = () => {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/notes');
-      if (response.data && response.data.data) {
-        setNotes(response.data.data);
-        setFilteredNotes(response.data.data);
+      const response = await notesService.getAll();
+      if (response && response.data) {
+        setNotes(response.data);
+        setFilteredNotes(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch notes", error);
+      toast.error("Failed to load notes");
     } finally {
       setLoading(false);
     }
@@ -83,13 +82,11 @@ const Notes = () => {
       setEditId(note._id);
       setFormData({
           subjectName: note.subjectName,
-          description: note.description,
           teacherName: note.teacherName,
           year: note.year,
-          type: note.type,
-          difficulty: note.difficulty,
+          isFull: note.isFull || false,
+          chapterName: note.chapterName || '',
           isPremium: note.isPremium,
-          isImportant: note.isImportant || false,
           status: note.status,
           file: null 
       });
@@ -107,35 +104,37 @@ const Notes = () => {
         setSubmitting(true);
         const data = new FormData();
         data.append('subjectName', formData.subjectName);
-        data.append('description', formData.description || "");
         data.append('teacherName', formData.teacherName);
-        data.append('year', formData.year); 
-        data.append('type', formData.type);
-        data.append('difficulty', formData.difficulty);
+        data.append('year', formData.year);
+        data.append('isFull', formData.isFull);
         data.append('isPremium', formData.isPremium);
-        data.append('isImportant', formData.isImportant);
         data.append('status', formData.status);
+        
+        if (!formData.isFull) {
+            data.append('chapterName', formData.chapterName);
+        }
+
         if (formData.file) {
-            data.append('image', formData.file);
+            data.append('Notes', formData.file);
         }
 
         if (editId) {
-            await api.patch(`/notes/${editId}`, data);
+            await notesService.update(editId, data);
             toast.success("Note updated successfully!");
         } else {
-            await api.post('/notes/upload', data);
+            await notesService.upload(data);
             toast.success("Notes uploaded successfully!");
         }
 
         setIsModalOpen(false);
         setEditId(null);
         setFormData({ 
-            subjectName: '', description: '', teacherName: '', year: '', 
-            type: 'notes', difficulty: 'medium', isPremium: false, isImportant: false, status: 'draft', file: null 
+            subjectName: '', teacherName: '', year: '', isFull: false, 
+            chapterName: '', isPremium: false, status: 'draft', file: null
         });
         fetchNotes();
     } catch (error) {
-        console.error("Operation failed", error);
+        console.error("Operation failed details:", error.response ? error.response.data : error.message);
         alert(error.response?.data?.message || "Failed to save note");
     } finally {
         setSubmitting(false);
@@ -150,7 +149,7 @@ const Notes = () => {
           confirmText: "Delete",
           onConfirm: async () => {
               try {
-                  await api.delete(`/notes/${id}`);
+                  await notesService.delete(id);
                   fetchNotes();
                   toast.success("Note deleted");
               } catch (error) {
@@ -189,13 +188,11 @@ const Notes = () => {
               // Note: Ideally call a bulk API. Simulating loop for now.
               try {
                   for (const id of selectedItems) {
-                      if (actionType === 'delete') await api.delete(`/notes/${id}`);
-                      else if (actionType === 'publish') await api.patch(`/notes/${id}`, { status: 'published' });
-                      else if (actionType === 'draft') await api.patch(`/notes/${id}`, { status: 'draft' });
+                      if (actionType === 'delete') await notesService.delete(id);
+                      else if (actionType === 'approved') await notesService.update(id, { status: 'approved' });
+                      else if (actionType === 'draft') await notesService.update(id, { status: 'draft' });
                       else if (actionType === 'premium') {
-                          // Toggle logic might be tricky in bulk without current state, forcing true for now or skip
-                          // For simplicity, let's say 'premium' button makes them premium
-                          await api.patch(`/notes/${id}`, { isPremium: true });
+                          await notesService.update(id, { isPremium: true });
                       }
                   }
                   fetchNotes();
@@ -212,55 +209,64 @@ const Notes = () => {
 
   const columns = [
     { 
-        header: "Subject", 
-        accessor: "subjectName",
+        header: "Subject/Title", 
+        accessor: "subjectName", 
         render: (row) => (
-            <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                    row.isPremium ? 'bg-amber-500/10 text-amber-500' : 'bg-indigo-500/10 text-indigo-500'
-                }`}>
-                    {row.isPremium ? <Shield size={20} /> : <FileText size={20} />}
+             <div>
+                <div className="flex items-center gap-2">
+                    <span className="font-medium text-zinc-200">{row.subjectName}</span>
+                    {row.isPremium && <Shield size={14} className="text-amber-500" />}
                 </div>
-                <div>
-                    <div className="flex items-center gap-2">
-                        <p className="font-semibold text-zinc-200">{row.subjectName}</p>
-                        {row.status === 'draft' && <span className="text-[10px] bg-zinc-700 px-1.5 rounded text-zinc-400">Draft</span>}
-                        {row.isPremium && <span className="text-[10px] bg-amber-500/20 text-amber-500 px-1.5 rounded font-medium">PRO</span>}
-                        {row.isImportant && <span className="text-[10px] bg-rose-500/20 text-rose-500 px-1.5 rounded font-medium">IMP</span>}
-                    </div>
-                    <p className="text-xs text-zinc-500 line-clamp-1">{row.description}</p>
-                </div>
+                <div className="text-xs text-zinc-500 mt-0.5">{row.teacherName}</div>
             </div>
         )
     },
-    { header: "Teacher", accessor: "teacherName" },
-    { header: "Year", accessor: "year", render: (row) => <span className="bg-zinc-800 px-2 py-1 rounded text-xs">{row.year}</span> },
-    { header: "Type", accessor: "type", render: (row) => <span className="capitalize">{row.type}</span> },
+    { header: "Year", accessor: "year", render: (row) => <span className="text-sm text-zinc-300">{row.year}</span> },
     { 
-        header: "File", 
-        accessor: "fileUrl", 
+        header: "Content", 
+        accessor: "chapterName", 
         render: (row) => (
-            <a 
-                href={row.fileUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-indigo-400 hover:text-indigo-300 text-sm hover:underline"
-            >
-                View
-            </a>
+             <div>
+                {row.isFull ? (
+                    <span className="bg-purple-500/20 text-purple-400 text-xs px-2 py-1 rounded">Full Syllabus</span>
+                ) : (
+                    <span className="text-sm text-zinc-400">{row.chapterName}</span>
+                )}
+             </div>
+        )
+    },
+    { 
+        header: "Status", 
+        accessor: "status", 
+        render: (row) => (
+            <span className={`px-2 py-1 rounded text-xs ${
+                row.status === 'approved' ? 'bg-green-500/20 text-green-500' : 'bg-zinc-700 text-zinc-400'
+            }`}>
+                {row.status}
+            </span>
         ) 
     },
-    {
+     {
         header: "Actions",
         accessor: "actions",
         render: (row) => (
-            <button 
-                onClick={(e) => { e.stopPropagation(); handleEdit(row); }}
-                className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-                title="Edit Note"
-            >
-                <Edit size={18} />
-            </button>
+            <div className="flex items-center gap-2">
+                <a 
+                    href={row.fileUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-2 text-indigo-400 hover:bg-zinc-800 rounded-lg transition-colors"
+                >
+                    <FileText size={18} />
+                </a>
+                <button 
+                    onClick={(e) => { e.stopPropagation(); handleEdit(row); }}
+                    className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                    title="Edit Note"
+                >
+                    <Edit size={18} />
+                </button>
+            </div>
         )
     }
   ];
@@ -321,87 +327,63 @@ const Notes = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => { setIsModalOpen(false); setEditId(null); }} title={editId ? "Edit Note" : "Upload New Note"}>
         <form onSubmit={handleSubmit} className="space-y-4">
-            {/* ... Form Fields ... */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">Subject Name</label>
                     <input type="text" name="subjectName" value={formData.subjectName} onChange={handleInputChange} className="input-field" required />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Teacher Name</label>
-                    <input type="text" name="teacherName" value={formData.teacherName} onChange={handleInputChange} className="input-field" required />
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                 <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">Year</label>
-                    <select name="year" value={formData.year} onChange={handleInputChange} className="input-field" required>
-                        <option value="">Select</option>
-                        <option value="1st Year">1st Year</option>
-                        <option value="2nd Year">2nd Year</option>
-                        <option value="3rd Year">3rd Year</option>
-                        <option value="4th Year">4th Year</option>
-                    </select>
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Type</label>
-                    <select name="type" value={formData.type} onChange={handleInputChange} className="input-field">
-                        <option value="notes">Notes</option>
-                        <option value="assignment">Assignment</option>
-                        <option value="book">Book</option>
-                    </select>
-                </div>
-                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Difficulty</label>
-                    <select name="difficulty" value={formData.difficulty} onChange={handleInputChange} className="input-field">
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
+                    <input type="text" name="year" value={formData.year} onChange={handleInputChange} className="input-field" placeholder="e.g. 2023" required />
                 </div>
             </div>
-            
-            <div className="grid grid-cols-2 gap-4 border border-zinc-800 p-3 rounded-xl bg-zinc-950/30">
-                 <div className="flex items-center gap-3">
-                    <div className={`w-4 h-4 rounded-full border ${formData.status === 'published' ? 'bg-green-500 border-green-500' : 'border-zinc-500'}`} />
-                    <select name="status" value={formData.status} onChange={handleInputChange} className="bg-transparent text-sm focus:outline-none w-full">
-                        <option value="draft">Save as Draft</option>
-                        <option value="published">Publish Now</option>
-                    </select>
-                </div>
-                <label className="flex items-center gap-3 cursor-pointer">
+
+            <div className="space-y-2">
+                 <label className="text-sm font-medium text-zinc-400">Teacher Name</label>
+                 <input type="text" name="teacherName" value={formData.teacherName} onChange={handleInputChange} className="input-field" required />
+            </div>
+
+            <div className="flex items-center gap-4 py-2 border-y border-white/5">
+                 <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="isFull" checked={formData.isFull} onChange={handleInputChange} className="accent-indigo-500 w-4 h-4" />
+                    <span className="text-sm text-zinc-300">Full Syllabus?</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" name="isPremium" checked={formData.isPremium} onChange={handleInputChange} className="accent-amber-500 w-4 h-4" />
-                    <span className="text-sm font-medium text-amber-500 flex items-center gap-2"><Shield size={14}/> Premium Content</span>
-                </label>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-4 border border-zinc-800 p-3 rounded-xl bg-zinc-950/30">
-               <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" name="isImportant" checked={formData.isImportant} onChange={handleInputChange} className="accent-rose-500 w-4 h-4" />
-                    <span className="text-sm font-medium text-rose-500 flex items-center gap-2"><AlertCircle size={14}/> Mark as Important Question</span>
+                    <span className="text-sm text-amber-500 flex items-center gap-1"><Shield size={12}/> Premium</span>
                 </label>
             </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Description</label>
-                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={3} className="input-field" />
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Upload File</label>
-                <div className="border-2 border-dashed border-zinc-700 rounded-xl p-6 text-center cursor-pointer hover:bg-zinc-800/50 transition-colors relative">
-                    <input type="file" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" required={!editId} />
-                    <Upload className="mx-auto text-zinc-500 mb-2" size={24} />
-                    <p className="text-zinc-400 text-sm">{formData.file ? formData.file.name : "Click to upload"}</p>
+            {!formData.isFull && (
+                 <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Chapter Name</label>
+                    <input type="text" name="chapterName" value={formData.chapterName} onChange={handleInputChange} className="input-field" required />
                 </div>
+            )}
+
+             <div className="space-y-2">
+                 <label className="text-sm font-medium text-zinc-400">Status</label>
+                 <select name="status" value={formData.status} onChange={handleInputChange} className="input-field">
+                    <option value="draft">Draft</option>
+                    <option value="approved">Approved</option>
+                 </select>
             </div>
+             
+             <div className="space-y-2">
+                 <label className="text-sm font-medium text-zinc-400">Upload PDF</label>
+                  <div className="border-2 border-dashed border-zinc-700 rounded-xl p-4 text-center cursor-pointer hover:bg-zinc-800/50 transition-colors relative">
+                    <input type="file" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" required={!editId} />
+                    <Upload className="mx-auto text-zinc-500 mb-2" size={20} />
+                    <p className="text-zinc-400 text-xs">{formData.file ? formData.file.name : "Click to upload file"}</p>
+                </div>
+             </div>
 
             <div className="pt-4 flex justify-end gap-3">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800">Cancel</button>
-                <button type="submit" disabled={submitting} className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700 flex items-center gap-2">
+                <button type="submit" disabled={submitting} className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
                     {submitting && <Loader2 className="animate-spin" size={18} />}
-                    {submitting ? 'Uploading...' : 'Upload Notes'}
+                    {submitting ? 'Saving...' : (editId ? 'Update Note' : 'Add Note')}
                 </button>
             </div>
         </form>

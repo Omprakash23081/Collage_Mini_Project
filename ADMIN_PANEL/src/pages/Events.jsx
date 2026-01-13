@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { eventsService } from '../services/eventsService';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
 import { Search, Plus, Upload, Calendar, Link as LinkIcon, Loader2 } from 'lucide-react';
@@ -11,6 +11,8 @@ const Events = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -18,6 +20,7 @@ const Events = () => {
     description: '',
     link: '',
     endDate: '',
+    registrationDate: '',
     file: null
   });
 
@@ -40,13 +43,10 @@ const Events = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/events');
-      // Response structure in controller: { status: 200, data: response, message: "Faculty details" ??? }
-      // Wait, controller msg says "Faculty details" in getEvents? Copypasta error in backend.
-      // Assuming response.data.data is the array
-      if (response.data && response.data.data) {
-        setEvents(response.data.data);
-        setFilteredEvents(response.data.data);
+      const response = await eventsService.getAll();
+      if (response && response.data) {
+        setEvents(response.data);
+        setFilteredEvents(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch events", error);
@@ -64,6 +64,28 @@ const Events = () => {
     setFormData(prev => ({ ...prev, file: e.target.files[0] }));
   };
 
+  const handleEdit = (event) => {
+    setIsEditing(true);
+    setCurrentId(event._id);
+    setFormData({
+      name: event.name || '',
+      title: event.title || '',
+      description: event.description || '',
+      link: event.link || '',
+      endDate: event.endDate ? event.endDate.split('T')[0] : '', // Format date for input
+      registrationDate: event.registrationDate ? event.registrationDate.split('T')[0] : '', // Format date for input
+      file: null 
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleCreate = () => {
+    setIsEditing(false);
+    setCurrentId(null);
+    setFormData({ name: '', title: '', description: '', link: '', endDate: '', registrationDate: '', file: null });
+    setIsModalOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -74,21 +96,25 @@ const Events = () => {
         data.append('description', formData.description);
         data.append('link', formData.link);
         data.append('endDate', formData.endDate);
+        data.append('registrationDate', formData.registrationDate);
         if (formData.file) {
             data.append('image', formData.file);
         }
 
-        await api.post('/events', data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        if (isEditing) {
+            await eventsService.update(currentId, data);
+            alert("Event updated successfully!");
+        } else {
+            await eventsService.create(data);
+            alert("Event created successfully!");
+        }
 
-        alert("Event created successfully!");
         setIsModalOpen(false);
-        setFormData({ name: '', title: '', description: '', link: '', endDate: '', file: null });
+        setFormData({ name: '', title: '', description: '', link: '', endDate: '', registrationDate: '', file: null });
         fetchEvents();
     } catch (error) {
-        console.error("Creation failed", error);
-        alert(error.response?.data?.message || "Failed to create event");
+        console.error("Operation failed", error);
+        alert(error.response?.data?.message || `Failed to ${isEditing ? 'update' : 'create'} event`);
     } finally {
         setSubmitting(false);
     }
@@ -97,7 +123,7 @@ const Events = () => {
   const deleteEvent = async (id) => {
       if(!window.confirm("Are you sure you want to delete this event?")) return;
       try {
-          await api.delete(`/events/${id}`);
+          await eventsService.delete(id);
           fetchEvents();
       } catch (error) {
           console.error("Delete failed", error);
@@ -151,7 +177,7 @@ const Events = () => {
             <p className="text-zinc-500 text-sm mt-1">Manage upcoming college events</p>
         </div>
         <button 
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleCreate}
             className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2.5 rounded-xl hover:bg-rose-700 transition-colors font-medium shadow-lg shadow-rose-500/20"
         >
             <Plus size={18} />
@@ -177,9 +203,10 @@ const Events = () => {
         data={filteredEvents} 
         isLoading={loading}
         onDelete={(row) => deleteEvent(row._id)}
+        onEdit={handleEdit}
       />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create New Event">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={isEditing ? "Edit Event" : "Create New Event"}>
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -220,6 +247,17 @@ const Events = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Registration Date</label>
+                    <input 
+                        type="date" 
+                        name="registrationDate"
+                        value={formData.registrationDate}
+                        onChange={handleInputChange}
+                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
+                        required
+                    />
+                </div>
+                <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">End Date</label>
                     <input 
                         type="date" 
@@ -230,16 +268,17 @@ const Events = () => {
                         required
                     />
                 </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Event Link</label>
-                    <input 
-                        type="url" 
-                        name="link"
-                        value={formData.link}
-                        onChange={handleInputChange}
-                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
-                    />
-                </div>
+            </div>
+
+            <div className="space-y-2">
+                <label className="text-sm font-medium text-zinc-400">Event Link</label>
+                <input 
+                    type="url" 
+                    name="link"
+                    value={formData.link}
+                    onChange={handleInputChange}
+                    className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
+                />
             </div>
 
             <div className="space-y-2">
@@ -271,7 +310,7 @@ const Events = () => {
                     className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700 transition-colors flex items-center gap-2"
                 >
                     {submitting && <Loader2 className="animate-spin" size={18} />}
-                    {submitting ? 'Creating...' : 'Create Event'}
+                    {submitting ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Event' : 'Create Event')}
                 </button>
             </div>
         </form>

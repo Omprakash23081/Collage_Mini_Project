@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { usersService } from '../services/usersService';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
-import { Search, Plus, Shield, Crown, User as UserIcon } from 'lucide-react';
+import { Search, Plus, Shield, Crown, User as UserIcon, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const Users = () => {
@@ -48,10 +48,14 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/users/getallusers');
-      if (response.data && response.data.data) {
-        setUsers(response.data.data);
-        setFilteredUsers(response.data.data);
+      const response = await usersService.getAll();
+      if (response && Array.isArray(response.data)) {
+        setUsers(response.data);
+        setFilteredUsers(response.data);
+      } else {
+          console.error("Invalid users data structure:", response);
+          setUsers([]);
+          setFilteredUsers([]);
       }
     } catch (error) {
       console.error("Failed to fetch users (Full Error):", error);
@@ -87,12 +91,6 @@ const Users = () => {
         if (formData.file) data.append('profileImage', formData.file);
 
         if (formData.id) {
-            // Update User (Admin Override)
-            // Use JSON for update if file not present, or handle accordingly. 
-            // My route expects JSON mostly for role/premium updates via patch.
-            // Let's separate "Edit Profile" (name/email) from "Admin Actions" (Role/Premium).
-            // But here we are editing EVERYTHING.
-            
             const updatePayload = {
                 name: formData.name,
                 email: formData.email,
@@ -101,13 +99,11 @@ const Users = () => {
                 isPremium: formData.isPremium
             };
             
-            await api.patch(`/users/${formData.id}`, updatePayload);
+            await usersService.update(formData.id, updatePayload);
             toast.success("User updated successfully");
         } else {
              // Create New User (Register)
-            await api.post('/auth/register', data, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            await usersService.create(data);
             toast.success("User added successfully");
         }
 
@@ -130,7 +126,7 @@ const Users = () => {
         confirmText: "Delete User",
         onConfirm: async () => {
             try {
-                await api.delete(`/users/${id}`);
+                await usersService.delete(id);
                 fetchUsers();
                 toast.success("User deleted");
             } catch (error) {
@@ -276,10 +272,10 @@ const Users = () => {
                     <label className="text-sm font-medium text-zinc-400">Year</label>
                     <select name="year" value={formData.year} onChange={handleInputChange} className="input-field">
                         <option value="" disabled>Select Year</option>
-                        <option value="1st Year">1st Year</option>
-                        <option value="2nd Year">2nd Year</option>
-                        <option value="3rd Year">3rd Year</option>
-                        <option value="4th Year">4th Year</option>
+                        <option value="year1">year1</option>
+                        <option value="year2">year2</option>
+                        <option value="year3">year3</option>
+                        <option value="year4">year4</option>
                     </select>
                 </div>
 
@@ -318,4 +314,12 @@ const Users = () => {
   );
 };
 
-export default Users;
+import ErrorBoundary from '../components/ErrorBoundary';
+
+const UsersWithBoundary = () => (
+  <ErrorBoundary>
+    <Users />
+  </ErrorBoundary>
+);
+
+export default UsersWithBoundary;

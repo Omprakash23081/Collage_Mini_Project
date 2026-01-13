@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { itemsService } from '../services/itemsService';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
 import { Search, Plus, Upload, Box, Loader2 } from 'lucide-react';
@@ -40,10 +40,10 @@ const Items = () => {
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/items');
-      if (response.data && response.data.data) {
-        setItems(response.data.data);
-        setFilteredItems(response.data.data);
+      const response = await itemsService.getAll();
+      if (response && response.data) {
+        setItems(response.data);
+        setFilteredItems(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch items", error);
@@ -75,9 +75,7 @@ const Items = () => {
             data.append('image', formData.file);
         }
 
-        await api.post('/items/upload', data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await itemsService.create(data);
 
         alert("Item reported successfully!");
         setIsModalOpen(false);
@@ -94,7 +92,7 @@ const Items = () => {
   const deleteItem = async (id) => {
       if(!window.confirm("Are you sure you want to delete this item?")) return;
       try {
-          await api.delete(`/items/${id}`);
+          await itemsService.delete(id);
           fetchItems();
       } catch (error) {
           console.error("Delete failed", error);

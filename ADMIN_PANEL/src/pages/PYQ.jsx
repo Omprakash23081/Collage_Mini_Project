@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { pyqService } from '../services/pyqService';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
 import ConfirmModal from '../components/ConfirmModal';
@@ -22,15 +22,15 @@ const PYQ = () => {
 
   // Form State
   const [formData, setFormData] = useState({
-    questionNumber: '',
     subjectName: '',
-    question: '',
-    tag: '',
-    years: '',
-    answer: '',
-    isPremium: false,
+    year: '',
+    teacherName: '',
+    isAll: false,
+    examType: '',
+    chapter: '',
+    chapterName: '',
     status: 'draft',
-    difficulty: 'medium',
+    isPremium: false,
     file: null
   });
 
@@ -45,18 +45,20 @@ const PYQ = () => {
         const lower = searchTerm.toLowerCase();
         setFilteredPyqs(pyqs.filter(p => 
             p.subjectName?.toLowerCase().includes(lower) || 
-            p.question?.toLowerCase().includes(lower)
+            p.chapterName?.toLowerCase().includes(lower)
         ));
     }
   }, [searchTerm, pyqs]);
 
+  // ... fetchPYQs ...
   const fetchPYQs = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/pyq');
-      if (response.data && response.data.data) {
-        setPyqs(response.data.data);
-        setFilteredPyqs(response.data.data);
+      const response = await pyqService.getAll();
+      if (response && response.data) {
+        console.log("Fetched PYQs:", response.data);
+        setPyqs(response.data);
+        setFilteredPyqs(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch PYQs", error);
@@ -81,40 +83,41 @@ const PYQ = () => {
     e.preventDefault();
     try {
         setSubmitting(true);
-        // Transform user friendly years string "2020, 2021" to array
-        const yearsArray = formData.years.split(',').map(y => y.trim()).filter(y => y);
-        
         const payload = new FormData();
-        payload.append('questionNumber', formData.questionNumber);
         payload.append('subjectName', formData.subjectName);
-        payload.append('question', formData.question);
-        payload.append('tag', formData.tag);
-        payload.append('answer', formData.answer);
-        payload.append('isPremium', formData.isPremium);
+        payload.append('year', formData.year);
         payload.append('status', formData.status);
-        payload.append('difficulty', formData.difficulty);
-        yearsArray.forEach(year => payload.append('years', year)); // Handle array
+        payload.append('isPremium', formData.isPremium);
+        payload.append('isAll', formData.isAll);
         
-        if (formData.file) {
-            payload.append('image', formData.file);
+        if (formData.isAll) {
+             payload.append('teacherName', formData.teacherName);
+        } else {
+             payload.append('chapter', formData.chapter);
+             payload.append('chapterName', formData.chapterName);
         }
 
-        // Note: Controller expects JSON for some fields if not using multer properly for everything or specific handling. 
-        // Based on pyq.controller.js implementation of `addPYQ`:
-        // It extracts body fields. If using FormData globally, express might need multer to parse body fields too.
-        // Assuming the route uses `upload.single('image')` middleware which parses fields too.
+        if(formData.examType) payload.append('examType', formData.examType);
         
-        await api.post('/pyq/upload', payload);
+        if (formData.file) {
+            payload.append('file', formData.file);
+        }
 
-        toast.success("PYQ added successfully!");
+        if (formData.id) {
+            await pyqService.update(formData.id, payload); // Assuming update method accepts FormData or JSON depending on backend
+            toast.success("PYQ updated successfully!");
+        } else {
+            await pyqService.upload(payload);
+            toast.success("PYQ added successfully!");
+        }
         setIsModalOpen(false);
         setFormData({ 
-            questionNumber: '', subjectName: '', question: '', tag: '', years: '', answer: '',
-            isPremium: false, status: 'draft', difficulty: 'medium', file: null
+            subjectName: '', year: '', teacherName: '', isAll: false, examType: '',
+            chapter: '', chapterName: '', status: 'draft', isPremium: false, file: null
         });
         fetchPYQs();
     } catch (error) {
-        console.error("Upload failed", error);
+        console.error("Upload failed details:", error.response ? error.response.data : error.message);
         toast.error(error.response?.data?.message || "Failed to add PYQ");
     } finally {
         setSubmitting(false);
@@ -129,7 +132,7 @@ const PYQ = () => {
           confirmText: "Delete",
           onConfirm: async () => {
               try {
-                  await api.delete(`/pyq/${id}`);
+                  await pyqService.delete(id);
                   fetchPYQs();
                   toast.success("PYQ deleted");
               } catch (error) {
@@ -160,16 +163,19 @@ const PYQ = () => {
           onConfirm: async () => {
               try {
                   for(const id of selectedItems) {
-                      if (actionType === 'delete') await api.delete(`/pyq/${id}`);
-                      else if (actionType === 'publish') await api.patch(`/pyq/${id}`, { status: 'published' });
-                      else if (actionType === 'draft') await api.patch(`/pyq/${id}`, { status: 'draft' });
-                      else if (actionType === 'premium') await api.patch(`/pyq/${id}`, { isPremium: true });
+                      if (actionType === 'delete') await pyqService.delete(id);
+                      else if (actionType === 'approved') await pyqService.update(id, { status: 'approved' });
+                      else if (actionType === 'draft') await pyqService.update(id, { status: 'draft' });
+                      else if (actionType === 'premium') await pyqService.update(id, { isPremium: true });
                   }
                   fetchPYQs();
                   setSelectedItems([]);
                   toast.success("Bulk action completed");
               } catch (err) {
-                  toast.error("Some actions failed");
+                  console.error("Bulk action failed:", err);
+                  const errorMessage = err.response?.data?.message || err.message || "Some actions failed";
+                  const validationDetails = err.response?.data?.data?.details?.[0]?.message; // Extract Joi error message
+                  toast.error(validationDetails ? `Validation: ${validationDetails}` : errorMessage);
               }
           }
       });
@@ -177,7 +183,6 @@ const PYQ = () => {
   };
 
   const columns = [
-    { header: "Q.No", accessor: "questionNumber", render: (row) => <span className="font-mono text-zinc-400">#{row.questionNumber}</span> },
     { 
         header: "Subject", 
         accessor: "subjectName",
@@ -187,20 +192,54 @@ const PYQ = () => {
                     <span className="font-medium text-zinc-200">{row.subjectName}</span>
                     {row.isPremium && <Shield size={14} className="text-amber-500" />}
                 </div>
-                <div className="flex gap-2 text-[10px] mt-1">
-                    {row.status === 'draft' && <span className="bg-zinc-700 px-1 rounded text-zinc-400">Draft</span>}
-                    <span className={`px-1 rounded ${
-                        row.difficulty === 'hard' ? 'bg-red-500/20 text-red-500' :
-                        row.difficulty === 'medium' ? 'bg-yellow-500/20 text-yellow-500' :
-                        'bg-green-500/20 text-green-500'
-                    }`}>{row.difficulty || 'medium'}</span>
-                </div>
+                <div className="text-xs text-zinc-500 mt-0.5">{row.teacherName}</div>
             </div>
         )
     },
-    { header: "Question", accessor: "question", render: (row) => <div className="max-w-xs truncate text-zinc-400" title={row.question}>{row.question}</div> },
-    { header: "Years", accessor: "years", render: (row) => <span className="text-xs bg-zinc-800 px-2 py-1 rounded text-zinc-400">{Array.isArray(row.years) ? row.years.join(", ") : row.years}</span> },
+    { header: "Year", accessor: "year", render: (row) => <span className="text-sm text-zinc-300">{row.year}</span> },
+    { header: "Type", accessor: "examType", render: (row) => <span className="text-sm text-zinc-400 capitalize">{row.examType || '-'}</span> },
+    { 
+        header: "Content", 
+        accessor: "chapter", 
+        render: (row) => (
+            <div className="flex flex-col">
+                {row.isAll ? (
+                   <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded w-fit">Complete Syllabus</span>
+                ) : (
+                   <span className="text-sm text-zinc-300">{row.chapterName} <span className="text-zinc-500 text-xs">({row.chapter})</span></span>
+                )}
+            </div>
+        ) 
+    },
+    { 
+        header: "Status", 
+        accessor: "status", 
+        render: (row) => (
+            <span className={`px-2 py-1 rounded text-xs ${
+                row.status === 'approved' ? 'bg-green-500/20 text-green-500' : 'bg-zinc-700 text-zinc-400'
+            }`}>
+                {row.status || 'draft'}
+            </span>
+        ) 
+    },
   ];
+
+  const handleEdit = (pyq) => {
+      setFormData({
+          subjectName: pyq.subjectName,
+          year: pyq.year,
+          teacherName: pyq.teacherName || '',
+          isAll: pyq.isAll || false,
+          examType: pyq.examType || '',
+          chapter: pyq.chapter || '',
+          chapterName: pyq.chapterName || '',
+          status: pyq.status || 'draft',
+          isPremium: pyq.isPremium || false,
+          file: null, // File isn't editable directly unless replaced
+          id: pyq._id
+      });
+      setIsModalOpen(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -210,7 +249,13 @@ const PYQ = () => {
             <p className="text-zinc-500 text-sm mt-1">Previous Year Questions Database</p>
         </div>
         <button 
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+                setFormData({ 
+                    subjectName: '', year: '', teacherName: '', isAll: false, examType: '',
+                    chapter: '', chapterName: '', status: 'draft', isPremium: false, file: null
+                });
+                setIsModalOpen(true);
+            }}
             className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2.5 rounded-xl hover:bg-rose-700 transition-colors font-medium shadow-lg shadow-rose-500/20"
         >
             <Plus size={18} />
@@ -236,6 +281,7 @@ const PYQ = () => {
         data={filteredPyqs} 
         isLoading={loading}
         onDelete={(row) => deletePYQ(row._id)}
+        onEdit={(row) => handleEdit(row)}
         selectedItems={selectedItems}
         onSelect={handleSelect}
         onSelectAll={handleSelectAll}
@@ -253,73 +299,77 @@ const PYQ = () => {
           {...confirmConfig} 
       />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Add New PYQ">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={formData.id ? 'Edit PYQ' : 'Add New PYQ'}>
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Question No.</label>
-                    <input type="number" name="questionNumber" value={formData.questionNumber} onChange={handleInputChange} className="input-field" required />
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Subject</label>
+                    <label className="text-sm font-medium text-zinc-400">Subject Name</label>
                     <input type="text" name="subjectName" value={formData.subjectName} onChange={handleInputChange} className="input-field" required />
                 </div>
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Question</label>
-                <textarea name="question" value={formData.question} onChange={handleInputChange} rows={3} className="input-field" required />
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Answer (Markdown Supported)</label>
-                <textarea name="answer" value={formData.answer} onChange={handleInputChange} rows={5} className="input-field font-mono text-sm" required />
-            </div>
-
-             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Years (comma separated)</label>
-                    <input type="text" name="years" value={formData.years} onChange={handleInputChange} placeholder="2020, 2021" className="input-field" required />
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Tag</label>
-                    <input type="text" name="tag" value={formData.tag} onChange={handleInputChange} className="input-field" />
+                    <label className="text-sm font-medium text-zinc-400">Year</label>
+                    <input type="text" name="year" value={formData.year} onChange={handleInputChange} className="input-field" placeholder="e.g. 2023" required />
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 border border-zinc-800 p-3 rounded-xl bg-zinc-950/30">
-                 <div className="flex items-center gap-3">
-                    <div className={`w-4 h-4 rounded-full border ${formData.status === 'published' ? 'bg-green-500 border-green-500' : 'border-zinc-500'}`} />
-                    <select name="status" value={formData.status} onChange={handleInputChange} className="bg-transparent text-sm focus:outline-none w-full">
-                        <option value="draft">Save as Draft</option>
-                        <option value="published">Publish Now</option>
+            <div className="grid grid-cols-2 gap-4">
+                 <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Exam Type</label>
+                    <select name="examType" value={formData.examType} onChange={handleInputChange} className="input-field">
+                        <option value="">Select Type</option>
+                        <option value="ST-1">ST-1</option>
+                        <option value="ST-2">ST-2</option>
+                        <option value="PUT">PUT</option>
+                        <option value="AKTU EXAM">AKTU EXAM</option>
                     </select>
                 </div>
-                 <div className="flex items-center gap-3">
-                    <span className="text-sm text-zinc-400">Diff:</span>
-                    <select name="difficulty" value={formData.difficulty} onChange={handleInputChange} className="bg-transparent text-sm focus:outline-none w-full text-zinc-200">
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Status</label>
+                     <select name="status" value={formData.status} onChange={handleInputChange} className="input-field">
+                        <option value="draft">Draft</option>
+                        <option value="approved">Approved</option>
                     </select>
                 </div>
             </div>
 
-             <div className="space-y-2">
-                <label className="flex items-center gap-3 cursor-pointer p-2">
-                    <input type="checkbox" name="isPremium" checked={formData.isPremium} onChange={handleInputChange} className="accent-amber-500 w-4 h-4" />
-                    <span className="text-sm font-medium text-amber-500 flex items-center gap-2"><Shield size={14}/> Premium Content</span>
+            <div className="flex items-center gap-4 py-2 border-y border-white/5">
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="isAll" checked={formData.isAll} onChange={handleInputChange} className="accent-rose-500 w-4 h-4" />
+                    <span className="text-sm text-zinc-300">Is All? (Complete Syllabus)</span>
                 </label>
-             </div>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="isPremium" checked={formData.isPremium} onChange={handleInputChange} className="accent-amber-500 w-4 h-4" />
+                    <span className="text-sm text-amber-500 flex items-center gap-1"><Shield size={12}/> Premium</span>
+                </label>
+            </div>
+
+            {formData.isAll ? (
+                 <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Teacher Name</label>
+                    <input type="text" name="teacherName" value={formData.teacherName} onChange={handleInputChange} className="input-field" required />
+                </div>
+            ) : (
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-zinc-400">Chapter No.</label>
+                        <input type="text" name="chapter" value={formData.chapter} onChange={handleInputChange} className="input-field" />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-zinc-400">Chapter Name</label>
+                        <input type="text" name="chapterName" value={formData.chapterName} onChange={handleInputChange} className="input-field" required />
+                    </div>
+                </div>
+            )}
              
-             <div className="space-y-2">
-                 <label className="text-sm font-medium text-zinc-400">Optional Image</label>
+            <div className="space-y-2">
+                 <label className="text-sm font-medium text-zinc-400">Upload PDF/File</label>
                   <div className="border-2 border-dashed border-zinc-700 rounded-xl p-4 text-center cursor-pointer hover:bg-zinc-800/50 transition-colors relative">
                     <input type="file" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" />
                     <Upload className="mx-auto text-zinc-500 mb-2" size={20} />
-                    <p className="text-zinc-400 text-xs">{formData.file ? formData.file.name : "Click to upload"}</p>
+                    <p className="text-zinc-400 text-xs">{formData.file ? formData.file.name : "Click to upload file"}</p>
                 </div>
-             </div>
+            </div>
 
             <div className="pt-4 flex justify-end gap-3">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800">Cancel</button>

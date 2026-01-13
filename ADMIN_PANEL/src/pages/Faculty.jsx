@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { facultyService } from '../services/facultyService';
 import Table from '../components/Table';
 import Modal from '../components/Modal';
 import { Search, Plus, Upload, GraduationCap, Loader2 } from 'lucide-react';
@@ -14,8 +14,9 @@ const Faculty = () => {
 
   const [formData, setFormData] = useState({
     name: '',
-    departement: '', // Note: Backend typo
-    exprence: '',    // Note: Backend typo
+    department: '',
+    designation: '',
+    experience: '',
     subject: '',
     description: '',
     file: null
@@ -40,10 +41,10 @@ const Faculty = () => {
   const fetchFaculty = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/faculty');
-      if (response.data && response.data.data) {
-        setFaculty(response.data.data);
-        setFilteredFaculty(response.data.data);
+      const response = await facultyService.getAll();
+      if (response && response.data) {
+        setFaculty(response.data);
+        setFilteredFaculty(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch faculty", error);
@@ -67,21 +68,20 @@ const Faculty = () => {
         setSubmitting(true);
         const data = new FormData();
         data.append('name', formData.name);
-        data.append('departement', formData.departement);
-        data.append('exprence', formData.exprence);
+        data.append('department', formData.department);
+        data.append('designation', formData.designation);
+        data.append('experience', formData.experience);
         data.append('subject', formData.subject);
         data.append('description', formData.description);
         if (formData.file) {
             data.append('image', formData.file);
         }
 
-        await api.post('/faculty/create', data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await facultyService.create(data);
 
         alert("Faculty added successfully!");
         setIsModalOpen(false);
-        setFormData({ name: '', departement: '', exprence: '', subject: '', description: '', file: null });
+        setFormData({ name: '', department: '', designation: '', experience: '', subject: '', description: '', file: null });
         fetchFaculty();
     } catch (error) {
         console.error("Creation failed", error);
@@ -94,7 +94,7 @@ const Faculty = () => {
   const deleteFaculty = async (id) => {
       if(!window.confirm("Are you sure you want to delete this faculty member?")) return;
       try {
-          await api.delete(`/faculty/${id}`);
+          await facultyService.delete(id);
           fetchFaculty();
       } catch (error) {
           console.error("Delete failed", error);
@@ -119,13 +119,14 @@ const Faculty = () => {
                 </div>
                 <div>
                     <p className="font-semibold text-zinc-200">{row.name}</p>
-                    <p className="text-xs text-zinc-500">{row.departement}</p>
+                    <p className="text-xs text-zinc-500">{row.designation}</p>
                 </div>
             </div>
         )
     },
+    { header: "Department", accessor: "department" },
     { header: "Subject", accessor: "subject" },
-    { header: "Experience", accessor: "exprence" }, // Backend field name
+    { header: "Experience", render: (row) => <span>{row.experience} Years</span> },
   ];
 
   return (
@@ -182,16 +183,36 @@ const Faculty = () => {
                     <label className="text-sm font-medium text-zinc-400">Department</label>
                     <input 
                         type="text" 
-                        name="departement"
-                        value={formData.departement}
+                        name="department"
+                        value={formData.department}
                         onChange={handleInputChange}
                         className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
+                        placeholder="e.g. CS, Math"
                         required
                     />
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Designation</label>
+                    <select 
+                        name="designation"
+                        value={formData.designation}
+                        onChange={handleInputChange}
+                        className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50 appearance-none"
+                        required
+                    >
+                        <option value="" className="text-zinc-500">Select Designation</option>
+                        <option value="Professor">Professor</option>
+                        <option value="Associate Professor">Associate Professor</option>
+                        <option value="Assistant Professor">Assistant Professor</option>
+                        <option value="Lecturer">Lecturer</option>
+                        <option value="HOD">HOD</option>
+                        <option value="Dean">Dean</option>
+                        <option value="Lab Assistant">Lab Assistant</option>
+                    </select>
+                </div>
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">Subject</label>
                     <input 
@@ -203,15 +224,27 @@ const Faculty = () => {
                         required
                     />
                 </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-zinc-400">Experience</label>
+                    <label className="text-sm font-medium text-zinc-400">Experience (Years)</label>
                     <input 
-                        type="text" 
-                        name="exprence"
-                        value={formData.exprence}
+                        type="number" 
+                        name="experience"
+                        value={formData.experience}
                         onChange={handleInputChange}
                         className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
+                        min="0"
                         required
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-zinc-400">Profile Image</label>
+                    <input 
+                        type="file" 
+                        onChange={handleFileChange}
+                        className="w-full text-zinc-400 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700"
                     />
                 </div>
             </div>
@@ -226,21 +259,6 @@ const Faculty = () => {
                     className="w-full bg-zinc-800 border-none rounded-lg p-3 text-zinc-100 focus:ring-2 focus:ring-rose-500/50"
                     required
                 />
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-400">Profile Image</label>
-                <div className="border-2 border-dashed border-zinc-700 rounded-xl p-6 text-center cursor-pointer hover:bg-zinc-800/50 transition-colors relative">
-                    <input 
-                        type="file" 
-                        onChange={handleFileChange}
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                    />
-                    <Upload className="mx-auto text-zinc-500 mb-2" size={24} />
-                    <p className="text-zinc-400 text-xs">
-                        {formData.file ? formData.file.name : "Click to upload photo"}
-                    </p>
-                </div>
             </div>
 
             <div className="pt-4 flex justify-end gap-3">

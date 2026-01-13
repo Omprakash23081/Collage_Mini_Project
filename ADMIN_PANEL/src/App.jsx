@@ -11,6 +11,10 @@ import Faculty from './pages/Faculty';
 import Career from './pages/Career';
 import Items from './pages/Items';
 import Roadmap from './pages/Roadmap';
+import Premium from './pages/Premium';
+import Profile from './pages/Profile';
+import Banners from './pages/Banners';
+import Feedback from './pages/Feedback';
 import { Toaster } from 'react-hot-toast';
 
 const ProtectedRoute = ({ children }) => {
@@ -55,6 +59,8 @@ function App() {
           }>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/banners" element={<Banners />} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/pyq" element={<PYQ />} />
             <Route path="/events" element={<Events />} />
@@ -62,6 +68,8 @@ function App() {
             <Route path="/career" element={<Career />} />
             <Route path="/items" element={<Items />} />
             <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/premium" element={<Premium />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import { usersService } from '../services/usersService';
+import { notesService } from '../services/notesService';
+import { pyqService } from '../services/pyqService';
 import { useAuth } from '../context/AuthContext';
 import { Users, FileText, Calendar, TrendingUp, FileQuestion, Activity, AlertCircle, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -32,14 +34,53 @@ const StatCard = ({ title, value, icon: Icon, color, delay, subtext }) => (
 const Dashboard = () => {
   const { user } = useAuth();
   
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({
+      users: { total: 0, active24h: 0 },
+      content: { notes: 0, notesDrafts: 0, pyqs: 0 },
+      recentLogs: []
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await api.get('/dashboard/stats');
-        setStats(response.data.data);
+        const [usersRes, notesRes, pyqsRes] = await Promise.allSettled([
+            usersService.getAll(),
+            notesService.getAll(),
+            pyqService.getAll()
+        ]);
+
+        console.log("Dashboard Fetch Results:", { usersRes, notesRes, pyqsRes });
+
+        // Helper to extract data safely
+        const getData = (res) => {
+            if (res.status === 'fulfilled' && res.value && res.value.data) {
+                return Array.isArray(res.value.data) ? res.value.data : [];
+            }
+            return [];
+        };
+
+        // Process Users
+        const usersList = getData(usersRes);
+        const totalUsers = usersList.length;
+        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        const activeUsers = usersList.filter(u => new Date(u.updatedAt) > oneDayAgo).length;
+
+        // Process Notes
+        const notesList = getData(notesRes);
+        const totalNotes = notesList.length;
+        const draftNotes = notesList.filter(n => n.status === 'draft').length;
+
+        // Process PYQs
+        const pyqsList = getData(pyqsRes);
+        const totalPyqs = pyqsList.length;
+
+        setStats({
+            users: { total: totalUsers, active24h: activeUsers },
+            content: { notes: totalNotes, notesDrafts: draftNotes, pyqs: totalPyqs },
+            recentLogs: [] 
+        });
+
       } catch (error) {
         console.error("Error fetching dashboard stats:", error);
       } finally {

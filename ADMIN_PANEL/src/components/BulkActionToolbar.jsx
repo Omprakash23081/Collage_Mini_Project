@@ -20,12 +20,12 @@ const BulkActionToolbar = ({ selectedCount, onClear, onAction }) => {
 
       <div className="flex items-center gap-2">
         <button
-            onClick={() => onAction('publish')}
+            onClick={() => onAction('approved')}
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-green-500/20 text-green-400 transition-colors text-sm font-medium"
-            title="Publish Selected"
+            title="Approve Selected"
         >
             <CheckCircle size={16} />
-            <span className="hidden sm:inline">Publish</span>
+            <span className="hidden sm:inline">Approved</span>
         </button>
 
         <button

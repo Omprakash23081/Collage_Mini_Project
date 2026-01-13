@@ -2,6 +2,9 @@ import { motion } from 'framer-motion';
 import { Edit2, Trash2, Eye } from 'lucide-react';
 
 const Table = ({ columns, data, onEdit, onDelete, onView, isLoading, selectedItems, onSelect, onSelectAll }) => {
+  // Defensive check to prevent crashes
+  const safeData = Array.isArray(data) ? data.filter(item => item && typeof item === 'object') : [];
+
   if (isLoading) {
     return (
         <div className="bg-zinc-900 rounded-xl shadow-sm border border-white/5 p-8 flex justify-center">
@@ -10,7 +13,7 @@ const Table = ({ columns, data, onEdit, onDelete, onView, isLoading, selectedIte
     );
   }
 
-  const allSelected = data.length > 0 && selectedItems?.length === data.length;
+  const allSelected = safeData.length > 0 && selectedItems?.length === safeData.length;
 
   return (
     <div className="bg-zinc-900 rounded-xl shadow-sm border border-white/5 overflow-hidden">
@@ -39,14 +42,14 @@ const Table = ({ columns, data, onEdit, onDelete, onView, isLoading, selectedIte
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
-            {data.length === 0 ? (
+            {safeData.length === 0 ? (
                 <tr>
                     <td colSpan={columns.length + (onSelectAll ? 2 : 1)} className="px-6 py-8 text-center text-zinc-500">
                         No data found
                     </td>
                 </tr>
             ) : (
-                data.map((row, rowIdx) => {
+                safeData.map((row, rowIdx) => {
                     const isSelected = selectedItems?.includes(row._id);
                     return (
                         <motion.tr 
