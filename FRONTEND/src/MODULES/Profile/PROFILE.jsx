@@ -476,7 +476,7 @@ function PROFILE() {
                   "Updating..."
                 ) : (
                   <>
-                    <FiSave /> Update Password
+                    <FiSave /> Update
                   </>
                 )}
               </button>
