@@ -1,7 +1,7 @@
 import style from "./PROFILE01.module.css";
-import image from "../PHOTO/rocket.gif";
+import image from "../../PHOTO/rocket.gif";
 
-function PROFILE01() {
+function PROFILE01({ onEdit }) {
   return (
     <div className={style.acount_profile}>
       <div className={style.content_profile_details}>
@@ -17,7 +17,7 @@ function PROFILE01() {
 
       <div className={style.edit_profile}>
         <center>
-          <button className={style.edit}>Edit Profile</button>
+          <button className={style.edit} onClick={onEdit}>Edit Profile</button>
         </center>
       </div>
 

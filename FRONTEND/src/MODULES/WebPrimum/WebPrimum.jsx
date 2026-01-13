@@ -1,16 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from "./WebPrimum.module.css";
+import { planService } from "../../services/planService";
 
 function WebPrimum() {
+  const [plans, setPlans] = useState([]);
   const [currentPrice, setCurrentPrice] = useState("");
   const [currentDueDate, setCurrentDueDate] = useState("Yearly");
+  const [loading, setLoading] = useState(true);
 
-  function setPrice(value) {
-    setCurrentPrice(value);
-  }
-  function setDate(value) {
-    setCurrentDueDate(value);
-  }
+  // Default features list to ensure order, or we can extract from backend
+  const allFeatures = [
+    "Chapter-wise PYQs",
+    "Most Important Selected Qs Bank",
+    "AKTU Video Solutions",
+    "Number of devices that can be logged in"
+  ];
+
+  useEffect(() => {
+    fetchPlans();
+  }, []);
+
+  const fetchPlans = async () => {
+    try {
+      const response = await planService.getPlans();
+      if (response && response.data) {
+        setPlans(response.data);
+        if (response.data.length > 0) {
+            // Default select the first plan or one named "Premium"
+            const defParams = response.data.find(p => p.name === 'Premium') || response.data[0];
+            setCurrentPrice(defParams.name);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch plans", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFeatureValue = (plan, featureName) => {
+    const feature = plan.features.find(f => f.name.includes(featureName) || featureName.includes(f.name));
+    if (!feature) return <span className={style.x_mark}>✕</span>;
+    
+    if (feature.textValue) return feature.textValue;
+    return feature.included ? <span className={style.check}>✓</span> : <span className={style.x_mark}>✕</span>;
+  };
+
+  const getPrice = (plan) => {
+    if (!plan) return 0;
+    if (currentDueDate === "Monthly") return plan.prices.monthly;
+    if (currentDueDate === "Quarterly") return plan.prices.quarterly;
+    return plan.prices.yearly;
+  };
+
+  if (loading) return <div className={style.pricing_container}><div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>Loading Plans...</div></div>;
 
   return (
     <>
@@ -21,47 +64,23 @@ function WebPrimum() {
             <tbody>
               <tr className={style.header}>
                 <td>All content</td>
-                <td className={currentPrice === "Super" && style.selected}>
-                  Super
-                </td>
-                <td
-                  className={`${style.premiumtext} ${currentPrice === "Premium" ? style.selected : ""}`}
-                >
-                  Premium
-                </td>
+                {plans.map(plan => (
+                     <td key={plan._id} className={currentPrice === plan.name ? style.selected : ""}>
+                         {plan.name}
+                     </td>
+                ))}
               </tr>
-              <tr>
-                <td>Chapter-wise PYQs</td>
-                <td>
-                  <span className={style.check}>✓</span>
-                </td>
-                <td>
-                  <span className={style.check}>✓</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Most Important Selected Qs Bank</td>
-                <td>
-                  <span className={style.check}>✓</span>
-                </td>
-                <td>
-                  <span className={style.check}>✓</span>
-                </td>
-              </tr>
-              <tr>
-                <td>AKTU Video Solutions</td>
-                <td>
-                  <span className={style.x_mark}>✕</span>
-                </td>
-                <td>
-                  <span className={style.check}>✓</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Number of devices that can be logged in</td>
-                <td>2</td>
-                <td>4</td>
-              </tr>
+              
+              {allFeatures.map(featureName => (
+                  <tr key={featureName}>
+                      <td>{featureName}</td>
+                      {plans.map(plan => (
+                          <td key={plan._id}>
+                              {getFeatureValue(plan, featureName)}
+                          </td>
+                      ))}
+                  </tr>
+              ))}
             </tbody>
           </table>
 
@@ -70,85 +89,51 @@ function WebPrimum() {
               className={`${style.billing_option} ${
                 currentDueDate === "Quarterly" && style.color
               }`}
-              onClick={() => setDate("Quarterly")}
+              onClick={() => setCurrentDueDate("Quarterly")}
             >
-              One Month
+              Quarterly
             </div>
 
             <div
               className={`${style.billing_option} ${
                 currentDueDate === "Monthly" && style.color
               }`}
-              onClick={() => setDate("Monthly")}
+              onClick={() => setCurrentDueDate("Monthly")}
             >
-              Three Months
+              Monthly
             </div>
 
             <div
               className={`${style.billing_option} ${
                 currentDueDate === "Yearly" && style.color
               }`}
-              onClick={() => setDate("Yearly")}
+              onClick={() => setCurrentDueDate("Yearly")}
             >
-              Six Months
+              Yearly
             </div>
           </div>
 
           <div className={style.price_cards}>
-            <div
-              className={`${style.price_card} ${
-                currentPrice === "Super" && style.selected
-              }`}
-              onClick={() => setPrice("Super")}
-            >
-              <div id={style.super}>Super</div>
-              <div className={style.price1}>
-                {currentDueDate === "Quarterly" && (
-                  <span>
-                    ₹59.0<span>/Month</span>
-                  </span>
-                )}
-                {currentDueDate === "Monthly" && (
-                  <span>
-                    ₹99.0<span>/Month</span>
-                  </span>
-                )}
-                {currentDueDate === "Yearly" && (
-                  <span>
-                    ₹199.0<span>/Month</span>
-                  </span>
-                )}
-              </div>
-            </div>
-            <div
-              className={`${style.price_card} ${
-                currentPrice === "Premium" && style.selected
-              }`}
-              onClick={() => setPrice("Premium")}
-            >
-              <div className={style.premiumtext}>Premium</div>
-              <div className={style.price2}>
-                {currentDueDate === "Quarterly" && (
-                  <span>
-                    ₹99.0<span>/Month</span>
-                  </span>
-                )}
-                {currentDueDate === "Monthly" && (
-                  <span>
-                    ₹199<span>/Month</span>
-                  </span>
-                )}
-                {currentDueDate === "Yearly" && (
-                  <span>
-                    ₹249.0<span>/Month</span>
-                  </span>
-                )}
-              </div>
-            </div>
+            {plans.map(plan => (
+                 <div
+                 key={plan._id}
+                 className={`${style.price_card} ${
+                   currentPrice === plan.name && style.selected
+                 }`}
+                 onClick={() => setCurrentPrice(plan.name)}
+               >
+                 <div className={plan.name === 'Super' ? style.super : style.premiumtext} id={plan.name === 'Super' ? style.super : ''}>{plan.name}</div>
+                 <div className={plan.name === 'Super' ? style.price1 : style.price2}>
+                     <span>
+                       ₹{getPrice(plan)}<span>/Month</span>
+                     </span>
+                 </div>
+               </div>
+            ))}
           </div>
 
           <a href="#" className={style.cta_button}>
-            Continue with {currentPrice ? currentPrice : "Premium"}
+            Continue with {currentPrice}
           </a>
         </div>
       </div>

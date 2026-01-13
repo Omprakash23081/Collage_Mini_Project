@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FiUser,
   FiSettings,
@@ -14,10 +15,11 @@ import {
   FiCalendar,
 } from "react-icons/fi";
 import { BsCheckCircleFill, BsGraphUp } from "react-icons/bs";
-import style from "./PROFILE.module.css"; // Adjust the path as necessary
+import style from "./PROFILE.module.css";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
 function PROFILE() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("activity");
   const [isEditing, setIsEditing] = useState(false);
   const { user, updateUser, changePassword, logout } = useContext(AuthContext);
@@ -521,6 +523,7 @@ function PROFILE() {
                 >
                   <p style={{ color: "#A1A1AA" }}>Free Plan</p>
                   <button
+                    onClick={() => navigate("/primum/premium")}
                     style={{
                       marginTop: "0.5rem",
                       color: "#F43F5E",

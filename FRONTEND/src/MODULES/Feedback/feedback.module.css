@@ -1,111 +1,312 @@
 .feedbackContainer {
-  width: 80%;
-  margin: 48px auto;
-  padding: 36px 28px;
-  background: var(--bg-tertiary);
-  border-radius: 18px;
-  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.2), 0 1.5px 6px rgba(0, 0, 0, 0.04);
+  width: 90%;
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 50px;
+  background: rgba(20, 20, 25, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 40px;
   align-items: center;
-  border: 1px solid var(--border-color);
-  animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Subtle background accent */
+.feedbackContainer::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(194, 22, 65, 0.15), transparent 70%);
+  filter: blur(60px);
+  z-index: -1;
+}
+
+.feedbackContainer::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.1), transparent 70%);
+  filter: blur(60px);
+  z-index: -1;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .feedbackTitle {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 10px;
-  letter-spacing: 0.5px;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .feedbackForm {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 30px;
   width: 100%;
+  max-width: 650px;
 }
 
 .feedbackTextarea {
-  padding: 14px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1.08rem;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  font-size: 1.15rem;
   font-family: inherit;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  transition: border 0.2s, box-shadow 0.2s;
-  min-height: 90px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  transition: all 0.3s ease;
+  min-height: 180px;
   resize: vertical;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  line-height: 1.7;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .feedbackTextarea:focus {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(194, 22, 65, 0.2);
+  border-color: rgba(194, 22, 65, 0.6);
+  box-shadow: 0 0 0 4px rgba(194, 22, 65, 0.15), inset 0 2px 4px rgba(0,0,0,0.2);
   outline: none;
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.feedbackTextarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 300;
 }
 
 .feedbackButton {
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #c21641 0%, #d41847 50%, #b3143c 100%);
+  background-size: 200% auto;
   color: #fff;
-  border-radius: 15px;
-  padding: 14px 0;
+  border-radius: 16px;
+  padding: 18px 40px;
   border: none;
-  font-size: 1.08rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   cursor: pointer;
-  margin: auto;
-  box-shadow: 0 2px 8px rgba(194, 22, 65, 0.2);
-  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  margin: 10px auto 0;
+  box-shadow: 0 10px 25px rgba(194, 22, 65, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 100%;
+  max-width: 350px;
+  white-space: nowrap;
+}
+
+.feedbackButton:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(194, 22, 65, 0.4);
+  background-position: right center;
+}
+
+.feedbackButton:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.feedbackButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+}
+
+/* Success Message */
+.feedbackSuccess {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 60px;
+    background: rgba(46, 204, 113, 0.08);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    border-radius: 24px;
+    width: 100%;
+    animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes successPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.feedbackSuccess h3 {
+    color: #4ade80;
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: 800;
+}
+
+.feedbackSuccess p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* History Section */
+.historyContainer {
+  width: 100%;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.historyTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.historyList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.historyItem {
+  background: rgba(40, 40, 50, 0.5);
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.historyItem:hover {
+  background: rgba(50, 50, 60, 0.7);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.historyDate {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+}
+
+.deleteBtn {
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.deleteBtn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #ff4d4d !important;
+}
+
+.historyText {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+  flex-grow: 1;
+}
+
+.adminResponse {
+  margin-top: auto;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  padding: 16px;
+  border-radius: 12px;
+  border-top-left-radius: 2px;
+  position: relative;
+  margin-top: 15px;
+}
+
+.responseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.responseHeader span:first-child {
+  color: #60a5fa;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.feedbackButton:hover,
-.feedbackButton:focus {
-  box-shadow: 0 4px 16px rgba(194, 22, 65, 0.4);
-  outline: none;
+.responseText {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.feedbackSuccess {
-  color: #2ecc71;
-  background: rgba(46, 204, 113, 0.1);
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-size: 1.08rem;
-  font-weight: 500;
-  box-shadow: 0 1px 6px rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.2);
-  margin-top: 10px;
-  text-align: center;
-}
-
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .feedbackContainer {
-    max-width: 98vw;
-    padding: 18px 4vw;
-    border-radius: 10px;
+    padding: 24px;
+    margin: 20px auto;
+    width: 92%;
+    border-radius: 20px;
+    gap: 24px;
   }
+  
   .feedbackTitle {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-bottom: 5px;
   }
-  .feedbackButton {
+  
+  .feedbackForm {
+    gap: 20px;
+  }
+
+  .feedbackTextarea {
+    padding: 16px;
     font-size: 1rem;
-    padding: 12px 0;
+    min-height: 140px;
+  }
+
+  .feedbackButton {
+    width: 100%;
+    max-width: none;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    white-space: nowrap;
+  }
+  
+  .historyList {
+    grid-template-columns: 1fr;
   }
 }

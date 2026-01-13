@@ -2,27 +2,31 @@ import apiClient from '../utils/axios';
 
 export const facultyService = {
   add: async (facultyData) => {
-    const response = await apiClient.post('/faculty/create', facultyData);
-    return response.data;
+    const response = await apiClient.post('/faculty/create', facultyData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
+    return response;
   },
 
   getAll: async () => {
     const response = await apiClient.get('/faculty');
-    return response.data;
+    return response;
   },
 
   getById: async (id) => {
     const response = await apiClient.get(`/faculty/${id}`);
-    return response.data;
+    return response;
   },
 
   update: async (id, facultyData) => {
-    const response = await apiClient.patch(`/faculty/${id}`, facultyData);
-    return response.data;
+    const response = await apiClient.patch(`/faculty/${id}`, facultyData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
+    return response;
   },
 
-  delete: async (id) => {
+  deleteFaculty: async (id) => {
     const response = await apiClient.delete(`/faculty/${id}`);
-    return response.data;
+    return response;
   },
 };

@@ -5,12 +5,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 3%;
-  background: rgba(15, 23, 42, 0.6); /* Glass Transparent Dark */
+  background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  position: sticky;
+  position: fixed; /* User requested fixed for PC/Tab */
   top: 0;
+  left: 0;
   z-index: 1000;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -22,6 +23,151 @@
   align-items: center;
   gap: 40px;
 }
+
+/* Mobile Toggle - Hidden by default */
+.mobileToggle {
+  display: none;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Nav Link Container */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Logo Area */
+.image_navigation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.image_navigation img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: white;
+  padding: 2px;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+.image_navigation a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Nav Items */
+.language_navigation,
+.Resource_navigation,
+.Company_navigation {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.language h2,
+.solution h4,
+.solution a {
+  font-size: 0.95rem;
+  margin: 0;
+  color: #94a3b8;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.language_navigation:hover .language h2,
+.Resource_navigation:hover .solution h4,
+.Company_navigation:hover .solution h4,
+.Resource_navigation:hover .solution a,
+.Company_navigation:hover .solution a {
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Right Side Actions */
+.Right_side_navaction_bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ... existing button styles ... */
+
+
+/* ... existing button styles ... */
+
+/* Search Bar */
+/* ... existing search styles ... */
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .contener {
+    padding: 15px 20px;
+    background: #0f172a;
+    justify-content: space-between;
+  }
+
+  /* ... toggle styles ... */
+  
+  .left_side_navaction_bar {
+    width: 100%;
+    justify-content: space-between; /* Space between Logo and Toggle */
+  }
+
+  .navLinks {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    flex-direction: column;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transform: translateY(-150%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 999;
+    opacity: 0;
+    align-items: center; /* Center items in menu */
+  }
+
+  .navLinks.open {
+    transform: translateY(0);
+    opacity: 1;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  }
+
+  /* When Menu is open, hide the notification/search/login on the right to avoid clutter? 
+     Or stack them below. Let's stack them below. */
+  
+  .Right_side_navaction_bar {
+     display: none; /* Hide default right side on mobile, maybe move search inside menu? */
+  }
+
+  /* For now, just make right side stack if we want to keep it visible, 
+     but "Hamburger" usually implies everything goes in there.
+     However, keeping Login visible might be good.
+     Let's keep Login/Search always visible below the logo? 
+     Or hide them and user has to use menu.
+     
+     Current design: Logo Left, Burger Right.
+     Menu opens: Links + Search + Login.
+  */
+}
+
 
 /* Logo Area */
 .image_navigation {
@@ -244,43 +390,105 @@
 
 @media (max-width: 768px) {
   .contener {
-    flex-direction: column;
-    gap: 15px;
-    padding: 1rem;
-    position: relative;
-    background: rgba(15, 23, 42, 0.95); /* Solid background on mobile */
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    background: #0f172a;
+    gap: 0;
+    position: relative; /* Ensure context for absolute menu */
   }
 
   .left_side_navaction_bar {
     width: 100%;
     justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap; /* Allow wrapping */
+  }
+  
+  .mobileToggle {
+    display: block;
+    padding: 10px;
+    z-index: 1002;
   }
 
-  .Right_side_navaction_bar {
+  /* Nav Links - Compact Overlay Style */
+  .navLinks {
+    position: absolute;
+    top: 100%; /* Start exactly below the header container */
+    left: 0;
     width: 100%;
-    justify-content: space-between;
-    gap: 10px;
+    height: auto; /* Auto height based on content */
+    background: #0f172a;
     flex-direction: column;
-    margin-right: 3rem;
+    padding: 20px;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001; /* Above everything else */
+    align-items: center; /* Center items */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Add bottom border for visual closure */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Shadow to separate from content below */
   }
 
-  .navigation_Butten1 {
+  .navLinks.open {
+    transform: translateX(0);
+  }
+  
+  /* Styling Language Dropdown for Mobile */
+  .language_name {
+      position: absolute;
+      top: 10px; /* Slight offset */
+      left: 50%;
+      transform: translateX(-50%); /* Center it relative to parent or adjust as needed */
+      width: 180px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-top: 10px;
+      padding: 10px;
+      display: none; 
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 1005;
+      border-radius: 12px;
+  }
+  
+  /* Ensure parent has relative positioning context if lost, though global has it */
+  .language_navigation {
+      position: relative;
+      width: 100%; /* Expand touch area in mobile menu */
+      display: flex;
+      justify-content: center; /* Center the text */
+  }
+  
+  .language_navigation:hover .language_name {
+    display: block;
+  }
+  
+  /* Right Side (Bell, Primum, Search) - Always Visible below header */
+  .Right_side_navaction_bar {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
-    margin-left: 1rem;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    position: relative;
+    z-index: 1; /* Below menu */
   }
-
+  
+  .authWrapper { order: 1; }
+  .notificationWrapper { order: 2; }
   .searchContainer {
-    width: 106%;
-    margin-left: 3rem;
+      order: 3;
+      width: 100%;
+      margin: 5px 0;
   }
-
-  .input[type="search"] {
-    width: 100%;
+  
+  .navigation_Butten1 a {
+      padding: 0.5rem 1.2rem;
+      font-size: 0.9rem;
   }
-
-  .butten button {
-    display: block; /* Keep search button visible */
-  }
+  
+  .butten button { display: block; }
 }

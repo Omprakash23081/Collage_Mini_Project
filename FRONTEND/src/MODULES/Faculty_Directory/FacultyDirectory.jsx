@@ -1,111 +1,137 @@
 import styles from "./FacultyDirectory.module.css";
-import { useState } from "react";
-
-const facultyData = [
-  { name: "Dr. Alice Smith", department: "cs", designation: "Professor" },
-  {
-    name: "Dr. Bob Johnson",
-    department: "math",
-    designation: "Assistant Professor",
-  },
-  { name: "Dr. Charlie Lee", department: "physics", designation: "Lecturer" },
-  {
-    name: "Dr. Diana Brown",
-    department: "cs",
-    designation: "Assistant Professor",
-  },
-];
+import { useState, useEffect } from "react";
+import { facultyService } from "../../services/facultyService";
+import { toast } from "react-hot-toast";
 
 function FacultyDirectory() {
+  const [facultyData, setFacultyData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  // Search filters
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
-  const [results, setResults] = useState([]);
-
-  const handleSearch = () => {
-    const filteredData = facultyData.filter((faculty) => {
-      const matchesName = faculty.name
-        .toLowerCase()
-        .includes(name.trim().toLowerCase());
-      const matchesDepartment = department
-        ? faculty.department.toLowerCase() === department
-        : true;
-      const matchesDesignation = designation
-        ? faculty.designation.toLowerCase() === designation
-        : true;
-      return matchesName && matchesDepartment && matchesDesignation;
-    });
-    setResults(filteredData);
+  
+  const fetchFaculty = async () => {
+      setLoading(true);
+      try {
+          const res = await facultyService.getAll();
+          if(res.data && res.data.data) {
+              setFacultyData(res.data.data);
+          } else if (Array.isArray(res.data)) {
+             // Handle case where it might return array directly
+             setFacultyData(res.data);
+          }
+      } catch (error) {
+          console.error(error);
+          toast.error("Failed to load faculty directory");
+      } finally {
+          setLoading(false);
+      }
   };
+
+  useEffect(() => {
+      fetchFaculty();
+  }, []);
+
+  // Filter Logic
+  const filteredResults = facultyData.filter((faculty) => {
+    const matchesName = faculty.name?.toLowerCase().includes(name.trim().toLowerCase());
+    const matchesDepartment = department
+      ? faculty.department?.toLowerCase() === department
+      : true;
+    const matchesDesignation = designation
+      ? faculty.designation?.toLowerCase() === designation
+      : true;
+    return matchesName && matchesDepartment && matchesDesignation;
+  });
 
   return (
     <div className={styles.container}>
-      <header>
-        <h1 className={styles.headerTitle}>Faculty Directory</h1>
-        <p className={styles.headerSubtitle}>
-          Find faculty members by name, department, or designation.
-        </p>
-      </header>
-
-      <div className={styles.searchBar}>
-        <input
-          type="text"
-          placeholder="Faculty Name"
-          className={styles.inputField}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <select
-          className={styles.inputField}
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
-        >
-          <option value="">Select Department</option>
-          <option value="cs">Computer Science</option>
-          <option value="math">Mathematics</option>
-          <option value="physics">Physics</option>
-          <option value="chemistry">Chemistry</option>
-        </select>
-        <select
-          className={styles.inputField}
-          value={designation}
-          onChange={(e) => setDesignation(e.target.value)}
-        >
-          <option value="">Select Designation</option>
-          <option value="professor">Professor</option>
-          <option value="assistant professor">Assistant Professor</option>
-          <option value="lecturer">Lecturer</option>
-        </select>
-        <button className={styles.searchButton} onClick={handleSearch}>
-          Search
-        </button>
+      <div className={styles.pageHeader}>
+        <div>
+          <h1 className={styles.headerTitle}>Faculty Directory</h1>
+          <p className={styles.headerSubtitle}>
+            Find faculty members by name, department, or designation.
+          </p>
+        </div>
       </div>
 
-      <div className={styles.results}>
-        {results.length > 0 ? (
-          results.map((faculty, index) => (
-            <div className={styles.faculty_card} key={index}>
-              <div className={styles.card_inner}>
-                <div className={styles.card_image}>
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-                      faculty.name
-                    )}&background=0D8ABC&color=fff`}
-                    alt={faculty.name}
-                  />
+      <div className={styles.filterToolbar}>
+        <div className={styles.searchContainer}>
+          <span className={styles.searchIcon}>🔍</span>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            className={styles.searchInput}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        
+        <div className={styles.filterGroup}>
+            <select
+              className={styles.filterSelect}
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+            >
+              <option value="">All Departments</option>
+              <option value="cs">Computer Science</option>
+              <option value="math">Mathematics</option>
+              <option value="physics">Physics</option>
+              <option value="chemistry">Chemistry</option>
+            </select>
+            <div className={styles.divider}></div>
+            <select
+              className={styles.filterSelect}
+              value={designation}
+              onChange={(e) => setDesignation(e.target.value)}
+            >
+              <option value="">All Designations</option>
+              <option value="professor">Professor</option>
+              <option value="assistant professor">Assistant Professor</option>
+              <option value="lecturer">Lecturer</option>
+            </select>
+        </div>
+      </div>
+
+      {loading ? (
+          <div className={styles.loadingState}>
+              <div className={styles.spinner}></div>
+              <p>Loading directory...</p>
+          </div>
+      ) : (
+        <div className={styles.results}>
+            {filteredResults.length > 0 ? (
+            filteredResults.map((faculty) => (
+                <div className={styles.faculty_card} key={faculty._id}>
+                <div className={styles.card_inner}>
+                    <div className={styles.card_image}>
+                    <img
+                        src={faculty.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(faculty.name)}&background=020617&color=fff`}
+                        alt={faculty.name}
+                    />
+                    </div>
+                    <div className={styles.card_details}>
+                        <h3>{faculty.name}</h3>
+                        <div className={styles.tags}>
+                            <span className={styles.tag}>{faculty.department?.toUpperCase()}</span>
+                            <span className={styles.tag}>{faculty.designation}</span>
+                        </div>
+                        <p className={styles.subject}>{faculty.subject}</p>
+                    </div>
                 </div>
-                <div className={styles.card_details}>
-                  <h3>{faculty.name}</h3>
-                  <p>Department: {faculty.department.toUpperCase()}</p>
-                  <p>Designation: {faculty.designation}</p>
                 </div>
-              </div>
+            ))
+            ) : (
+            <div className={styles.emptyState}>
+                <div className={styles.emptyIcon}>📂</div>
+                <h3>No faculty members found</h3>
+                <p>Try adjusting your search or filters.</p>
             </div>
-          ))
-        ) : (
-          <p>No results found.</p>
-        )}
-      </div>
+            )}
+        </div>
+      )}
     </div>
   );
 }

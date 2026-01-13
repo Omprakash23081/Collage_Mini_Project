@@ -1,17 +1,24 @@
 import styles from "./Lost_Found.module.css";
-import { useState, useContext } from "react";
-import axios from "../../API/axiosConfig.js";
+import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppContext.jsx";
-import { useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext.jsx";
+import { useSearchParams } from "react-router-dom";
+import { itemsService } from "../../services/itemsService.js";
+import Footer from "../Footer/Footer.jsx";
+import { toast } from "react-hot-toast";
 
 function Lost_Found() {
   const { lostManue, setlostManue } = useContext(AppContext);
+  const { user } = useContext(AuthContext); // Get user for auth check
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q") || "";
+  
   const [items, setItems] = useState({
     name: "",
     description: "",
-    status: "",
+    status: "lost", // Default to lost
     location: "",
-    number: 0,
+    number: "",
     image: null,
   });
   const [data, setData] = useState([]);
@@ -37,74 +44,111 @@ function Lost_Found() {
     formData.append("image", items.image);
 
     try {
-      const res = await axios.post(`/items/upload`, formData);
-
+      const res = await itemsService.uploadItem(formData);
       if (res.status < 400) {
-        alert("item uploaded successfully ", res.data);
-        if (res) setlostManue("items");
-        setLoding(false);
+        alert("Item uploaded successfully!");
+        setlostManue("items");
+        // Reset form
+        setItems({
+            name: "",
+            description: "",
+            status: "lost",
+            location: "",
+            number: "",
+            image: null
+        });
       }
     } catch (error) {
-      console.log(error);
-      const msg =
-        error.response?.data?.message || "error during uploading form";
+      console.error(error);
+      const msg = error.response?.data?.message || "Error uploading item.";
       alert(msg);
+    } finally {
+        setLoding(false);
+    }
+  };
+
+  const fetchData = async () => {
+    setLoding(true);
+    try {
+      const res = await itemsService.getItems();
+      if (res.data && res.data.data) {
+        setData(res.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoding(false);
     }
   };
 
   useEffect(() => {
-    const fatchData = async () => {
-      setLoding(true);
-      try {
-        const res = await axios.get(`/items`);
-        if (res.status < 400) {
-          setData(res.data.data);
-        }
-        setLoding(false);
-      } catch (error) {
-        alert("errer during fatching data from DB", error);
-      }
-      setLoding(false);
-    };
-    if (lostManue === "items") fatchData();
+    if (lostManue === "items") fetchData();
   }, [lostManue]);
+
+  const handleDelete = async (id) => {
+      if(!window.confirm("Are you sure you want to delete this item?")) return;
+      
+      try {
+          await itemsService.deleteItem(id);
+          toast.success("Item deleted successfully");
+          fetchData(); // Refresh list
+      } catch (error) {
+          console.error(error);
+          toast.error("Failed to delete item");
+      }
+  };
+
+  // Filter Logic
+  const filteredData = data.filter(obj => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+        obj.name?.toLowerCase().includes(query) || 
+        obj.description?.toLowerCase().includes(query) || // Note: backend schema uses lowercase 'description'
+        obj.Description?.toLowerCase().includes(query) || // Legacy support
+        obj.location?.toLowerCase().includes(query) ||
+        obj.Location?.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div className={styles.body}>
       <header className={styles.header}>
         <h1>Lost and Found</h1>
         <nav className={styles.condation}>
-          <button onClick={() => setlostManue("post")}>
+          <button 
+            onClick={() => setlostManue("post")}
+            className={lostManue === "post" ? styles.activeBtn : ""}
+          >
             <a>Post an Item</a>
           </button>
-          <button onClick={() => setlostManue("items")}>
+          <button 
+            onClick={() => setlostManue("items")}
+            className={lostManue === "items" ? styles.activeBtn : ""}
+          >
             <a>View Items</a>
           </button>
         </nav>
       </header>
 
       {loding && (
-        <>
-          <h1>page is loding....</h1>
-        </>
+        <div className={styles.loading}>
+            <p>Loading...</p>
+        </div>
       )}
 
       {lostManue === "post" && !loding && (
-        <>
-          <section id="post-item">
-            <form
-              id="name"
-              className={styles.form}
-              onSubmit={(e) => handleSubmit(e)}
-            >
+        <section id="post-item">
+            <form className={styles.form} onSubmit={handleSubmit}>
               <label htmlFor="name">Item Title:</label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 required
-                placeholder={items.name}
-                onChange={(e) => onChange(e)}
+                placeholder="e.g. Blue Backpack"
+                value={items.name}
+                onChange={onChange}
               />
 
               <label htmlFor="description">Description:</label>
@@ -113,8 +157,9 @@ function Lost_Found() {
                 name="description"
                 rows="4"
                 required
-                onChange={(e) => onChange(e)}
-                placeholder={items.Description}
+                placeholder="Describe the item (color, brand, distinguishing marks...)"
+                value={items.description}
+                onChange={onChange}
               ></textarea>
 
               <label htmlFor="status">Status:</label>
@@ -122,7 +167,8 @@ function Lost_Found() {
                 id="status"
                 name="status"
                 required
-                onChange={(e) => onChange(e)}
+                value={items.status}
+                onChange={onChange}
               >
                 <option value="lost">Lost</option>
                 <option value="found">Found</option>
@@ -134,20 +180,20 @@ function Lost_Found() {
                 id="location"
                 name="location"
                 required
-                placeholder={items.Location}
-                onChange={(e) => onChange(e)}
+                placeholder="Where was it lost/found?"
+                value={items.location}
+                onChange={onChange}
               />
 
-              <label htmlFor="contact">Your Contact Info:</label>
+              <label htmlFor="contact">Contact Number:</label>
               <input
-                type="text"
+                type="number" // changed to number input for better mobile UX
                 id="contact"
-                name="contact"
+                name="number" // matching state key
                 required
-                minLength={10}
-                maxLength={10}
-                placeholder={items.number}
-                onChange={(e) => onChange(e)}
+                placeholder="Your phone number"
+                value={items.number}
+                onChange={onChange}
               />
 
               <label htmlFor="image">Upload Image:</label>
@@ -155,51 +201,74 @@ function Lost_Found() {
                 type="file"
                 id="image"
                 name="image"
-                required
-                onChange={(e) => onChange(e)}
+                required={!items.image} // Only required if no image selected yet? Actually always require for new post
+                onChange={onChange}
+                accept="image/*"
               />
 
               <button type="submit">Post Item</button>
             </form>
-          </section>
-        </>
+        </section>
       )}
 
       {lostManue === "items" && !loding && (
         <>
-          {Array.isArray(data) &&
-            data.map((obj) => (
-              <div key={obj._id} className={styles.itemCard}>
-                {obj.image && (
-                  <img
-                    src={obj.image}
-                    alt={obj.name}
-                    className={styles.itemImage}
-                  />
-                )}
-                <div className={styles.itemDetails}>
-                  <h3 className={styles.itemTitle}>{obj.name}</h3>
-                  <p className={styles.itemField}>
-                    <strong>Description:</strong> {obj.Description}
-                  </p>
-                  <p className={styles.itemField}>
-                    <strong>Status:</strong> {obj.Status}
-                  </p>
-                  <p className={styles.itemField}>
-                    <strong>Location:</strong> {obj.Location}
-                  </p>
-                  <p className={styles.itemField}>
-                    <strong>Contact:</strong> {obj.number}
-                  </p>
+            {filteredData.length > 0 ? (
+                filteredData.map((obj) => (
+                    <div key={obj._id} className={styles.itemCard}>
+                        {obj.image && (
+                        <img
+                            src={obj.image}
+                            alt={obj.name}
+                            className={styles.itemImage}
+                        />
+                        )}
+                        <div className={styles.itemDetails}>
+                          <h3 className={styles.itemTitle}>{obj.name}</h3>
+                          <p className={styles.itemField}>
+                              <strong>Description:</strong> {obj.description || obj.Description}
+                          </p>
+                          <p className={styles.itemField}>
+                              <strong>Status:</strong> {obj.status || obj.Status}
+                          </p>
+                          <p className={styles.itemField}>
+                              <strong>Location:</strong> {obj.location || obj.Location}
+                          </p>
+                          <p className={styles.itemField}>
+                              <strong>Contact:</strong> {obj.number}
+                          </p>
+                        </div>
+                        
+                        {user?.role === "admin" && (
+                            <button 
+                                className={styles.deleteBtn}
+                                onClick={() => handleDelete(obj._id)}
+                                title="Delete Item"
+                            >
+                                🗑️
+                            </button>
+                        )}
+                    </div>
+                ))
+            ) : (
+                <div className={styles.noResults}>
+                    {data.length === 0 ? (
+                        <>
+                            <h2>No Items Posted Yet</h2>
+                            <p>Be the first to post a lost or found item!</p>
+                        </>
+                    ) : (
+                        <>
+                            <h2>No items found matching "{searchQuery}"</h2>
+                            <p>Try checking your spelling or search for something else.</p>
+                        </>
+                    )}
                 </div>
-              </div>
-            ))}
+            )}
         </>
       )}
 
-      <footer className={styles.footer}>
-        <p>&copy; 2024 Student Sport Portal. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

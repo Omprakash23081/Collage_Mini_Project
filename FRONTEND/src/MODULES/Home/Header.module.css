@@ -3,6 +3,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 100px;
+  padding-top: 1rem;
   padding: 0; /* Removed padding to minimize gap */
   background: transparent;
   text-align: center;
@@ -38,6 +40,7 @@
 @media (max-width: 768px) {
   .Content_section {
     padding: 30px 15px;
+    margin-top: 0; /* Reset margin for mobile relative navbar */
   }
 
   .Content_section h1 {

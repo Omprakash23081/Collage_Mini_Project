@@ -1,28 +1,37 @@
-import apiClient from '../utils/axios';
+import apiClient from "../utils/axios";
 
+// Service for handling lost and found items
 export const itemsService = {
-  report: async (itemData) => {
-    const response = await apiClient.post('/items/upload', itemData);
-    return response.data;
+  // Get all items
+  getItems: async () => {
+    try {
+      const response = await apiClient.get("/items");
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
 
-  getAll: async () => {
-    const response = await apiClient.get('/items');
-    return response.data;
+  // Upload new item (if needed for frontend)
+  uploadItem: async (data) => {
+    try {
+      const response = await apiClient.post("/items/upload", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
-
-  getById: async (id) => {
-    const response = await apiClient.get(`/items/${id}`);
-    return response.data;
-  },
-
-  updateStatus: async (id, status) => {
-    const response = await apiClient.patch(`/items/${id}`, { status });
-    return response.data;
-  },
-
-  delete: async (id) => {
-    const response = await apiClient.delete(`/items/${id}`);
-    return response.data;
-  },
+  // Delete item
+  deleteItem: async (id) => {
+    try {
+      const response = await apiClient.delete(`/items/${id}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 };

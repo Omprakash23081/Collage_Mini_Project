@@ -56,7 +56,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(loginData.email, loginData.password, "student");
+      await login(loginData.email, loginData.password);
       toast.success("Welcome back!");
       navigate("/primum");
     } catch (error) {

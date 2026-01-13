@@ -54,6 +54,25 @@
      but assuming we might add an image later. For now using subtle noise) */
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--neon-blue), var(--neon-magenta));
+  border-radius: 5px;
+  border: 2px solid var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #3b82f6, #ff1f6a);
+}
+
 /* Global Reset & Typography */
 body {
   background: var(--bg-dark); /* Fallback */
