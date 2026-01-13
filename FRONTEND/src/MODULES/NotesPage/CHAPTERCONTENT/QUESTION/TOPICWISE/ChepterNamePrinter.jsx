@@ -1,30 +1,44 @@
 import style from "./TopicWisePrinter.module.css";
-function TopicWisePrinter({ chepter }) {
-  if (!chepter || typeof chepter !== "object") {
-    return <div>No topics available.</div>;
-  }
-  let i = 1;
-  return (
-    <>
-      {chepter.map((values) => (
-        <>
-          <a href={values.fileUrl}>
-            <div className={style.question_item} key={values}>
-              <div className={style.question_text}>
-                <span>
-                  0{i++}{" "}
-                  <span style={{ color: "#ffffff", margin: "0 8px" }}>
-                    {values}
-                  </span>
-                </span>{" "}
-              </div>
-            </div>
-          </a>
+import { useContext } from "react";
+import { DataContext } from "../../../../../context/DataContext.jsx";
 
+function TopicWisePrinter({ currentsubject }) {
+  const { notes } = useContext(DataContext);
+
+  console.log(notes);
+  console.log(currentsubject);
+
+  const questionList = Object.values(notes || {}).filter(
+    (q) =>
+      q.isFull === false &&
+      q.subjectName?.toLowerCase() === currentsubject?.toLowerCase() &&
+      q.status === "approved"
+  );
+
+  console.log(questionList);
+
+  return (
+    <div className={style.questions}>
+      {questionList.map((q, index) => (
+        <a
+          href={q.fileUrl}
+          key={q._id}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div className={style.question_item}>
+            <div className={style.question_text}>
+              <span>
+                {index + 1}. {q.chapter} {q.chapterName?.toUpperCase()}
+              </span>
+            </div>
+            <div className={style.question_meta}>{q?.year}</div>
+          </div>
           <hr className={style.hr} />
-        </>
+        </a>
       ))}
-    </>
+    </div>
   );
 }
+
 export default TopicWisePrinter;

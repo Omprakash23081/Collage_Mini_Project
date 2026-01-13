@@ -6,86 +6,93 @@ export const DataContext = createContext(null);
 
 export const DataProvider = ({ children }) => {
   // initialize as arrays (safer if API returns list)
-  const [notes, setnotes] = useState([]);
-  const [pyq, setpyq] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [pyq, setPyq] = useState([]);
 
-  //this is running perfectely
   const Subject = {
     //for 1 and 2 semester
     year1: [
-      "Mathematics-I",
-      "Physics ",
-      " Chemistry",
-      "Electrical Engineering ",
-      "Electronics Engineering",
-      "Programming for Problem Solving ",
-      "Mechanical Engineering",
-      "Mathematics-II",
-      "Mechanics",
-      "Basic Electrical ",
-      "Soft Skills ",
-      "Environment & Ecology",
+      // Semester I
+      "M-I", // Mathematics-I
+      "PHY", // Physics
+      "CHEM", // Chemistry
+      "EE", // Electrical Engineering
+      "ME", // Mechanical Engineering
+      "PPS", // Programming for Problem Solving
+
+      // Semester II
+      "M-II", // Mathematics-II
+      "BEE", // Basic Electrical Engineering
+      "EVS", // Environment & Ecology
+      "SOFT", // Soft Skills
+      "ENG", // Engineering Graphics
     ],
     year2: [
-      // Semester III & IV combined
-      "DS",
-      "COA",
-      "DSTL",
-      "OS",
-      "TAFAL",
-      "Java",
-      "Python Programming",
-      "Syber Security",
-      "Web Designing Workshop",
-      "Science Based Open Elective (Maths-III/IV/V)",
-      "UHV",
-      "TC",
+      // Semester III
+      "DS", // Data Structures
+      "COA", // Computer Organization & Architecture
+      "DSTL", // Digital System & Logic Design
+      "TC", // Technical Communication
+      "UHV", // Universal Human Values
+
+      // Semester IV
+      "OS", // Operating System
+      "DBMS", // Database Management System
+      "TAFL", // Theory of Automata & Formal Languages
+      "JAVA", // Java Programming
+      "PY", // Python Programming
     ],
     year3: [
-      // Semester V & VI – core CSE/IT
-      "DBMS",
-      "DAA",
-      "CN",
-      "AI",
+      // Semester V
+      "DAA", // Design & Analysis of Algorithms
+      "CN", // Computer Networks
+      "AI", // Artificial Intelligence
+      "SE", // Software Engineering
+      "OE-I", // Open Elective-I
+
+      // Semester VI
+      "ML", // Machine Learning
+      "CD", // Compiler Design
+      "WT", // Web Technology
+      "PE-I", // Professional Elective-I
+      "PE-II", // Professional Elective-II
     ],
     year4: [
-      // Semester VII & VIII
-      "HSMSC-1 / HSMSC-2 (Humanities & Social Sciences / Management Science)",
-      "Departmental Elective-IV",
-      "Departmental Elective-V",
-      "Open Elective-II",
-      "Open Elective-III",
-      "Project",
-      "MOOCs (for Honours Degree)",
-      "Industry Internship / Major Project",
-      "Seminar / Workshop",
-      "Professional Elective",
+      // Semester VII
+      "PE-III", // Professional Elective-III
+      "OE-II", // Open Elective-II
+      "HS", // Humanities / Management
+      "INT", // Internship
+
+      // Semester VIII
+      "PROJ", // Major Project
+      "SEMINAR", // Seminar
+      "OE-III", // Open Elective-III
     ],
   };
 
   useEffect(() => {
-    let mounted = true; // prevent state updates after unmount
+    const controller = new AbortController();
 
     const fetchDashboardData = async () => {
       try {
-        const response = await notesService.getAll();
-        if (mounted) setnotes(response?.data ?? []);
-      } catch (err) {
-        console.error("Error fetching notes:", err);
-      }
+        const [notesRes, pyqRes] = await Promise.all([
+          notesService.getAll({ signal: controller.signal }),
+          pyqService.getAll({ signal: controller.signal }),
+        ]);
 
-      try {
-        const pyqresponse = await pyqService.getAll();
-        if (mounted) setpyq(pyqresponse?.data ?? []);
+        setNotes(notesRes?.data ?? []);
+        setPyq(pyqRes?.data ?? []);
       } catch (err) {
-        console.error("Error fetching pyq:", err);
+        if (err.name !== "CanceledError") {
+          console.error("Dashboard fetch error:", err);
+        }
       }
     };
-
     fetchDashboardData();
 
     return () => {
-      mounted = false;
+      controller.abort();
     };
   }, []);
 

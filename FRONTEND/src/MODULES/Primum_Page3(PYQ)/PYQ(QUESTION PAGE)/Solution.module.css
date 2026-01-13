@@ -1,4 +1,4 @@
-.contaner {
+/* .contaner {
   background-color: var(--bg-primary);
   width: 100%;
   height: 100%;
@@ -92,13 +92,13 @@
     padding: 10px; /* Add padding for smaller screens */
   }
 }
-
+/*
 @media (max-width: 480px) {
   .questionName h1 {
-    font-size: 1.5em; /* Adjust font size for smaller screens */
+    font-size: 1.5em; 
   }
 
   .subjectName h2 {
-    font-size: 1.2em; /* Adjust font size for smaller screens */
+    font-size: 1.2em; 
   }
-}
+} */

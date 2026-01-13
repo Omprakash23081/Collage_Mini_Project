@@ -2,7 +2,7 @@ import style from "./NOTES.module.css";
 import Subject from "../SUBJECT/Subject";
 import Chapter from "../CHAPTER/Chapter";
 import ChapterContent from "../CHAPTERCONTENT/HEADER/ChapContHEADER";
-import Question from "../CHAPTERCONTENT/QUESTION/Question.jsx";
+import Notes from "../CHAPTERCONTENT/QUESTION/Note.jsx";
 import Manue from "../CHAPTERCONTENT/MANUE/MANUE.jsx";
 import { useState } from "react";
 
@@ -40,7 +40,7 @@ function NOTES() {
             currentsubject={currentsubject}
           />
           {/* <Manue /> */}
-          <Question currentsubject={currentsubject} />
+          <Notes currentsubject={currentsubject} />
         </>
       )}
     </div>

@@ -1,18 +1,18 @@
-import App from "./App.jsx";
 import { StrictMode } from "react";
-import style from "./main.module.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router } from "react-router-dom";
+import { DataProvider } from "../context/DataContext.jsx";
+
+import App from "./App.jsx";
+import style from "./main.module.css";
 import "./App.css";
-import ErrorBoundary from "../components/ErrorBoundary.jsx";
+
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+// import ErrorBoundary from "../components/ErrorBoundary.jsx";
 
 createRoot(document.getElementById("root")).render(
-  // <StrictMode>
   <div className={style.contener}>
-    {/* <ErrorBoundary> */}
-    <App></App>
-    {/* </ErrorBoundary> */}
+    <DataProvider>
+      <App />
+    </DataProvider>
   </div>
-  // </StrictMode>
 );

@@ -75,12 +75,6 @@
   color: var(--text-primary);
 }
 
-@media (max-width: 768px) {
-  .question_meta {
-    width: auto;
-  }
-}
-
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -90,5 +84,10 @@
   }
   100% {
     opacity: 1;
+  }
+}
+@media (max-width: 768px) {
+  .question_meta {
+    width: auto;
   }
 }

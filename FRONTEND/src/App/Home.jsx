@@ -1,8 +1,5 @@
 import style from "./App.module.css";
-import Login from "../MODULES/Login/Login.jsx";
 import Header from "../MODULES/Home/Header.jsx";
-import Navbar from "../MODULES/Home/Navbars.jsx";
-import Footer from "../MODULES/Footer/Footer.jsx";
 import Hackthon from "../MODULES/Home/Hackthon.jsx";
 import Feedback from "../MODULES/Feedback/feedback.jsx";
 import ScrolBar from "../MODULES/Home/ScrolBar.jsx";
@@ -20,8 +17,8 @@ function Home() {
         <div className={style.stars}></div>
         <div className={style.stars2}></div>
       </div>
+
       <div className={style.content_wrapper}>
-        <Navbar />
         <Header />
         <ScrolBar />
         <YearBooks />
@@ -30,7 +27,6 @@ function Home() {
         <Facelity_Directery />
         <Feedback />
       </div>
-      <Footer />
     </div>
   );
 }

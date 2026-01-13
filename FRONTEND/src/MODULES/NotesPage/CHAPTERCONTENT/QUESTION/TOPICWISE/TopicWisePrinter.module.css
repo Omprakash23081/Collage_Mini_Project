@@ -86,3 +86,9 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .question_meta {
+    width: auto;
+  }
+}

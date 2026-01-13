@@ -1,12 +1,9 @@
 import style from "./PYQ03.module.css";
 import PYQ03ALLQUESTION from "./PYQ03ALLQUESTION.jsx";
-import PYQ03TOPICKWISE from "./PYQ03TOPICKWISE.jsx";
-// import PYQ03SUBTOPICWISE from "./PYQ03(ALLTOPICK).jsx"; // Unused now
-import PYQ03MANUE from "./PYQ03MANUE.jsx"; // Imported
+import PYQ03MANUE from "./PYQ03MANUE.jsx";
 import PYQ03HEADERS from "./PYQ03HEADER.jsx";
 import { useState, useRef, useEffect } from "react";
-import Solution from "./Solution.jsx";
-import TopicwisePrinter from "../../NotesPage/CHAPTERCONTENT/QUESTION/TOPICWISE/ChepterNamePrinter.jsx";
+import TopicwisePrinter from "./TopicWisePYQ.jsx";
 
 function PYQ03({ setcontents, currentsubject }) {
   const chepter = [
@@ -16,12 +13,10 @@ function PYQ03({ setcontents, currentsubject }) {
     "Chepter 4",
     "Chepter 5",
   ];
-  const [solution, SetSolution] = useState({});
-  const [showMenu, setShowMenu] = useState("TopicWise"); // Default to TopicWise
-  const [selectedTopic, setSelectedTopic] = useState("");
-  const [id, SetId] = useState("");
-  const [currentfilter, setcurrentfilter] = useState("All"); // Added filter state
-  const navbarRef = useRef();
+
+  const [showMenu, setShowMenu] = useState("All");
+  const [currentfilter, setcurrentfilter] = useState("st-1");
+  const navbarRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,80 +27,53 @@ function PYQ03({ setcontents, currentsubject }) {
         );
       }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMenuChange = (menu) => {
-    const [menuType, data] = menu;
-    setShowMenu(menuType);
-    if (menuType === "Topic") {
-      setSelectedTopic(data);
-      SetId("");
-    } else if (menuType === "") {
-      SetId(data);
-    } else {
-      SetId("");
-      setSelectedTopic("");
-    }
-  };
-
-  console.log(id);
-
   return (
-    <>
-      {id ? (
-        <>
-          <Solution id={id} handleMenuChange={handleMenuChange} />
-        </>
-      ) : (
-        <>
-          {" "}
-          <div className={style.body}>
-            <PYQ03HEADERS set={setcontents} currentsubject={currentsubject} />
-            <nav className={style.tabs} ref={navbarRef}>
-              <div
-                className={`${style.tab} ${
-                  showMenu === "All" ? style.active : ""
-                }`}
-                onClick={() => handleMenuChange(["All"])}
-              >
-                <center>All Questions (PYQ)</center>
-              </div>
-              <div
-                className={`${style.tab} ${
-                  showMenu === "TopicWise" || showMenu === "Topic"
-                    ? style.active
-                    : ""
-                }`}
-                onClick={() => handleMenuChange(["TopicWise"])}
-              >
-                <center>Chapater-Wise (PYQ)</center>
-              </div>
-            </nav>
-            {/* <hr className={style.hr} /> */}
+    <div className={style.body}>
+      <PYQ03HEADERS set={setcontents} currentsubject={currentsubject} />
 
-            {showMenu === "All" && (
-              <PYQ03MANUE
-                currentfilter={currentfilter}
-                setcurrentfilter={setcurrentfilter}
-              />
-            )}
-            <div className={style.questions_contener}>
-              {showMenu === "All" && (
-                <PYQ03ALLQUESTION
-                  handleMenuChange={handleMenuChange}
-                  currentFilter={currentfilter}
-                />
-              )}
-              {showMenu === "TopicWise" && (
-                <TopicwisePrinter chepter={chepter} />
-              )}
-            </div>
-          </div>
-        </>
+      <nav className={style.tabs} ref={navbarRef}>
+        <div
+          className={`${style.tab} ${showMenu === "All" ? style.active : ""}`}
+          onClick={() => setShowMenu("All")}
+        >
+          <center>All Questions (PYQ)</center>
+        </div>
+
+        <div
+          className={`${style.tab} ${
+            showMenu === "TopicWise" ? style.active : ""
+          }`}
+          onClick={() => setShowMenu("TopicWise")}
+        >
+          <center>Chapater-Wise (PYQ)</center>
+        </div>
+      </nav>
+
+      {showMenu === "All" && (
+        <PYQ03MANUE
+          currentfilter={currentfilter}
+          setcurrentfilter={setcurrentfilter}
+        />
       )}
-    </>
+
+      <div className={style.questions_contener}>
+        {showMenu === "All" && (
+          <PYQ03ALLQUESTION
+            currentFilter={currentfilter}
+            currentsubject={currentsubject}
+          />
+        )}
+
+        {showMenu === "TopicWise" && (
+          <TopicwisePrinter currentsubject={currentsubject} />
+        )}
+      </div>
+    </div>
   );
 }
 

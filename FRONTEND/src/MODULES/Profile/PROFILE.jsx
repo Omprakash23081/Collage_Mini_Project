@@ -267,7 +267,7 @@ function PROFILE() {
 
             <div className={style.formButtons}>
               <button className={style.saveBtn} onClick={handleSaveProfile}>
-                <FiSave /> Save Changes
+                <FiSave /> Update
               </button>
               <button className={style.cancelBtn} onClick={handleCancelEdit}>
                 <FiX /> Cancel

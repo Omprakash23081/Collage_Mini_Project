@@ -37,33 +37,33 @@ function PYQ03MANUE({ currentfilter, setcurrentfilter }) {
         </button>
         <button
           className={`${style.filter_btn} ${
-            currentfilter === "All" && style.active
+            currentfilter === "st-1" && style.active
           }`}
-          onClick={(event) => set2("All")}
+          onClick={(event) => set2("st-1")}
         >
           ST-1
         </button>
         <button
           className={`${style.filter_btn} ${
-            currentfilter === "important" && style.active
+            currentfilter === "st-2" && style.active
           }`}
-          onClick={(event) => set2("important")}
+          onClick={(event) => set2("st-2")}
         >
           ST-2
         </button>
         <button
           className={`${style.filter_btn} ${
-            currentfilter === "Most important" && style.active
+            currentfilter === "put" && style.active
           }`}
-          onClick={(event) => set2("Most important")}
+          onClick={(event) => set2("put")}
         >
           PUT
         </button>
         <button
           className={`${style.filter_btn} ${
-            currentfilter === "Attempted" && style.active
+            currentfilter === "aktu exam" && style.active
           }`}
-          onClick={(event) => set2("Attempted")}
+          onClick={(event) => set2("aktu exam")}
         >
           AKTU EXAM
         </button>
