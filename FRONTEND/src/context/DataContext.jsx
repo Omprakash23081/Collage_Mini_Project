@@ -39,7 +39,6 @@ export const DataProvider = ({ children }) => {
 
       // Semester IV
       "OS", // Operating System
-      "DBMS", // Database Management System
       "TAFL", // Theory of Automata & Formal Languages
       "JAVA", // Java Programming
       "PY", // Python Programming
@@ -49,14 +48,15 @@ export const DataProvider = ({ children }) => {
       "DAA", // Design & Analysis of Algorithms
       "CN", // Computer Networks
       "AI", // Artificial Intelligence
-      "SE", // Software Engineering
-      "OE-I", // Open Elective-I
+      "OOSD", // Software Engineering
+      "COI", // Open Elective-I
+      "DBMS",
 
       // Semester VI
       "ML", // Machine Learning
       "CD", // Compiler Design
       "WT", // Web Technology
-      "PE-I", // Professional Elective-I
+      "CC", // Professional Elective-I
       "PE-II", // Professional Elective-II
     ],
     year4: [
