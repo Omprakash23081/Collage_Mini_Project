@@ -3,7 +3,7 @@ function Header() {
   return (
     <>
       <section className={`${style.Content_section}`}>
-        <center><h1>Welcome to  <b className={style.dominname}>STUDYSHARP</b> to become a sark !</h1></center>
+        <h1>Welcome to <span className={style.dominname}>STUDYSHARP</span> to become a shark!</h1>
       </section>
     </>
   )

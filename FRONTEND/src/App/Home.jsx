@@ -13,7 +13,14 @@ function Home() {
   return (
     <div className={style.App_contaniar}>
       <div className={style.background_animation}>
-        <img src={rocket} alt="" className={style.rocket_bg} />
+        <img 
+          src={rocket} 
+          alt="Animated Rocket Background" 
+          className={style.rocket_bg} 
+          loading="lazy"
+          width="80"
+          height="80"
+        />
         <div className={style.stars}></div>
         <div className={style.stars2}></div>
       </div>

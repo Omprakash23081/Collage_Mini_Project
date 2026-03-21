@@ -49,18 +49,27 @@ function Navbar() {
       <div className={style.contener}>
         <div className={style.left_side_navaction_bar}>
           <div className={style.image_navigation}>
-            <img src={icon} alt="StudySharp" className="rounded-lg bg-white" />
+            <img 
+              src={icon} 
+              alt="StudySharp Logo" 
+              className="rounded-lg bg-white" 
+              width="40" 
+              height="40"
+              loading="lazy"
+            />
             <Link to="/">
               <b>StudySharp</b>
             </Link>
           </div>
 
-          <div
+          <button
             className={style.mobileToggle}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
           >
             <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} size="lg" color="white" />
-          </div>
+          </button>
 
           <div className={`${style.navLinks} ${isMenuOpen ? style.open : ""}`}>
             <div className={style.language_navigation}>

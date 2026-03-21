@@ -54,7 +54,14 @@ function YearBooks() {
               className={style.card}
               key={index}
             >
-              <img src={image} alt={year.title} className={style.profileImage} />
+              <img 
+                src={image} 
+                alt={`${year.title} study resources`} 
+                className={style.profileImage} 
+                loading="lazy"
+                width="150"
+                height="150"
+              />
               <h2>{year.title}</h2>
               <p>{year.desc}</p>
               <button 

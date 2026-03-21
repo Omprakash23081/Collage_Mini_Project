@@ -39,6 +39,8 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  will-change: transform; /* Hint for browser */
+  transform: translateZ(0); /* Create new compositing layer */
 }
 
 .rocket_bg {
@@ -47,6 +49,7 @@
   opacity: 0.8;
   animation: flyRocket 20s linear infinite;
   filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+  will-change: transform, top, left;
 }
 
 @keyframes flyRocket {
@@ -73,6 +76,8 @@
   height: 100%;
   display: block;
   background: transparent;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Force GPU */
 }
 
 .stars {

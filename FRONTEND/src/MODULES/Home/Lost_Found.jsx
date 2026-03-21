@@ -38,7 +38,7 @@ function Lost_Found() {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <button className={styles.search_button} onClick={handleSearch}>
+        <button className={styles.search_button} onClick={handleSearch} aria-label="Search items">
           <b>→</b>
         </button>
       </div>
