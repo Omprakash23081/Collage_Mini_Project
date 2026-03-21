@@ -301,7 +301,7 @@ const PYQ = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={formData.id ? 'Edit PYQ' : 'Add New PYQ'}>
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">Subject Name</label>
                     <input type="text" name="subjectName" value={formData.subjectName} onChange={handleInputChange} className="input-field" required />
@@ -312,7 +312,7 @@ const PYQ = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">Exam Type</label>
                     <select name="examType" value={formData.examType} onChange={handleInputChange} className="input-field">
@@ -350,7 +350,7 @@ const PYQ = () => {
                     <input type="text" name="teacherName" value={formData.teacherName} onChange={handleInputChange} className="input-field" required />
                 </div>
             ) : (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-zinc-400">Chapter No.</label>
                         <input type="text" name="chapter" value={formData.chapter} onChange={handleInputChange} className="input-field" />

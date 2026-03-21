@@ -1,0 +1,1 @@
+this folder is used for givinf services like generate acesstoken and sendinf notification to the all the webside and app user when uplode new ebent on plateform

@@ -14,7 +14,7 @@ export default defineConfig({
     port: 5174,
     proxy: {
       "/api": {
-        target: "https://collage-mini-project-090y.onrender.com/health",
+        target: "http://localhost:3000",
         changeOrigin: true,
         secure: false,
       },

@@ -1,0 +1,19 @@
+this folder is help to wright busniess logic to validate fields witch is comming from client side 
+
+user.validation.js ------->
+1 registerValidation — validates name, email, password for registration.
+2 loginValidation — validates email, password, role for login.
+3 updateProfileValidation — validates name/email updates.
+4 changePasswordValidation — validates old/new password fields.
+5 resetPasswordValidation — validates email for reset flow.
+6 setNewPasswordValidation — validates new password for forgotten-password set.
+7 verifyEmailValidation — validates email for verification.
+8 forgotPasswordValidation — validates email for forgot-password.
+
+
+items.validation.js -------->
+1 addItemValidation — validates fields when adding lost/found items (title, description, status, category).
+2 updateItemValidation — validates updates to an item.
+3 deleteItemValidation — validates itemId for deletion.
+4 getItemValidation — validates itemId for retrieval.
+5 listItemsValidation — validates filters/pagination (status, category, page, limit).

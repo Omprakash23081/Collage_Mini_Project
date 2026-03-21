@@ -240,7 +240,7 @@ const Users = () => {
       {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={formData.id ? 'Edit User' : 'Add New User'}>
              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-zinc-400">Full Name</label>
                         <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="input-field" required />

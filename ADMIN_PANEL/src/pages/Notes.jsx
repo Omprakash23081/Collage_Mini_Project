@@ -327,7 +327,7 @@ const Notes = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => { setIsModalOpen(false); setEditId(null); }} title={editId ? "Edit Note" : "Upload New Note"}>
         <form onSubmit={handleSubmit} className="space-y-4">
-             <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-400">Subject Name</label>
                     <input type="text" name="subjectName" value={formData.subjectName} onChange={handleInputChange} className="input-field" required />

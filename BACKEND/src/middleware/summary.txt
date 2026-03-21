@@ -1,0 +1,1 @@
+this is middleware this will execute before controller(buesnies Logic) to validate and secure server

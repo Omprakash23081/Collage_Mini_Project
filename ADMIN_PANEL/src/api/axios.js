@@ -1,11 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://collage-mini-project-090y.onrender.com/api",
+  baseURL: "http://localhost:3000/api",
   withCredentials: true, // Important for cookies
-  headers: {
-    "Content-Type": "application/json",
-  },
+  timeout: 10000, // 10 seconds timeout to avoid infinite loading
 });
 
 // Interceptor to handle 401/RefreshToken if needed (can be added later)
