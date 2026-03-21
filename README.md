@@ -1,4 +1,4 @@
-# 🧠 StudySharp
+# 🧠 StudySharp (https://studysharp.in)
 
 ## Full-Stack MERN Platform for Academic & Administrative Automation
 
@@ -162,7 +162,7 @@ Secure session handling
 ````
 ## 🔄 Backend Flow
 
-<img width="507" height="1318" alt="mermaid-diagram (3)" src="https://github.com/user-attachments/assets/7d84b5be-675c-409d-a725-1274a2b0bb51" />
+<img width="507" height="918" alt="mermaid-diagram (3)" src="https://github.com/user-attachments/assets/7d84b5be-675c-409d-a725-1274a2b0bb51" />
 
 ## 📊 Data Flow Example
 
