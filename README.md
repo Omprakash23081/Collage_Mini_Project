@@ -5,6 +5,8 @@ This project is a comprehensive college management system designed to facilitate
 
 ## Project Flow
 
+<img width="806" height="547" alt="image" src="https://github.com/user-attachments/assets/29b999d7-52d6-48e6-b3ba-1bbbd7679a5c" />
+
 ### Backend (`BACKENDS/`)
 The backend serves as the core API provider for the application.
 - **Entry Point**: `index.js` initializes the server and connects to the database.
