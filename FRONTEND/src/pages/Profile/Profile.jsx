@@ -16,7 +16,7 @@ import {
 } from "react-icons/fi";
 import { BsCheckCircleFill, BsGraphUp } from "react-icons/bs";
 import Footer from "../../components/Footer/Footer.jsx";
-import style from "./PROFILE.module.css";
+import style from "./Profile.module.css";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
 function PROFILE() {

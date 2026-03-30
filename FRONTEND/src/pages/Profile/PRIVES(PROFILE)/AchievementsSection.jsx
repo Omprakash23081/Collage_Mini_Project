@@ -1,5 +1,5 @@
 import { FiAward, FiX } from "react-icons/fi";
-import style from "../PROFILE.module.css";
+import style from "../Profile.module.css";
 
 const AchievementsSection = ({ achievements, isEditing, editData, handleAchievementChange, handleRemoveAchievement, handleAddAchievement }) => {
   

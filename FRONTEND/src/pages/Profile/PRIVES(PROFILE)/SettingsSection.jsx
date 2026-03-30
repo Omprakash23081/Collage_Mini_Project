@@ -1,5 +1,5 @@
 import { FiLock, FiSave, FiActivity, FiLogOut } from "react-icons/fi";
-import style from "../PROFILE.module.css";
+import style from "../Profile.module.css";
 
 const SettingsSection = ({ 
     passwordData, 

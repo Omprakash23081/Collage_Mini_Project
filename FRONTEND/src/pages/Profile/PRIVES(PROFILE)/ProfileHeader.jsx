@@ -1,5 +1,5 @@
 import { FiUser, FiMail, FiCalendar, FiBook, FiEdit, FiAward } from "react-icons/fi";
-import style from "../PROFILE.module.css";
+import style from "../Profile.module.css";
 
 const ProfileHeader = ({ user, isEditing, editData, handleEditChange, handleEditClick, handleSaveProfile, handleCancelEdit }) => {
   return (

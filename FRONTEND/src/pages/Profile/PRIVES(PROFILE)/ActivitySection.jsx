@@ -1,5 +1,5 @@
 import { FiActivity } from "react-icons/fi";
-import style from "../PROFILE.module.css";
+import style from "../Profile.module.css";
 
 const ActivitySection = ({ courses }) => {
   return (
