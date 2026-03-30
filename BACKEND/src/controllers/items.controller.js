@@ -17,14 +17,13 @@ const uplodeItems = async (req, res) => {
       throw new Error(err.message);
     });
 
-    const localPath = req.file?.path;
+    const fileSource = req.file?.buffer || req.file?.path;
     let responseUrl = null;
-
-    if (localPath) {
-      responseUrl = await Upload(localPath, req.file?.isImage);
+    if (fileSource) {
+      responseUrl = await Upload(fileSource, req.file?.isImage);
     }
 
-    if (!responseUrl && localPath) { // If path exists but upload failed
+    if (!responseUrl && fileSource) { // If path exists but upload failed
         // Logic to handle upload failure
     }
 
@@ -104,8 +103,8 @@ const updateItem = async (req, res) => {
     if (location) updateData.location = location;
     if (number) updateData.number = number;
 
-    if (req.file?.path) {
-      const ImageUrl = await Upload(req.file.path, req.file.isImage);
+    if (req.file?.buffer || req.file?.path) {
+      const ImageUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
       updateData.image = ImageUrl;
     }
 

@@ -57,14 +57,22 @@ router.route("/me/:id").get(verifyJWT, getProfile);
 //update logged-in user profile
 router
   .route("/me")
-  .patch(verifyJWT, upload.single("profileImage"), optimizeFile, updateProfile);
+  .patch(
+    verifyJWT, 
+    upload.fields([
+      { name: "profileImage", maxCount: 1 },
+      { name: "paymentQRCode", maxCount: 1 }
+    ]), 
+    optimizeFile, 
+    updateProfile
+  );
 
 //refresh access token
 router.route("/refreshToken").post(refreshAccessToken);
 
-//track activity
-import { trackActivity } from "../controllers/auth.controller.js";
-router.route("/activity").post(verifyJWT, trackActivity);
+//save location
+import { saveLastLocation } from "../controllers/auth.controller.js";
+router.route("/save-location").post(verifyJWT, saveLastLocation);
 
 //change password
 //change password
@@ -75,6 +83,10 @@ router
 
 //logout user
 router.route("/logout").post(logoutUser);
+
+// get users by role
+import { getUsers } from "../controllers/auth.controller.js";
+router.route("/users").get(getUsers);
 
 export default router;
 

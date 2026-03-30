@@ -2,19 +2,27 @@ import logger from "../utils/logger.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export default function errorHandler(err, req, res, next) {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  
+  const errorMetadata = {
+    statusCode,
+    path: req.path,
+    method: req.method,
+    ip: req.ip,
+    userAgent: req.get("user-agent"),
+    stack: process.env.NODE_ENV !== "production" ? err.stack : undefined,
+  };
+
   if (err instanceof ApiError) {
-    // Log operational errors as info or warn
-    logger.warn(`API Error: ${err.message}`, { statusCode: err.statusCode, path: req.path });
-    return res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-    });
+    logger.warn(`API Error: ${message}`, errorMetadata);
+  } else {
+    logger.error(`Unhandled Error: ${message}`, errorMetadata);
   }
 
-  // Log unhandled errors as error
-  logger.error(`Unhandled Error: ${err.message}`, { stack: err.stack, path: req.path });
-  return res.status(500).json({
+  return res.status(statusCode).json({
     success: false,
-    message: "Internal Server Error",
+    message,
+    ...(process.env.NODE_ENV !== "production" && { stack: err.stack }),
   });
 }

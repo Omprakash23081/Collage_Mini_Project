@@ -13,12 +13,12 @@ const createBanner = asyncHandler(async (req, res) => {
   }
 
   // Handle Image Upload
-  const imageLocalPath = req.file?.path;
-  if (!imageLocalPath) {
+  const fileSource = req.file?.buffer || req.file?.path;
+  if (!fileSource) {
     throw new ApiError(400, "Banner image is required");
   }
 
-  const imageUrl = await Upload(imageLocalPath);
+  const imageUrl = await Upload(fileSource, true);
   if (!imageUrl) {
     throw new ApiError(500, "Failed to upload image to Cloudinary");
   }

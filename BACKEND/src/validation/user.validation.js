@@ -7,7 +7,7 @@ export const registerValidation = Joi.object({
   name: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  role: Joi.string().valid("student", "admin", "moderator", "content_manager").default("student"),
+  role: Joi.string().valid("student", "admin", "moderator", "content_manager", "canteen_vendor", "stationery_vendor", "teacher").default("student"),
   year: Joi.string().valid("year1", "year2", "year3", "year4").allow("", null).optional(),
 }).unknown(true);
 
@@ -15,7 +15,7 @@ export const registerValidation = Joi.object({
 export const loginValidation = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  role: Joi.string().valid("student", "admin", "moderator", "content_manager").allow("", null).optional(),
+  role: Joi.string().valid("student", "admin", "moderator", "content_manager", "canteen_vendor", "stationery_vendor", "teacher").allow("", null).optional(),
 });
 
 //this is used for updating name and email any of them or both of them

@@ -64,7 +64,7 @@ const uploadNotes = async (req, res) => {
       chapterName,
     } = req.body;
 
-    const resourcesUrl = await Upload(req?.file?.path, req?.file?.isImage);
+    const resourcesUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
     console.log(resourcesUrl, "response Url is ");
 
     if (!resourcesUrl) {
@@ -150,7 +150,7 @@ const updateNotes = async (req, res) => {
     if (difficulty) updateData.difficulty = difficulty;
 
     if (req.file) {
-      const resourcesUrl = await Upload(req.file.path, req.file.isImage);
+      const resourcesUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
       if (resourcesUrl) {
         updateData.fileUrl = resourcesUrl;
       }

@@ -18,6 +18,8 @@ const loginUser = async (req, res) => {
     return res.status(404).json(new ApiResponse(404, null, "User not found"));
   }
 
+  // Role check is now optional for login to prevent mismatches from the frontend default state
+  /*
   if (role && user.role !== role) {
     return res
       .status(403)
@@ -29,6 +31,7 @@ const loginUser = async (req, res) => {
         ),
       );
   }
+  */
 
   const isPasswordValid = await user.comparePassword(reqPassword);
   if (!isPasswordValid) {
@@ -167,7 +170,7 @@ const registerUser = async (req, res) => {
     let imageUrl = null;
 
     if (imageLocalPath) {
-      imageUrl = await Upload(imageLocalPath, req.file?.isImage);
+      imageUrl = await Upload(req.file.buffer || imageLocalPath, req.file?.isImage);
     }
 
     let normalizedRole = role?.replace(/['"]+/g, "").trim().toLowerCase();
@@ -241,12 +244,32 @@ const updateProfile = async (req, res) => {
   if (location !== undefined) updateData.location = location;
   if (courses) updateData.courses = courses;
   if (achievements) updateData.achievements = achievements;
+  if (req.body.paymentQRCode) updateData.paymentQRCode = req.body.paymentQRCode;
 
-  if (req.file?.path) {
-    console.log("DEBUG: Uploading file to Cloudinary:", req.file.path);
-    const imageUrl = await Upload(req.file.path, req.file.isImage);
-    console.log("DEBUG: Cloudinary upload result:", imageUrl);
-    updateData.profileImage = imageUrl;
+  if (req.files) {
+    if (req.files.paymentQRCode && req.files.paymentQRCode[0]) {
+      console.log("DEBUG: Uploading paymentQRCode to Cloudinary");
+      const qrFile = req.files.paymentQRCode[0];
+      const imageUrl = await Upload(qrFile.buffer || qrFile.path, qrFile.isImage);
+      console.log("DEBUG: Cloudinary QR Upload Result:", imageUrl);
+      updateData.paymentQRCode = imageUrl;
+    }
+    if (req.files.profileImage && req.files.profileImage[0]) {
+      console.log("DEBUG: Uploading profileImage to Cloudinary");
+      const profileFile = req.files.profileImage[0];
+      const imageUrl = await Upload(profileFile.buffer || profileFile.path, profileFile.isImage);
+      console.log("DEBUG: Cloudinary Profile Upload Result:", imageUrl);
+      updateData.profileImage = imageUrl;
+    }
+  } else if (req.file?.buffer || req.file?.path) {
+    console.log("DEBUG: Uploading single file to Cloudinary");
+    const imageUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
+    
+    if (req.file.fieldname === "paymentQRCode") {
+      updateData.paymentQRCode = imageUrl;
+    } else {
+      updateData.profileImage = imageUrl;
+    }
   }
 
   try {
@@ -262,7 +285,7 @@ const updateProfile = async (req, res) => {
         return res.status(404).json(new ApiResponse(404, null, "User not found"));
     }
 
-    console.log("DEBUG: Profile updated successfully in DB");
+    console.log("DEBUG: Final User object to be returned:", user);
 
     return res
       .status(200)
@@ -275,13 +298,13 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const trackActivity = async (req, res) => {
-  const { subjectName, type } = req.body; // type: "Notes" or "PYQ"
+const saveLastLocation = async (req, res) => {
+  const { url } = req.body;
 
-  if (!subjectName) {
+  if (!url) {
     return res
       .status(400)
-      .json(new ApiResponse(400, null, "Subject name is required"));
+      .json(new ApiResponse(400, null, "URL is required"));
   }
 
   try {
@@ -289,42 +312,17 @@ const trackActivity = async (req, res) => {
     if (!user)
       return res.status(404).json(new ApiResponse(404, null, "User not found"));
 
-    let courseIndex = user.courses.findIndex((c) => c.name === subjectName);
-
-    if (courseIndex > -1) {
-      // Update existing
-      user.courses[courseIndex].lastAccessed = new Date();
-      // Increment progress slightly (mock logic), max 100
-      let newProgress = user.courses[courseIndex].progress + 5;
-      if (newProgress > 100) newProgress = 100;
-      user.courses[courseIndex].progress = newProgress;
-
-      // Update time spent string (mock logic: increment hour if possible, else just set new)
-      // For simplicity, just cycling times or keeping static for now, or randomizing slightly
-      // Let's just keep it simple: if below 100%, assume they spent more time.
-    } else {
-      // Add new
-      user.courses.push({
-        name: subjectName,
-        progress: 10,
-        timeSpent: "30m", // Initial time
-        lastAccessed: new Date(),
-      });
-    }
-
-    // Sort courses by lastAccessed desc
-    user.courses.sort((a, b) => b.lastAccessed - a.lastAccessed);
-    // Limit to recent 5? Optional.
-
+    user.lastVisitedUrl = url;
     await user.save();
+    
     return res
       .status(200)
-      .json(new ApiResponse(200, user.courses, "Activity tracked"));
+      .json(new ApiResponse(200, null, "Location saved"));
   } catch (error) {
-    console.error("Track Activity Error:", error);
+    console.error("Save Location Error:", error);
     return res
       .status(500)
-      .json(new ApiResponse(500, null, "Failed to track activity"));
+      .json(new ApiResponse(500, null, "Failed to save location"));
   }
 };
 
@@ -369,6 +367,27 @@ const changePassword = async (req, res) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  try {
+    const { role } = req.query;
+    console.log(`DEBUG: Fetching users with role: "${role}"`);
+    
+    const filter = {};
+    if (role) {
+      // Use case-insensitive regex for more flexibility
+      filter.role = { $regex: new RegExp(`^${role}$`, 'i') };
+    }
+
+    const users = await User.find(filter).select("-password -refreshToken");
+    console.log(`DEBUG: Found ${users.length} users`);
+    
+    return res.status(200).json(new ApiResponse(200, users, "Users fetched successfully"));
+  } catch (error) {
+    console.error("DEBUG: getUsers Error:", error);
+    return res.status(500).json(new ApiResponse(500, null, "Internal server error"));
+  }
+};
+
 export {
   loginUser,
   logoutUser,
@@ -376,6 +395,7 @@ export {
   registerUser,
   getProfile,
   updateProfile,
-  trackActivity,
+  saveLastLocation,
   changePassword,
+  getUsers,
 };

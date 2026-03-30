@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
     // RBAC & Features
     role: {
       type: String,
-      enum: ["student", "admin", "moderator", "content_manager"],
+      enum: ["student", "admin", "moderator", "content_manager", "canteen_vendor", "stationery_vendor", "teacher"],
       default: "student",
       required: true,
     },
@@ -78,14 +78,10 @@ const userSchema = new mongoose.Schema(
       action: String,
       timestamp: { type: Date, default: Date.now }
     }],
-    courses: [
-      {
-        name: String,
-        progress: Number,
-        timeSpent: String,
-        lastAccessed: { type: Date, default: Date.now },
-      },
-    ],
+    lastVisitedUrl: {
+      type: String,
+      default: "",
+    },
     achievements: [
       {
         title: String,
@@ -95,6 +91,10 @@ const userSchema = new mongoose.Schema(
         earned: { type: Boolean, default: true } 
       },
     ],
+    paymentQRCode: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

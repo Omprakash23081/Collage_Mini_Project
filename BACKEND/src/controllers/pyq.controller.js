@@ -35,8 +35,8 @@ const uploadPYQ = async (req, res) => {
   // }
 
   let fileUrl = null;
-  if (req.file?.path) {
-    fileUrl = await Upload(req.file.path, req.file.isImage);
+  if (req.file?.buffer || req.file?.path) {
+    fileUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
   }
 
   const response = await PYQ.create({

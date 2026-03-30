@@ -25,8 +25,8 @@ const createFaculty = async (req, res) => {
 
   let imageUrl = null;
 
-  if (req.file?.path) {
-    imageUrl = await Upload(req.file.path, req.file.isImage);
+  if (req.file?.buffer || req.file?.path) {
+    imageUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
   }
 
   const response = await Faculty.create({
@@ -106,8 +106,8 @@ const updateFaculty = async (req, res) => {
   if (subject) updateData.subject = subject;
   if (description) updateData.description = description;
 
-  if (req.file?.path) {
-    const imageUrl = await Upload(req.file.path, req.file.isImage);
+  if (req.file?.buffer || req.file?.path) {
+    const imageUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
     updateData.image = imageUrl;
   }
 

@@ -1,23 +1,23 @@
 import dotenv from "dotenv";
 import app from "./src/app.js";
 import connectDB from "./src/config/db.js";
-import root from "./src/routes/index.js";
+import http from "http";
+import { initSocket } from "./src/utils/socket.js";
 
 dotenv.config({ path: "./.env" });
 
 const port = process.env.PORT || 3000;
+const server = http.createServer(app);
 
-/* =========================
-   ROUTES (BEFORE SERVER)
-========================= */
-app.use("/api", root);
+// Initialize Socket.io
+initSocket(server);
 
 /* =========================
    DB + SERVER START
 ========================= */
 connectDB()
   .then(() => {
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
   })

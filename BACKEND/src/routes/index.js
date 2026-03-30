@@ -14,6 +14,9 @@ import roadmapRoutes from "./roadmap.routes.js";
 import dashboardRoutes from "./dashboard.routes.js";
 import searchRoutes from "./search.routes.js";
 import bannerRoutes from "./banner.routes.js";
+import productRoutes from "./product.routes.js";
+import orderRoutes from "./order.routes.js";
+import printRequestRoutes from "./printRequest.routes.js";
 
 const router = Router();
 
@@ -21,6 +24,12 @@ const router = Router();
 router.use("/auth", authRoutes);
 //this is for items like add item delete item excetra in lost and found section
 router.use("/items", itemsRoutes);
+//this is for products management
+router.use("/products", productRoutes);
+//this is for orders management
+router.use("/orders", orderRoutes);
+//this is for print requests
+router.use("/print", printRequestRoutes);
 //this is for notes like add note delete note excetra in primum section
 router.use("/notes", notesRoutes);
 //this is for user profile and user settings excetra like change password update profile excetra
@@ -51,6 +60,14 @@ router.use("/plans", planRoutes);
 
 import feedbackRoutes from "./feedbackRoutes.js";
 console.log("DEBUG: Loading feedback routes in index.js");
-router.use("/feedback", feedbackRoutes);
+console.log("DEBUG: feedbackRoutes type:", typeof feedbackRoutes);
+try {
+  router.use("/feedback", feedbackRoutes);
+  console.log("DEBUG: Feedback routes loaded successfully");
+} catch (e) {
+  console.error("DIAGNOSTIC: Error loading feedback routes:", e.message);
+  console.error("DIAGNOSTIC: Error stack:", e.stack);
+  throw e;
+}
 
 export default router;

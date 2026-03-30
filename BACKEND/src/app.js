@@ -1,28 +1,56 @@
-import express from "express";
+import morgan from "morgan";
+import compression from "compression";
+import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
-import compression from "compression";
+import { rateLimit } from "express-rate-limit";
+import logger from "./utils/logger.js";
 import errorHandler from "./middleware/errorHandler.middleware.js";
-import bannerRouter from "./routes/banner.routes.js";
-import itemsRouter from "./routes/items.routes.js";
+import { ApiError } from "./utils/ApiError.js";
+import express from "express";
 
 const app = express();
 
-/* =========================
-   TRUST PROXY (Render/Vercel)
-========================= */
 app.set("trust proxy", 1);
 
-/* =========================
-   SECURITY + PERFORMANCE
-========================= */
 app.use(compression());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "res.cloudinary.com", "*.cloudinary.com"],
+        connectSrc: [
+          "'self'",
+          "http://localhost:*",
+          "https://studysharps.vercel.app",
+          "https://studysharp.netlify.app",
+          "https://studysharp.in",
+          "https://www.studysharp.in",
+        ],
+      },
+    },
+  }),
+);
 
 /* =========================
-   HEALTH CHECK (NO LIMIT)
+   LOGGER (Morgan Hooks into Winston)
+========================= */
+const morganFormat =
+  ":method :url :status :res[content-length] - :response-time ms";
+app.use(
+  morgan(morganFormat, {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+    skip: (req) => req.url === "/health",
+  }),
+);
+
+/* =========================
+   HEALTH CHECK
 ========================= */
 app.get("/health", (req, res) => {
   res.status(200).json({
@@ -32,16 +60,6 @@ app.get("/health", (req, res) => {
   });
 });
 
-/* =========================
-   GLOBAL LOGGER (NO HEALTH)
-========================= */
-app.use((req, res, next) => {
-  if (req.url !== "/health") {
-    console.log(`[GLOBAL LOG] ${req.method} ${req.url}`);
-  }
-  next();
-});
-
 app.use(
   cors({
     origin: [
@@ -49,6 +67,8 @@ app.use(
       "https://studysharp.netlify.app/",
       "https://studysharps.vercel.app",
       "https://studysharp.netlify.app",
+      "https://studysharp.in",
+      "https://www.studysharp.in",
       "https://sspadminpanal.netlify.app",
       "http://localhost:5173",
       "http://localhost:5174",
@@ -61,8 +81,8 @@ app.use(
 /* =========================
    BODY PARSERS
 ========================= */
-app.use(express.json({ limit: "10kb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "15kb" }));
+app.use(express.urlencoded({ extended: true, limit: "15kb" }));
 app.use(cookieParser());
 app.use(express.static("public"));
 
@@ -71,9 +91,16 @@ app.use(express.static("public"));
 ========================= */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 1000,
   standardHeaders: true,
   legacyHeaders: false,
+  handler: (req, res, next, options) => {
+    logger.warn(`Rate limit exceeded for IP: ${req.ip}`);
+    res.status(options.statusCode).json({
+      success: false,
+      message: options.message,
+    });
+  },
   message: "Too many requests, try again later",
 });
 
@@ -82,17 +109,19 @@ app.use("/api", limiter);
 /* =========================
    ROUTES
 ========================= */
-// app.use("/api/v1/banners", bannerRouter);
-// app.use("/api/v1/items", itemsRouter);
+import rootRouter from "./routes/index.js";
+app.use("/api", rootRouter);
+
+/* =========================
+   404 HANDLER
+========================= */
+app.use((req, res, next) => {
+  next(new ApiError(404, `Route ${req.originalUrl} not found`));
+});
 
 /* =========================
    ERROR PIPELINE
 ========================= */
-app.use((err, req, res, next) => {
-  if (err) console.error("Global Error:", err);
-  next(err);
-});
-
 app.use(errorHandler);
 
 export default app;

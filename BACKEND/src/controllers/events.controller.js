@@ -43,8 +43,8 @@ const createEvents = async (req, res) => {
 
     let imageUrl = null;
 
-    if (req.file?.path) {
-      imageUrl = await Upload(req.file.path, req.file.isImage);
+    if (req.file?.buffer || req.file?.path) {
+      imageUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
     }
 
     const response = await Event.create({
@@ -95,8 +95,8 @@ const updateEvents = async (req, res) => {
     if (endDate) updateData.endDate = endDate;
     if (registrationDate) updateData.registrationDate = registrationDate;
 
-    if (req.file?.path) {
-      const imageUrl = await Upload(req.file.path, req.file.isImage);
+    if (req.file?.buffer || req.file?.path) {
+      const imageUrl = await Upload(req.file.buffer || req.file.path, req.file.isImage);
       updateData.image = imageUrl;
     }
 

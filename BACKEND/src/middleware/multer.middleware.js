@@ -6,4 +6,5 @@ const storage = multer.memoryStorage();
 //we call upload function it will call storage then store in buffer
 const upload = multer({ storage: storage });
 
+export { upload };
 export default upload;

@@ -1,2 +1,3 @@
 // export const BASE_URL = "https://collage-mini-project-090y.onrender.com";
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://collage-mini-project.onrender.com";
+// export const BASE_URL = "http://localhost:3000";
