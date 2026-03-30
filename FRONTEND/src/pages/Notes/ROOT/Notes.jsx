@@ -1,7 +1,7 @@
-import style from "./NOTES.module.css";
+import style from "./Notes.module.css";
 import Subject from "../Subject/Subject";
-import ChapterContent from "../ChapterContent/HEADER/ChapContHEADER";
-import Notes from "../ChapterContent/QUESTION/Note.jsx";
+import ChapterContent from "../CHAPTERCONTENT/HEADER/ChapContHEADER";
+import Notes from "../CHAPTERCONTENT/QUESTION/Note.jsx";
 import { useParams } from "react-router-dom";
 import { useData } from "../../../context/GlobalContext.jsx";
 
