@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import style from "./feedback.module.css";
+import style from "./Feedback.module.css";
 import apiClient from "../../../services/apiClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
