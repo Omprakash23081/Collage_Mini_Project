@@ -112,9 +112,9 @@ const Table = ({ columns, data, onEdit, onDelete, onView, isLoading, selectedIte
       </div>
 
       {/* Mobile Card View */}
-      <div className="block md:hidden divide-y divide-white/5">
+      <div className="block md:hidden space-y-3 p-3">
         {onSelectAll && (
-            <div className="p-3 flex items-center justify-between bg-zinc-950/50">
+            <div className="p-3 bg-zinc-950/50 rounded-xl border border-white/5 flex items-center justify-between">
                 <span className="text-sm font-semibold text-zinc-400">Select All</span>
                 <input 
                     type="checkbox" 
@@ -125,7 +125,7 @@ const Table = ({ columns, data, onEdit, onDelete, onView, isLoading, selectedIte
             </div>
         )}
         {safeData.length === 0 ? (
-            <div className="p-8 text-center text-zinc-500">No data found</div>
+            <div className="p-8 pb-12 text-center text-zinc-500 bg-zinc-950/30 rounded-xl border border-white/5">No data found</div>
         ) : (
             safeData.map((row, rowIdx) => {
                 const isSelected = selectedItems?.includes(row._id);
@@ -135,48 +135,64 @@ const Table = ({ columns, data, onEdit, onDelete, onView, isLoading, selectedIte
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: rowIdx * 0.05 }}
-                        className={`p-3 space-y-3 transition-colors ${isSelected ? 'bg-rose-500/5' : 'hover:bg-zinc-800/50'}`}
+                        className={`p-4 rounded-xl border border-white/5 shadow-sm space-y-4 transition-colors ${isSelected ? 'bg-rose-500/10 border-rose-500/20' : 'bg-zinc-950/80 hover:bg-zinc-900'}`}
                     >
-                        {/* Mobile Actions & Select Row */}
-                        <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                           {onSelect && (
-                                <input 
-                                    type="checkbox" 
-                                    checked={isSelected || false}
-                                    onChange={(e) => onSelect(row._id, e.target.checked)}
-                                    className="rounded border-zinc-700 bg-zinc-800 text-rose-500 focus:ring-rose-500/20"
-                                />
-                            )}
-                            <div className="flex gap-2 ml-auto">
+                        {/* Header Row: Column 0 + Select Checkbox + Actions */}
+                        <div className="flex items-start justify-between gap-4">
+                            {/* Checkbox + First Column (Photo/Title) */}
+                            <div className="flex items-start gap-3 flex-1 min-w-0">
+                                {onSelect && (
+                                    <div className="mt-1 flex-shrink-0">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={isSelected || false}
+                                            onChange={(e) => onSelect(row._id, e.target.checked)}
+                                            className="rounded border-zinc-700 bg-zinc-800 text-rose-500 focus:ring-rose-500/20"
+                                        />
+                                    </div>
+                                )}
+                                <div className="flex-1 min-w-0 text-left">
+                                    {columns.length > 0 && (
+                                        columns[0].render ? columns[0].render(row) : (
+                                            <p className="font-semibold text-zinc-200 truncate">{row[columns[0].accessor]}</p>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Actions (Built-in Table Actions) */}
+                            <div className="flex gap-1 flex-shrink-0 bg-zinc-900 rounded-lg p-0.5 border border-white/10">
                                 {onView && (
-                                    <button onClick={() => onView(row)} className="p-1 text-zinc-500 hover:text-indigo-400 bg-zinc-800/50 rounded-lg">
+                                    <button onClick={() => onView(row)} className="p-1.5 text-zinc-400 hover:text-indigo-400 hover:bg-zinc-800 rounded-md transition-colors">
                                         <Eye size={16} />
                                     </button>
                                 )}
                                 {onEdit && (
-                                    <button onClick={() => onEdit(row)} className="p-1 text-zinc-500 hover:text-blue-400 bg-zinc-800/50 rounded-lg">
+                                    <button onClick={() => onEdit(row)} className="p-1.5 text-zinc-400 hover:text-blue-400 hover:bg-zinc-800 rounded-md transition-colors">
                                         <Edit2 size={16} />
                                     </button>
                                 )}
                                 {onDelete && (
-                                    <button onClick={() => onDelete(row)} className="p-1 text-zinc-500 hover:text-red-400 bg-zinc-800/50 rounded-lg">
+                                    <button onClick={() => onDelete(row)} className="p-1.5 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded-md transition-colors">
                                         <Trash2 size={16} />
                                     </button>
                                 )}
                             </div>
                         </div>
 
-                        {/* Mobile Data Stack */}
-                        <div className="grid gap-2">
-                            {columns.map((col, colIdx) => (
-                                <div key={colIdx} className="flex justify-between items-start gap-2">
-                                    <span className="text-xs font-semibold text-zinc-500 uppercase mt-0.5">{col.header}</span>
-                                    <div className="text-sm text-zinc-300 text-right break-words overflow-hidden">
-                                        {col.render ? col.render(row) : row[col.accessor]}
+                        {/* Rest of the Data Stack */}
+                        {columns.length > 1 && (
+                            <div className="grid gap-2.5 pt-3 border-t border-white/5">
+                                {columns.slice(1).map((col, colIdx) => (
+                                    <div key={colIdx} className="flex justify-between items-start gap-3">
+                                        <span className="text-xs font-semibold text-zinc-500 uppercase mt-0.5 flex-shrink-0">{col.header}</span>
+                                        <div className="text-sm text-zinc-300 text-right min-w-0 break-words">
+                                            {col.render ? col.render(row) : row[col.accessor]}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </motion.div>
                 );
             })
