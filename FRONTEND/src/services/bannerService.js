@@ -1,4 +1,4 @@
-import apiClient from "../utils/axios";
+import apiClient from "./apiClient";
 
 // Service for handling banner-related API calls
 export const bannerService = {

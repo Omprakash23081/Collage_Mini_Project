@@ -1,0 +1,190 @@
+/* Premium Notes Browser Layout */
+
+.PYQ02contener {
+  width: 100%;
+  min-height: 100vh;
+  /* background: var(--bg-darker); -- Removing distinct bg to use global gradient */
+  padding-bottom: 4rem;
+}
+
+/* Header Section */
+.PYQ02header {
+  height: 80px; /* Reduced from 120px */
+  display: flex;
+  align-items: center;
+  padding-left: 2rem;
+  width: 100%;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 1.5rem; /* Reduced from 2rem */
+}
+
+.PYQ02header h1 {
+  font-size: 2.2rem; /* Reduced from 3rem */
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Status Badge */
+.status_badge {
+  background: rgba(46, 204, 113, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 2rem 2rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.1);
+}
+
+/* Stats Panel - Floating Glass */
+/* Stats Panel - Floating Glass */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 1.5rem; /* Reduced from 2.5rem */
+  margin: 0 2rem 2rem 2rem; /* Reduced bottom margin from 3rem */
+  background: var(--bg-glass-heavy);
+  border-radius: 20px; /* Slightly reduced radius */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-deep);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px; /* Reduced from 4px */
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-magenta));
+}
+
+.stat_item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Reduced from 0.5rem */
+  position: relative;
+  z-index: 1;
+}
+
+.stat_value {
+  color: white;
+  font-size: 1.8rem; /* Reduced from 2.2rem */
+  font-weight: 800;
+  text-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+}
+
+.stat_label {
+  color: var(--text-secondary);
+  font-size: 0.75rem; /* Reduced from 0.85rem */
+  text-transform: uppercase;
+  letter-spacing: 1.5px; /* Slightly reduced */
+  font-weight: 600;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 2rem 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 2rem;
+}
+
+.tab {
+  color: #ffffff;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--bg-tertiary); /* Inactive State */
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}
+
+/* Active Tab Styling (assuming .tab gets active class logic or just styling the main one for now) */
+.tab {
+  background: var(--grad-primary);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+  border: none;
+}
+
+/* Grid Layout */
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .stats {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    margin: 0 1rem 1.5rem 1rem;
+  }
+
+  .stat_value {
+    font-size: 1.3rem; /* Scaled down for mobile */
+  }
+
+  .stat_label {
+    font-size: 0.65rem;
+  }
+
+  .status_badge {
+    margin: 0 1rem 1.5rem 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .PYQ02header {
+    height: 60px;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .PYQ02header h1 {
+    font-size: 1.8rem;
+  }
+
+  .subjects {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+
+  .tabs {
+    padding: 0 1rem 1rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+}

@@ -1,4 +1,4 @@
-import apiClient from "../utils/axios";
+import apiClient from "./apiClient";
 
 export const eventsService = {
   create: async (eventData) => {

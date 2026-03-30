@@ -1,4 +1,4 @@
-import apiClient from "../utils/axios";
+import apiClient from "./apiClient";
 
 // Service for handling lost and found items
 export const itemsService = {

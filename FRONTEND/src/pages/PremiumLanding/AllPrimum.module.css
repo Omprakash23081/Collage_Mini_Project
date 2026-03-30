@@ -1,0 +1,307 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* Premium Sidebar & Layout Stying */
+
+.layoutContainer {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #000000;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 31, 106, 0.04) 0px, transparent 50%);
+  background-attachment: fixed;
+  background-size: cover;
+  position: relative;
+}
+
+/* Sidebar Styling - Glassmorphism & Neon */
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: #000000;
+  border-right: 1px solid rgba(255, 255, 255, 0.05); /* Subtle smooth border */
+  color: var(--text-primary);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.4); /* Deep shadow */
+}
+
+/* Brand/Logo Area */
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brandText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  margin-left: 12px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(37, 99, 235, 0.5); /* Neon Blue Glow */
+}
+
+/* Navigation Links */
+.navItem {
+  margin-bottom: 0.5rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.navLink:hover {
+  background: rgba(37, 99, 235, 0.08); /* Subtle Blue Tint */
+  color: var(--text-primary);
+  transform: translateX(4px);
+  border-color: rgba(37, 99, 235, 0.2); /* Neon Border Hint */
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
+}
+
+.navLink i {
+  font-size: 1.2rem;
+  margin-right: 12px;
+  width: 24px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover i {
+  color: var(--neon-blue);
+}
+
+/* Active State - Glowing Magenta Pill */
+.active {
+  background: var(--grad-primary);
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(255, 31, 106, 0.4);
+  border: none;
+}
+
+.active:hover {
+  transform: none;
+  background: var(--grad-primary);
+  box-shadow: 0 6px 20px rgba(255, 31, 106, 0.6);
+}
+
+.active i {
+  color: white !important;
+}
+
+/* User Profile Section - Glass Capsule */
+.userSection {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.userDropdown {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 50px; /* Capsule shape */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.userName {
+  color: var(--text-primary);
+}
+
+.userDropdown:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Main Content Area */
+.mainContent {
+  flex: 1;
+  background: transparent !important;
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding: 0; 
+  z-index: 1;
+}
+
+/* Bottom Navigation Bar (Mobile Only) - Premium */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 11, 14, 0.85); /* Premium glass dark */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.6rem 0.2rem;
+  padding-bottom: env(safe-area-inset-bottom, 0.6rem); /* Support notch iPhone */
+  z-index: 2000;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.bottomNavLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.65rem;
+  flex: 1;
+  gap: 4px;
+  transition: all 0.2s ease;
+  min-height: 48px; /* Standard touch target height */
+}
+
+.bottomNavLink i {
+  font-size: 1.3rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bottomNavLink.activeBottom {
+  color: var(--neon-blue); /* Consistent blue theme */
+}
+
+.bottomNavLink.activeBottom i {
+  transform: translateY(-4px) scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.5));
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none; 
+  }
+
+  .mainContent {
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px)); /* Exact clearance for bottom bar */
+  }
+
+  .layoutContainer {
+    display: block; 
+  }
+}
+
+@media (min-width: 769px) {
+  .bottomNav {
+    display: none;
+  }
+}
+
+/* Global Loading Bar */
+.globalLoadingBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(37, 99, 235, 0.1);
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #2563eb, transparent);
+  width: 50%;
+  position: absolute;
+  animation: loadingProgress 1.5s infinite ease-in-out;
+}
+
+@keyframes loadingProgress {
+  0% { left: -50%; }
+  100% { left: 100%; }
+}
+
+
+
+/* Space Background Animations */
+.background_animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rocket_bg {
+  position: absolute;
+  width: 80px;
+  opacity: 0.8;
+  animation: flyRocket 20s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+}
+
+@keyframes flyRocket {
+  0% { top: 110%; left: -10%; transform: rotate(45deg) scale(0.8); }
+  100% { top: -10%; left: 110%; transform: rotate(45deg) scale(0.8); }
+}
+
+.stars, .stars2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: twinkle 4s infinite;
+  opacity: 0.3;
+}
+
+.stars2 {
+  background-image: 
+    radial-gradient(1.5px 1.5px at 50px 100px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 100px 20px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 150px 150px, #ddd, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  animation: twinkle 6s infinite;
+  opacity: 0.4;
+}
+
+@keyframes twinkle {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 0.5; }
+}

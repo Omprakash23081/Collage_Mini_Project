@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { authService } from "../services/authService";
+import { initSocket, disconnectSocket } from "../utils/socket";
 
 export const AuthContext = createContext(null);
 
@@ -12,9 +13,11 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const data = await authService.refreshToken();
       setUser(data.data);
+      initSocket(data.data._id);
       return data;
     } catch (error) {
       setUser(null);
+      disconnectSocket();
       throw error;
     } finally {
       setLoading(false);
@@ -26,9 +29,10 @@ export const AuthProvider = ({ children }) => {
     refreshToken().catch(() => {});
   }, []);
 
-  const login = async (email, password, role) => {
-    const data = await authService.login(email, password, role);
+  const login = async (email, password) => {
+    const data = await authService.login(email, password);
     setUser(data.data);
+    initSocket(data.data._id);
     return data;
   };
 
@@ -39,8 +43,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await authService.logout();
-    setUser(null);
+    try {
+      await authService.logout();
+    } finally {
+      setUser(null);
+      disconnectSocket();
+    }
   };
 
   const updateUser = async (updatedUserdata) => {

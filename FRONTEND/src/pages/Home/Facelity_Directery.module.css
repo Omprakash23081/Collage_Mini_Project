@@ -1,0 +1,208 @@
+.container1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 100px 20px;
+  background: radial-gradient(at 50% 0%, rgba(245, 158, 11, 0.15) 0%, #0a0a0a 80%);
+  color: var(--text-primary);
+  min-height: auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.container1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.filterToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(15, 17, 26, 0.4); /* Darker base */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; /* Boxy but rounded */
+  padding: 12px 12px 12px 20px;
+  margin: 0 auto 40px;
+  width: 90%;
+  max-width: 950px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  gap: 20px;
+  transition: all 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.filterToolbar:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3); /* Dark Input BG */
+  padding: 0 16px;
+  border-radius: 12px; /* Matching the screenshot style */
+  flex-grow: 1;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Visible Border */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.searchContainer:focus-within {
+  border-color: var(--neon-blue);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
+}
+
+.searchIcon {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-right: 12px;
+  color: #fff;
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  padding: 10px 0;
+  color: white;
+  width: 100%;
+  outline: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.filterSelect {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  appearance: none;
+}
+
+.filterSelect:hover {
+  color: white;
+}
+
+.filterSelect option {
+  background: #1e293b; /* Fallback dark background */
+  color: white;
+  padding: 10px;
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5); /* More visible */
+  font-weight: 400;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.search_button {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); /* Sharper Orange Gradient */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 12px 32px;
+  border-radius: 50px; /* Pill Shape */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.search_button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.5);
+  filter: brightness(1.1);
+}
+
+.search_button:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 768px) {
+  .container1 {
+    padding: 40px 15px;
+  }
+
+  .container1 h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .container1 p {
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .filterToolbar {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    padding: 20px;
+    border-radius: 24px; /* Grid shape for mobile */
+    margin-bottom: 20px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .filterGroup {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .filterSelect {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .search_button {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+}

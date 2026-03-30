@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext.jsx";
-const ProtectedRoute = ({ children, allowedRoles }) => {
+const ProtectedRoute = ({ children, roles }) => {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
@@ -11,10 +11,18 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
       </div>
     );
   }
-  console.log(user);
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (roles && !roles.includes(user.role)) {
+    console.warn(`Access denied for role: ${user.role}. Required: ${roles}`);
+    return <Navigate to="/" replace />;
+  }
+
+  if (user.role === 'student' && !user.year) {
+    return <Navigate to="/home" replace />;
   }
 
   return children;

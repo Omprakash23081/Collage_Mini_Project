@@ -1,19 +1,16 @@
-import apiClient from "../utils/axios";
+import apiClient from "./apiClient";
 
 export const authService = {
   //this will take userData from frantend and call backend to rejester and return response
   register: async (userData) => {
-    console.log("DEBUG: Frontend authService.register called");
-    console.log("DEBUG: API URL should be:", apiClient.defaults.baseURL);
     const response = await apiClient.post("/auth/register", userData);
     return response.data;
   },
 
-  login: async (email, password, role) => {
+  login: async (email, password) => {
     const response = await apiClient.post("/auth/login", {
       email,
       password,
-      role,
     });
     return response.data;
   },
@@ -31,8 +28,8 @@ export const authService = {
     return response.data;
   },
 
-  trackActivity: async (subjectName, type) => {
-    return apiClient.post("/auth/activity", { subjectName, type });
+  saveLastLocation: async (url) => {
+    return apiClient.post("/auth/save-location", { url });
   },
 
   logout: async () => {

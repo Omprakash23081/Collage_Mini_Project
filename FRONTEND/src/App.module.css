@@ -1,0 +1,32 @@
+.App_contaniar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 70px; /* Offset for fixed navbar */
+  row-gap: 20px;
+  column-gap: 60px;
+  font-family: "Outfit", "Inter", sans-serif !important;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background: #030303; /* Deep Night Black */
+}
+
+.content_wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.Primum_contener {
+  display: flex;
+  width: 100%;
+  background-color: #050505;
+  color: white;
+}

@@ -1,0 +1,316 @@
+/* Premium Pricing Page */
+
+#body {
+  background-color: transparent; /* Use global body gradient */
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.pricing_container {
+  max-width: 100%; /* Full width as requested */
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.innerContainer {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- GLASS PRICING TABLE --- */
+.pricing_table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+  margin-bottom: 3rem;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.pricing_table td {
+  padding: 1rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s;
+  vertical-align: middle; /* Ensure vertical centering */
+}
+
+.pricing_table tr:last-child td {
+  border-bottom: none;
+}
+
+.pricing_table td:first-child {
+  width: 40%;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding-left: 2rem;
+  text-align: left; /* Explicitly left for body rows */
+}
+
+.pricing_table td:not(:first-child) {
+  text-align: center;
+  width: 30%;
+}
+
+.pricing_table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.header td {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Center the 'All content' header to match others */
+.header td:first-child {
+  text-align: center;
+  padding-left: 0;
+}
+
+.header td:nth-child(2) {
+  color: var(--neon-blue);
+}
+
+.header td:nth-child(3) {
+  color: var(--gold);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.check {
+  color: var(--neon-blue);
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+}
+
+.x_mark {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
+
+/* --- BILLING TOGGLE --- */
+.billing_toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  width: fit-content;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.billing_option {
+  padding: 0.8rem 1.5rem;
+  border-radius: 40px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.billing_option:hover {
+  color: white;
+}
+
+.billing_option.color {
+  background: var(--grad-primary);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 31, 106, 0.3);
+}
+
+/* --- PRICE CARDS --- */
+.price_cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+.price_card {
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.price_card:hover {
+  transform: translateY(-10px);
+  background: var(--bg-glass-heavy);
+}
+
+.price_card.selected {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 30px rgba(194, 22, 65, 0.2);
+}
+
+/* Super Card Styles */
+.price_card:first-child:hover {
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.2);
+}
+
+.price_card:first-child.selected {
+  border-color: var(--neon-blue);
+  background: radial-gradient(
+    circle at top,
+    rgba(37, 99, 235, 0.1),
+    transparent 70%
+  );
+}
+
+#super {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--neon-blue);
+  margin-bottom: 1rem;
+}
+
+/* Premium Card Styles */
+.price_card:last-child:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.price_card:last-child.selected {
+  border-color: var(--gold);
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 215, 0, 0.1),
+    transparent 70%
+  );
+}
+
+.premiumtext {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.price1,
+.price2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.price1 span,
+.price2 span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.price1 span span,
+.price2 span span {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+/* --- CTA BUTTON --- */
+.cta_button {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 1.2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 3rem;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  letter-spacing: 1px;
+}
+
+.cta_button:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btnBasic {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+}
+.btnBasic:hover {
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btnSuper {
+  background: var(--neon-blue);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
+.btnSuper:hover {
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.6);
+}
+
+.btnPremium {
+  background: var(--gold);
+  color: var(--text-primary);
+  border: none;
+  background: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 4px 20px rgba(88, 82, 43, 0.4);
+}
+.btnPremium:hover {
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #body {
+    padding: 1rem;
+  }
+
+  .pricing_table td {
+    padding: 1rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .price_cards {
+    grid-template-columns: 1fr;
+  }
+
+  .cta_button {
+    width: 100%;
+  }
+}
+
+/* Hiding old elements silently - Removed as they are no longer in DOM */

@@ -1,0 +1,79 @@
+:root {
+  /* GLOBAL PREMIUM OBSIDIAN THEME - ABSOLUTE VISIBILITY */
+  --text-primary: #ffffff;
+  --text-secondary: #f1f5f9; /* Slate-100 */
+  --text-muted: #e2e8f0;     /* Slate-200 */
+  
+  --bg-primary: #000000;
+  --bg-dark: #000000;
+  --bg-darker: #000000;
+  
+  /* Synced Deep Space Gradients */
+  --bg-gradient-base: 
+      radial-gradient(circle at 15% 40%, rgba(37, 99, 235, 0.1), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.08), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(244, 63, 94, 0.05), transparent 50%),
+      #000000;
+  
+  --bg-glass: rgba(15, 23, 42, 0.85);
+  --bg-glass-heavy: rgba(0, 0, 0, 0.95);
+  
+  --accent-primary: #3b82f6; 
+  --accent-secondary: #0ea5e9;
+  --neon-blue: #3b82f6;
+  --neon-magenta: #0ea5e9;
+  
+  --card-bg: rgba(30, 41, 59, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --shadow-deep: 0 20px 50px rgba(0, 0, 0, 0.9);
+  --grad-primary: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+}
+
+/* Force Dark Mode & Global Contrast Reset */
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #000000 !important;
+  background-image: var(--bg-gradient-base) !important;
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  color: #ffffff !important; /* Force global white text base */
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Global Visibility Boost for Sub-elements */
+p, span, b, i, li, a, h1, h2, h3, h4, h5, h6, label {
+  opacity: 1 !important;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ensure secondary text is visible on absolute black */
+[class*="Subtitle"], [class*="subtitle"], [class*="Description"], [class*="description"], [class*="Meta"], [class*="meta"] {
+  color: var(--text-secondary) !important;
+}
+
+/* High Contrast placeholders */
+::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+/* Override modules/containers for global visibility */
+[class*="mainContent"], [class*="homeContainer"], [class*="layoutContainer"], [class*="PYQ02contener"] {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #ffffff !important;
+}
+
+[class*="sidebar"] {
+  background-color: #000000 !important;
+  border-right: 1px solid var(--border-subtle) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}

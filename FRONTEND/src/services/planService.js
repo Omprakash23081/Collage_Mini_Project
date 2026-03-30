@@ -1,8 +1,8 @@
-import api from "../utils/axios";
+import apiClient from "./apiClient";
 
 export const planService = {
   getPlans: async () => {
-    const response = await api.get('/plans');
-    return response.data;
+    const response = await apiClient.get('/plans');
+    return response;
   }
 };

@@ -1,4 +1,4 @@
-import apiClient from '../utils/axios';
+import apiClient from "./apiClient";
 
 export const facultyService = {
   add: async (facultyData) => {
