@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import style from './PrintSpooler.module.css';
 import apiClient from '../../services/apiClient';
 import toast from 'react-hot-toast';
-import { Upload, FileText, Settings, CreditCard, Clock, CheckCircle, X } from 'lucide-react';
+import { CloudUpload, FileText, Settings, CreditCard, Clock, CheckCircle, X, Eye } from 'lucide-react';
+import { useStore } from '../../context/StoreContext';
+import { useActivity } from '../../context/ActivityContext';
 
 const PrintSpooler = () => {
   const [file, setFile] = useState(null);
+  const { vendors: allVendors, fetchStoreData } = useStore();
+  const { printRequests: requests, fetchActivityData, addLocalPrintRequest, removeLocalPrintRequest } = useActivity();
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState('');
-  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState({
     copies: 1,
@@ -23,41 +26,25 @@ const PrintSpooler = () => {
   const [classNumber, setClassNumber] = useState('');
 
   useEffect(() => {
-    fetchVendors();
-    fetchRequests();
+    // Filter vendors for stationery only
+    const stationeryShops = allVendors.filter(v => v.role === 'stationery_vendor');
+    setVendors(stationeryShops);
+    if (stationeryShops.length > 0 && !selectedVendor) {
+      setSelectedVendor(stationeryShops[0]._id);
+    }
+  }, [allVendors, selectedVendor]);
+
+  useEffect(() => {
+    fetchStoreData();
+    fetchActivityData();
   }, []);
-
-  const fetchVendors = async () => {
-    try {
-      const { data } = await apiClient.get('/auth/users?role=stationery_vendor');
-      const shopList = data.data || [];
-      setVendors(shopList);
-      if (shopList.length > 0) {
-        setSelectedVendor(shopList[0]._id);
-      } else {
-        console.warn('No stationery shops found with role: stationery_vendor');
-      }
-    } catch (error) {
-      console.error('Failed to fetch vendors:', error);
-      setVendors([]);
-    }
-  };
-
-  const fetchRequests = async () => {
-    try {
-      const { data } = await apiClient.get('/print');
-      setRequests(data.data);
-    } catch (error) {
-      toast.error('Failed to load history');
-    }
-  };
   
   const deleteRequest = async (id) => {
     if (!window.confirm('Are you sure you want to cancel this print request?')) return;
     try {
       await apiClient.delete(`/print/${id}`);
       toast.success('Print request cancelled');
-      fetchRequests();
+      removeLocalPrintRequest(id);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to delete');
     }
@@ -95,19 +82,20 @@ const PrintSpooler = () => {
     }
 
     try {
-      await apiClient.post('/print', fd, {
+      const res = await apiClient.post('/print', fd, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      toast.success('Print request submitted with payment proof!');
+      
+      toast.success('Print request submitted!');
+      if (res.data?.data) addLocalPrintRequest(res.data.data);
       setFile(null);
       setShowPaymentModal(false);
       setPaymentProof(null);
       setTransactionId('');
       setBuilding('');
       setClassNumber('');
-      fetchRequests();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to submit request');
     } finally {
@@ -147,7 +135,7 @@ const PrintSpooler = () => {
                     </div>
                   ) : (
                     <div className={style.placeholder}>
-                      <Upload size={48} />
+                      <CloudUpload size={48} strokeWidth={1.5} />
                       <p>Click to upload document (PDF, DOCX)</p>
                     </div>
                   )}
@@ -228,13 +216,20 @@ const PrintSpooler = () => {
                          {req.status}
                       </span>
                       {req.totalEstimatedPrice && <span className={style.price}>₹{req.totalEstimatedPrice}</span>}
-                      {req.status === 'Pending' && (
-                        <div className={style.itemActions}>
+                      <div className={style.itemActions}>
+                         <button 
+                           onClick={() => window.open(req.documentUrl, '_blank')} 
+                           className={style.previewBtn} 
+                           title="Preview Document"
+                         >
+                           <Eye size={14} />
+                         </button>
+                         {req.status === 'Pending' && (
                            <button onClick={() => deleteRequest(req._id)} className={style.deleteBtn} title="Cancel">
                              <X size={14} />
                            </button>
-                        </div>
-                      )}
+                         )}
+                      </div>
                    </div>
                 </div>
               ))

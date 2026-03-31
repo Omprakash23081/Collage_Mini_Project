@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import OrderSection from "./PRIVES(PROFILE)/OrderSection.jsx";
 import {
   FiUser,
   FiSettings,
@@ -13,6 +14,7 @@ import {
   FiLock,
   FiMail,
   FiCalendar,
+  FiShoppingBag,
 } from "react-icons/fi";
 import { BsCheckCircleFill, BsGraphUp } from "react-icons/bs";
 import Footer from "../../components/Footer/Footer.jsx";
@@ -21,7 +23,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 
 function PROFILE() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("activity");
+  const [activeTab, setActiveTab] = useState("orders");
   const [isEditing, setIsEditing] = useState(false);
   const { user, updateUser, changePassword, logout } = useContext(AuthContext);
 
@@ -312,11 +314,11 @@ function PROFILE() {
       <div className={style.profileNav}>
         <button
           className={`${style.navButton} ${
-            activeTab === "activity" ? style.active : ""
+            activeTab === "orders" ? style.active : ""
           }`}
-          onClick={() => setActiveTab("activity")}
+          onClick={() => setActiveTab("orders")}
         >
-          <FiActivity className={style.navIcon} /> Activity
+          <FiShoppingBag className={style.navIcon} /> Orders
         </button>
         <button
           className={`${style.navButton} ${
@@ -346,47 +348,9 @@ function PROFILE() {
 
       {/* Profile Content */}
       <div className={style.profileContent}>
-        {activeTab === "activity" && (
+        {activeTab === "orders" && (
           <div className={style.activitySection}>
-            <h2 className={style.sectionTitle}>Recent Activity</h2>
-            <div className={style.activityGrid}>
-              {user?.courses && user.courses.length > 0 ? (
-                user.courses.map((activity, index) => (
-                  <div key={index} className={style.activityCard}>
-                    <div className={style.activityHeader}>
-                      <h3>{activity.name}</h3>
-                      <span className={style.activityDate}>
-                        {activity.lastAccessed
-                          ? new Date(activity.lastAccessed).toLocaleDateString()
-                          : "N/A"}
-                      </span>
-                    </div>
-                    <div className={style.progressContainer}>
-                      <div className={style.progressBarTrack}>
-                        <div
-                          className={style.progressBar}
-                          style={{ width: `${activity.progress}%` }}
-                        ></div>
-                      </div>
-                      <span className={style.progressText}>
-                        {activity.progress}%
-                      </span>
-                    </div>
-                    <div className={style.activityFooter}>
-                      <span className={style.timeSpent}>
-                        <FiActivity className={style.timeIcon} />
-                        {activity.timeSpent}
-                      </span>
-                      <button className={style.continueButton}>Continue</button>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-400">
-                  No recent activity found. Edit profile to add.
-                </p>
-              )}
-            </div>
+            <OrderSection />
           </div>
         )}
 

@@ -68,10 +68,15 @@ const getPrintRequests = async (req, res) => {
     const { role, _id } = req.user;
     let filter = {};
 
-    if (role === "student") {
-      filter.studentId = _id;
+    if (role === "admin") {
+      // Admins see everything
+      filter = {};
     } else if (role === "stationery_vendor") {
+      // Vendors only see requests placed WITH them
       filter.vendorId = _id;
+    } else {
+      // Students, Teachers, and all other roles only see requests placed BY them
+      filter.studentId = _id;
     }
 
     const requests = await PrintRequest.find(filter)

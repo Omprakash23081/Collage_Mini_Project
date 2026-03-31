@@ -4,7 +4,7 @@ import TopicwisePrinter from "./TOPICWISE/ChepterNamePrinter.jsx";
 import { useState, useRef, useEffect, useContext } from "react";
 
 function Notes({ setcontents, currentsubject }) {
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("TopicWise");
   const [isSticky, setIsSticky] = useState(false);
 
   const navbarRef = useRef(null);
@@ -32,19 +32,19 @@ function Notes({ setcontents, currentsubject }) {
           className={`${style.tabs} ${isSticky ? style.sticky : ""}`}
         >
           <div
-            className={`${style.tab} ${activeTab === "All" ? style.active : ""}`}
-            onClick={() => setActiveTab("All")}
-          >
-            All Chapter (Notes)
-          </div>
-
-          <div
             className={`${style.tab} ${
               activeTab === "TopicWise" ? style.active : ""
             }`}
             onClick={() => setActiveTab("TopicWise")}
           >
             Chapter wise (Notes)
+          </div>
+
+          <div
+            className={`${style.tab} ${activeTab === "All" ? style.active : ""}`}
+            onClick={() => setActiveTab("All")}
+          >
+            All Chapter (Notes)
           </div>
         </nav>
       </div>

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import style from './CanteenStore.module.css';
 import apiClient from '../../services/apiClient';
 import toast from 'react-hot-toast';
-import { ShoppingCart, Search, Filter, Info, Minus, Plus, X, Clock } from 'lucide-react';
+import { Plus, Minus, ShoppingCart, Trash2, Clock, CheckCircle, X, Info, Search, Filter } from 'lucide-react';
+import { useStore } from '../../context/StoreContext';
+import { useActivity } from '../../context/ActivityContext';
 
 const CanteenStore = () => {
-  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem('canteen_cart');
@@ -28,40 +29,29 @@ const CanteenStore = () => {
   const [classNumber, setClassNumber] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const [orders, setOrders] = useState([]);
+  const { products: allProducts, fetchStoreData } = useStore();
+  const { orders, addLocalOrder, removeLocalOrder, refreshActivity } = useActivity();
+  const [products, setProducts] = useState([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
 
   const total = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
 
   useEffect(() => {
-    fetchProducts();
-    fetchOrders();
+    // Filter global products for canteen only
+    setProducts(allProducts.filter(p => p.category === 'canteen' && p.isAvailable));
+  }, [allProducts]);
+
+  useEffect(() => {
+    fetchStoreData();
+    refreshActivity();
   }, []);
-
-  const fetchProducts = async () => {
-    try {
-      const { data } = await apiClient.get('/products?category=canteen');
-      setProducts(data.data.filter(p => p.isAvailable));
-    } catch (error) {
-      toast.error('Failed to load menu');
-    }
-  };
-
-  const fetchOrders = async () => {
-    try {
-      const { data } = await apiClient.get('/orders');
-      setOrders(data.data);
-    } catch (error) {
-      console.error('Failed to load orders');
-    }
-  };
 
   const deleteOrder = async (id) => {
     if (!window.confirm('Cancel this order?')) return;
     try {
       await apiClient.delete(`/orders/${id}`);
       toast.success('Order cancelled');
-      fetchOrders();
+      removeLocalOrder(id);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to cancel');
     }
@@ -136,12 +126,12 @@ const CanteenStore = () => {
         formData.append('paymentProof', paymentProof);
       }
 
-      await apiClient.post('/orders', formData, {
+      const res = await apiClient.post('/orders', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
       toast.success(`Order placed with ${itemsForVendor[0].vendorName}!`);
-      await fetchOrders();
+      if (res.data?.data) addLocalOrder(res.data.data);
       
       // Remove these items from cart
       const remainingCart = cart.filter(item => item.vendorId !== currentVendorId);
@@ -269,20 +259,17 @@ const CanteenStore = () => {
                   <p className={style.description}>{activeProduct.description}</p>
                   
                   {hasMultiple ? (
-                    <div className={style.vendorPicker}>
-                       <label>Select Your Favorite Shop:</label>
-                       <div className={style.vendorList}>
+                    <div className={style.shopSelector}>
+                       <select 
+                        value={selectedId} 
+                        onChange={(e) => setSelectedVendors(prev => ({ ...prev, [name]: e.target.value }))}
+                       >
                           {variants.map(v => (
-                            <button 
-                              key={v._id}
-                              className={selectedId === v._id ? style.activeVendor : ''}
-                              onClick={() => setSelectedVendors(prev => ({ ...prev, [name]: v._id }))}
-                            >
-                              <span className={style.vName}>{v.vendorId?.name || 'Shop'}</span>
-                              <span className={style.vPrice}>₹{v.price}</span>
-                            </button>
+                            <option key={v._id} value={v._id}>
+                              {v.vendorId?.name || 'Shop'} — ₹{v.price}
+                            </option>
                           ))}
-                       </div>
+                       </select>
                     </div>
                   ) : (
                     <div className={style.singleVendorInfo}>

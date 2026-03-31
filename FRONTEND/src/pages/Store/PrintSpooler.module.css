@@ -11,28 +11,26 @@
 }
 
 .card {
-  background: rgba(15, 17, 26, 0.7); /* Custom Obsidian Glass */
+  background: rgba(15, 17, 26, 0.7);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  padding: 2rem;
-  border-radius: 28px;
+  padding: 0.75rem 1.25rem;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 .card h2 {
-  margin-bottom: 2rem;
-  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
   font-weight: 800;
   text-align: center;
-  background: linear-gradient(to right, #fff, var(--text-muted));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
+  letter-spacing: -0.5px;
 }
 
 .uploadArea {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .dropzone {
@@ -40,32 +38,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed rgba(37, 99, 235, 0.2); /* Neon Blue Dash */
-  border-radius: 24px;
-  padding: 3rem 1.5rem;
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.25rem 1rem;
   text-align: center;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(37, 99, 235, 0.02);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .dropzone:hover {
-  border-color: var(--neon-blue);
-  background: rgba(37, 99, 235, 0.06);
-  transform: scale(0.99);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .placeholder {
-  color: var(--text-secondary);
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  opacity: 0.8;
 }
 
 .placeholder p {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .fileSelected {
@@ -88,92 +86,91 @@
 .settingsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .settingItem label {
   display: block;
-  margin-bottom: 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  opacity: 0.85;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .settingItem input, .settingItem select {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5rem 0.75rem;
+  background: #11141d;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
+  border-radius: 8px;
   color: white;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
   outline: none;
 }
 
 .settingItem input:focus, .settingItem select:focus {
-  border-color: var(--neon-blue);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 15px rgba(37, 99, 235, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #151824;
 }
 
 .checkboxes {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2.5rem;
+  gap: 2.5rem;
+  margin: 1rem 0;
 }
 
 .checkbox {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.8rem;
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #ffffff;
 }
 
 .checkbox input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--neon-blue);
+  width: 16px;
+  height: 16px;
+  accent-color: #ffffff;
   cursor: pointer;
 }
 
 .submitBtn {
   width: 100%;
-  padding: 1.1rem;
-  background: var(--grad-primary);
+  padding: 0.75rem;
+  background: #2d3345;
   border: none;
-  border-radius: 18px;
-  color: white;
+  border-radius: 10px;
+  color: #ffffff;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(255, 31, 106, 0.3);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
+  letter-spacing: 1.2px;
+  transition: all 0.2s ease;
+  opacity: 0.9;
 }
 
 .submitBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 35px rgba(255, 31, 106, 0.4);
+  background: #363c52;
+  opacity: 1;
 }
 
 .submitBtn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.99);
 }
+
 .submitBtn:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
-  filter: grayscale(0.8);
-  box-shadow: none;
 }
 
 .historySection {
@@ -222,26 +219,33 @@
 
 .itemActions {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
-  margin-top: 5px;
 }
 
-.deleteBtn {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  padding: 4px;
-  border-radius: 6px;
-  cursor: pointer;
+.previewBtn, .deleteBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 0.4rem;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.previewBtn:hover {
+  background: rgba(37, 99, 235, 0.2);
+  border-color: #2563eb;
+  color: #3b82f6;
 }
 
 .deleteBtn:hover {
-  background: #ef4444;
-  color: white;
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
 .status {
