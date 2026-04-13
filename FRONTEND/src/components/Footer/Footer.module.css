@@ -1,15 +1,17 @@
 /* Premium Footer CSS */
 
 .footerContainer {
-  background: var(--bg-dark);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 11, 14, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 4rem 2rem 2rem;
   color: var(--text-secondary);
   position: relative;
   overflow: hidden;
   margin-top: auto;
-  width: 100%; /* Force full width within flex container */
-  box-sizing: border-box; /* Ensure padding doesn't overflow width */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .footerContent {
@@ -58,16 +60,11 @@
 
 .sectionHeader {
   font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 700;
+  color: var(--neon-blue); /* Premium blue accents */
   margin-bottom: 1.5rem;
-  position: relative;
-  display: inline-block;
-}
-
-/* Underline removed as requested */
-.sectionHeader::after {
-  content: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .linkList {
@@ -106,34 +103,26 @@
 }
 
 .socialIcon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-primary);
   text-decoration: none;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 1.2rem;
-}
-
-/* "Eye" look: Odds to right, Evens to left for a tight cluster */
-.socialIcon:nth-child(odd) {
-  justify-self: end;
-}
-
-.socialIcon:nth-child(even) {
-  justify-self: start;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.15); /* Permanent subtle glow */
 }
 
 .socialIcon:hover {
-  background: var(--accent-primary);
-  border-color: var(--accent-primary);
-  box-shadow: var(--shadow-glow-blue);
-  transform: translateY(-3px);
+  background: var(--grad-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.5);
+  transform: translateY(-8px) scale(1.1);
   color: white;
 }
 
@@ -153,22 +142,32 @@
 }
 
 @media (max-width: 600px) {
+  .footerContainer {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
   .footerContent {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    text-align: left; /* Revert to left align */
+    grid-template-columns: 1fr 1fr; /* Two columns for links/contact */
+    gap: 2rem;
+    text-align: left;
   }
 
-  .section {
-    align-items: flex-start; /* Revert to left align */
+  /* Force brand section to span full width */
+  .footerContent > .section:first-child {
+    grid-column: span 2;
+    margin-bottom: 1rem;
   }
 
-  /* Reset margin for social icons to align left */
-  .socialIcons {
-    margin: 0;
+  /* Force social grid to span full width too */
+  .footerContent > .section:last-child {
+    grid-column: span 2;
   }
 
-  .footerLogo {
-    justify-content: flex-start;
+  .brandText {
+    font-size: 1.3rem;
+  }
+
+  .link {
+    font-size: 0.85rem;
   }
 }

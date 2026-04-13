@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /student
+Disallow: /primum
+Disallow: /canteen
+Disallow: /stationery
+
+Sitemap: https://studysharp.in/sitemap.xml

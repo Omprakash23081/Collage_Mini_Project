@@ -5,11 +5,11 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  padding-top: 100px; /* Account for fixed Navbar */
-  background-color: #030303;
-  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #030303 80%);
+  padding-top: 45px; /* Aggressive header shift for ultra-tight look */
+  background-color: #000000;
   color: var(--text-secondary);
   padding-bottom: 50px;
+  margin-top: -1.6rem;
 }
 
 /* Header Section */
@@ -24,16 +24,17 @@
 .header h1 {
   font-size: 2rem;
   font-weight: 800;
-  margin: 0 0 1rem 0;
-  background: linear-gradient(180deg, #ffffff 0%, var(--text-muted) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* margin: 0 0 1rem 0; */
+  color: var(--text-primary);
   text-transform: uppercase;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   line-height: 1.1;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
+/* @media (max-width: 600px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+} */
 
 /* Navigation/Toggle Buttons */
 .condation {
@@ -70,9 +71,10 @@
 
 /* Active State styling */
 .activeBtn {
-  background-color: #3b82f6 !important; /* Force override */
+  background: var(--grad-primary) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .condation button a {
@@ -203,30 +205,29 @@
 
 /* Item Cards - Enhanced for Visual Depth */
 .itemCard {
-  background: rgba(30, 41, 59, 0.4); 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   color: var(--text-secondary);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   padding: 1.5rem;
-  margin: 1.5rem auto;
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 1rem auto;
+  width: 95%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  gap: 2rem;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  gap: 1.5rem;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .itemCard:hover {
-  transform: translateY(-8px) scale(1.01);
-  background: rgba(30, 41, 59, 0.6);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(59, 130, 246, 0.3);
-  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px);
+  border-color: var(--neon-blue);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .itemCard::after {
@@ -401,41 +402,40 @@
 .statsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 98%;
-  margin: 0 auto 3rem;
-  animation: fadeIn 1s ease-out;
+  gap: 12px;
+  width: 95%;
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
 }
 
 .statCard {
-  background: rgba(30, 41, 59, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 1.5rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1rem 0.5rem;
   text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.statCard:hover {
-  transform: translateY(-5px);
-  background: rgba(30, 41, 59, 0.4);
 }
 
 .statNumber {
   display: block;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  color: #3b82f6;
-  margin-bottom: 5px;
+  color: var(--neon-blue);
+  margin-bottom: 2px;
+}
+
+.statIcon {
+  margin-bottom: 8px;
+  opacity: 0.8;
 }
 
 .statLabel {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 /* How It Works Section */
@@ -523,75 +523,110 @@
   to { opacity: 1; }
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .statsSection, .stepsGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 600px) {
+  .body {
+    padding-top: 45px; /* Aggressive shift up */
+    padding-bottom: 110px;
+  }
+
+  .header {
+    padding: 0; 
+    margin: 0.2rem 0 0.8rem; /* Minimal top margin */
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 1.8rem; /* BOLDER FONT */
+    margin: 0;
+    padding-top: 0;
+    letter-spacing: -1px;
+    font-weight: 900;
+  }
+
+  .statsSection {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px; /* Tighter row */
+    width: 100%;
+    margin: 0 auto 1.2rem auto;
+  }
+
+  .statCard {
+    padding: 0.5rem 0.1rem;
+    border-radius: 10px;
+  }
+
+  .statNumber {
+    font-size: 1.3rem; /* Increased Font */
+  }
+
+  .howItWorks {
+    width: 98%;
+    margin: 2rem auto;
+    padding: 0;
+  }
+
+  .howItWorks h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stepsGrid {
+    gap: 15px;
+  }
+
+  .stepIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .condation {
+    width: 100%;
+    border-radius: 12px;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+
+  .form {
+    width: 100%;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+
+  .emptyStateContainer {
+    width: 100%;
+    margin: 1.5rem 0;
+    padding: 2.5rem 1rem;
+    box-sizing: border-box;
   }
 }
 
 @media (max-width: 768px) {
   .itemCard {
     flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
   }
 
   .itemImageWrapper {
     width: 100%;
-    height: 250px;
+    height: 180px;
   }
 
   .itemTitle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+  }
+
+  .itemDescription {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
   }
 
   .itemGrid {
     grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-}
-
-/* Slide Up Animation */
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .condation {
-    width: 90%;
-    margin-bottom: 20px;
-  }
-
-  .condation button {
-    flex: 1;
-    padding: 12px;
-  }
-
-  .itemCard {
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem;
-  }
-
-  .itemImage {
-    width: 100%;
-    height: 250px;
-    margin-bottom: 1rem;
-  }
-
-  .header h1 {
-    font-size: 2rem;
-  }
-
-  .itemDetails {
-    width: 100%;
+    gap: 0.5rem;
   }
 }

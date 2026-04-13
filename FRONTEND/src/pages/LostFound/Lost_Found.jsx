@@ -136,16 +136,19 @@ function Lost_Found() {
         {/* Stats Section */}
         <div className={styles.statsSection}>
           <div className={styles.statCard}>
+            <Search size={18} className={styles.statIcon} />
             <span className={styles.statNumber}>{data.length}</span>
-            <span className={styles.statLabel}>Total Items</span>
+            <span className={styles.statLabel}>Total</span>
           </div>
           <div className={styles.statCard}>
+            <AlertCircle size={18} className={styles.statIcon} style={{ color: '#ef4444' }} />
             <span className={styles.statNumber}>{data.filter(i => i.status === 'lost').length}</span>
-            <span className={styles.statLabel}>Lost Reports</span>
+            <span className={styles.statLabel}>Lost</span>
           </div>
           <div className={styles.statCard}>
+            <CheckCircle2 size={18} className={styles.statIcon} style={{ color: '#22c55e' }} />
             <span className={styles.statNumber}>{data.filter(i => i.status === 'found').length}</span>
-            <span className={styles.statLabel}>Found Items</span>
+            <span className={styles.statLabel}>Found</span>
           </div>
         </div>
 
@@ -394,8 +397,6 @@ function Lost_Found() {
           )}
         </AnimatePresence>
       </main>
-
-      <Footer />
     </div>
   );
 }

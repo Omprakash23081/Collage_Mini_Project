@@ -176,7 +176,7 @@ function AllPrimum() {
             }
           >
             <i className={`bi ${item.icon}`}></i>
-            <span className="naveLinckName">{item.name}</span>
+            <span className={style.navLinkName}>{item.name}</span>
           </NavLink>
         ))}
       </div>

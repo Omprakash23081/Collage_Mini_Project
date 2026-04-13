@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,22 +21,23 @@ import Footer from "./components/Footer/Footer.jsx";
 // Pages
 import RoleSelection from "./pages/RoleSelection/RoleSelection.jsx";
 import Home from "./Home.jsx";
-import Login from "./pages/Login/Login.jsx";
-import LostFound from "./pages/LostFound/Lost_Found.jsx";
-import FacultyDirectory from "./pages/FacultyDirectory/FacultyDirectory.jsx";
-import AllPrimum from "./pages/PremiumLanding/AllPrimum.jsx";
-import PrimiumHome from "./pages/PremiumDashboard/PrimiumHome.jsx";
-import ProfilePage from "./pages/Profile/Profile.jsx";
-import NotesPage from "./pages/Notes/ROOT/Notes.jsx";
-import PYQPage from "./pages/PYQHub/ROOT/PYQ.jsx";
-import PremiumPage from "./pages/PremiumPlans/WebPrimum.jsx";
-import CareerPathways from "./pages/Career/CareerPathways.jsx";
-import ATSAnalyzer from "./pages/Career/ATSAnalyzer.jsx";
-import RoadmapGenerator from "./pages/Roadmap/RoadmapGenerator.jsx";
-import CanteenDashboard from "./pages/Vendor/CanteenDashboard.jsx";
-import StationeryDashboard from "./pages/Vendor/StationeryDashboard.jsx";
-import CanteenStore from "./pages/Store/CanteenStore.jsx";
-import PrintSpooler from "./pages/Store/PrintSpooler.jsx";
+
+const Login = lazy(() => import("./pages/Login/Login.jsx"));
+const LostFound = lazy(() => import("./pages/LostFound/Lost_Found.jsx"));
+const FacultyDirectory = lazy(() => import("./pages/FacultyDirectory/FacultyDirectory.jsx"));
+const AllPrimum = lazy(() => import("./pages/PremiumLanding/AllPrimum.jsx"));
+const PrimiumHome = lazy(() => import("./pages/PremiumDashboard/PrimiumHome.jsx"));
+const ProfilePage = lazy(() => import("./pages/Profile/Profile.jsx"));
+const NotesPage = lazy(() => import("./pages/Notes/ROOT/Notes.jsx"));
+const PYQPage = lazy(() => import("./pages/PYQHub/ROOT/PYQ.jsx"));
+const PremiumPage = lazy(() => import("./pages/PremiumPlans/WebPrimum.jsx"));
+const CareerPathways = lazy(() => import("./pages/Career/CareerPathways.jsx"));
+const ATSAnalyzer = lazy(() => import("./pages/Career/ATSAnalyzer.jsx"));
+const RoadmapGenerator = lazy(() => import("./pages/Roadmap/RoadmapGenerator.jsx"));
+const CanteenDashboard = lazy(() => import("./pages/Vendor/CanteenDashboard.jsx"));
+const StationeryDashboard = lazy(() => import("./pages/Vendor/StationeryDashboard.jsx"));
+const CanteenStore = lazy(() => import("./pages/Store/CanteenStore.jsx"));
+const PrintSpooler = lazy(() => import("./pages/Store/PrintSpooler.jsx"));
 
 function LocationTracker() {
   const location = useLocation();
@@ -91,6 +92,7 @@ function App() {
     <Router>
       <LocationTracker />
       <Toaster position="top-center" reverseOrder={false} />
+      <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'gray', backgroundColor: '#0f0f13' }}>Loading...</div>}>
       <Routes>
         {/* ---------- Role Selection & Landing ---------- */}
         <Route path="/" element={<RoleSelection />} />
@@ -152,6 +154,7 @@ function App() {
         <Route path="/career/ats-analyzer" element={<ATSAnalyzer />} />
         <Route path="/roadmaps" element={<RoadmapGenerator />} />
       </Routes>
+      </Suspense>
     </Router>
   );
 }

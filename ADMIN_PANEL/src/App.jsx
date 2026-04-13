@@ -1,20 +1,22 @@
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
 import Layout from './layouts/Layout';
-import Users from './pages/Users';
-import Notes from './pages/Notes';
-import PYQ from './pages/PYQ';
-import Events from './pages/Events';
-import Faculty from './pages/Faculty';
-import Career from './pages/Career';
-import Items from './pages/Items';
-import Roadmap from './pages/Roadmap';
-import Premium from './pages/Premium';
-import Profile from './pages/Profile';
-import Banners from './pages/Banners';
-import Feedback from './pages/Feedback';
+
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Users = lazy(() => import('./pages/Users'));
+const Notes = lazy(() => import('./pages/Notes'));
+const PYQ = lazy(() => import('./pages/PYQ'));
+const Events = lazy(() => import('./pages/Events'));
+const Faculty = lazy(() => import('./pages/Faculty'));
+const Career = lazy(() => import('./pages/Career'));
+const Items = lazy(() => import('./pages/Items'));
+const Roadmap = lazy(() => import('./pages/Roadmap'));
+const Premium = lazy(() => import('./pages/Premium'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Banners = lazy(() => import('./pages/Banners'));
+const Feedback = lazy(() => import('./pages/Feedback'));
 import { Toaster } from 'react-hot-toast';
 
 const ProtectedRoute = ({ children }) => {
@@ -49,6 +51,14 @@ function App() {
           border: '1px solid #27272a'
         }
       }} />
+        <Suspense fallback={
+          <div className="h-screen w-full flex items-center justify-center bg-[#f8fafc]">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-slate-500 font-medium animate-pulse">Loading Route...</p>
+            </div>
+          </div>
+        }>
         <Routes>
           <Route path="/login" element={<Login />} />
           
@@ -75,6 +85,7 @@ function App() {
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        </Suspense>
       </AuthProvider>
     </Router>
   );

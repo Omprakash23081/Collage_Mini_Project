@@ -1,7 +1,5 @@
 .App_contaniar {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   padding-top: 70px; /* Offset for fixed navbar */
   row-gap: 20px;

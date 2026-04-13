@@ -19,9 +19,8 @@
 }
 
 .questions_contener {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 1rem;
+  width: 100%;
 }
 
 .sticky_header {
@@ -200,7 +199,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .questions_contener {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 }
 

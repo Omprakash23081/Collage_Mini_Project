@@ -484,8 +484,8 @@
 .floatingCartBtn {
   display: none;
   position: fixed;
-  bottom: 85px;
-  right: 25px;
+  bottom: 100px; /* Higher up to clear bottom nav */
+  right: 20px;
   width: 65px;
   height: 65px;
   background: #3b82f6;
@@ -716,4 +716,48 @@
 .confirmBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .storeContainer {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+  .header {
+    margin-bottom: 1rem;
+  }
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .productCard {
+    border-radius: 12px;
+  }
+  .imageWrapper {
+    height: 120px;
+  }
+  .priceTag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    top: 8px;
+    right: 8px;
+  }
+  .productInfo {
+    padding: 0.75rem;
+  }
+  .productName {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+  .description {
+    font-size: 0.75rem;
+    height: 2.4em;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  .addBtn {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
 }

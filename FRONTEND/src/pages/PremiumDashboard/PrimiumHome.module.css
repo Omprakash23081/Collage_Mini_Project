@@ -485,6 +485,7 @@
 @media (max-width: 768px) {
   .home {
     padding: 1rem 0.5rem;
+    padding-bottom: 100px;
     gap: 1.5rem;
     width: 100vw;
     box-sizing: border-box;
@@ -492,6 +493,7 @@
 
   .homeContainer {
     padding: 1.5rem 1rem;
+    padding-bottom: 100px;
   }
 
   .welcomeTitle {
